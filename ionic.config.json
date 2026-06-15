@@ -1,0 +1,7 @@
+{
+  "name": "Terrimeet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
