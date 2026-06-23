@@ -1,28 +1,56 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom" style="--background: #005846; --color: rgb(255, 255, 255); --color-selected: #44D62C;">
-    <ion-tab-button tab="home">
-      <ion-icon  name="home" color="white"></ion-icon>
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
+<nav class="bottom-nav">
+  <button
+    class="tab-btn"
+    [class.tab-selected]="activeTab === 'home'"
+    (click)="selectTab('home')"
+  >
+    <div class="tab-icon-wrap">
+      <ion-icon name="home-outline"></ion-icon>
+    </div>
+    <span class="tab-label">Home</span>
+  </button>
 
-    <ion-tab-button tab="eventos">
+  <button
+    class="tab-btn"
+    [class.tab-selected]="activeTab === 'eventos'"
+    (click)="selectTab('eventos')"
+  >
+    <div class="tab-icon-wrap">
       <ion-icon name="calendar-outline"></ion-icon>
-      <ion-label>Eventos</ion-label>
-    </ion-tab-button>
+    </div>
+    <span class="tab-label">Eventos</span>
+  </button>
 
-    <ion-tab-button tab="QR">
+  <button
+    class="tab-btn"
+    [class.tab-selected]="activeTab === 'qr'"
+    (click)="selectTab('qr')"
+  >
+    <div class="tab-icon-wrap">
       <ion-icon name="qr-code-outline"></ion-icon>
-      <ion-label>QR</ion-label>
-    </ion-tab-button>
+    </div>
+    <span class="tab-label">QR</span>
+  </button>
 
-    <ion-tab-button tab="wallet">
+  <button
+    class="tab-btn"
+    [class.tab-selected]="activeTab === 'wallet'"
+    (click)="selectTab('wallet')"
+  >
+    <div class="tab-icon-wrap">
       <ion-icon name="wallet-outline"></ion-icon>
-      <ion-label>Wallet</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="perfil">
-      <ion-icon name="person-outline"></ion-icon>
-      <ion-label>Perfil</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
+    </div>
+    <span class="tab-label">Wallet</span>
+  </button>
 
-</ion-tabs>
+  <button
+    class="tab-btn"
+    [class.tab-selected]="activeTab === 'perfil'"
+    (click)="selectTab('perfil')"
+  >
+    <div class="tab-icon-wrap">
+      <ion-icon name="person-outline"></ion-icon>
+    </div>
+    <span class="tab-label">Perfil</span>
+  </button>
+</nav>
