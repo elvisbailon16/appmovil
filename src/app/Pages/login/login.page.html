@@ -17,6 +17,7 @@
       <div class="input-wrapper">
         <ion-icon class="input-icon" name="mail-outline"></ion-icon>
         <input 
+          #username
           class="form-input" 
           type="email" 
           placeholder="tunombre@espam.edu.ec"
@@ -30,6 +31,7 @@
       <div class="input-wrapper">
         <ion-icon class="input-icon" name="lock-closed-outline"></ion-icon>
         <input 
+          #password
           class="form-input" 
           type="password" 
           placeholder="••••••••"
@@ -47,7 +49,7 @@
     </div>
 
     <!-- Primary Button -->
-    <button (click)="login()" class="btn-primary">
+    <button (click)="login(username, password)" class="btn-primary">
       <span >Iniciar sesión</span>
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
