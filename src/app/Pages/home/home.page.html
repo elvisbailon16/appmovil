@@ -16,8 +16,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-  <h1>Hola Terrimeet</h1>
-  <h3>Bienvenido, disfruta de tus eventos favoritos</h3>
+  <div class="welcome-text">
+    <h1>Hola Terrimeet</h1>
+    <h3>Bienvenido, disfruta de tus eventos favoritos</h3>
+  </div>
 @for (evento of eventos; track evento.id) {
   <app-evento class="eventos-list" [evento]="evento"></app-evento>
 }
