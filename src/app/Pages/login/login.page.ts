@@ -26,6 +26,9 @@ export class LoginPage implements OnInit {
         this.valor = datos.success;
 
         if(this.valor){
+          localStorage.setItem('token', datos.data.access_token);
+          localStorage.setItem('refresh_token', datos.data.refresh_token);
+
           this.router.navigate(['/home'])
         }
 

@@ -1,3 +1,6 @@
+<ion-content>
+  <h1>Hola Terrimeet</h1>
+  <h3>Bienvenido, disfruta de tus eventos favoritos</h3>
 <ion-header class="header">
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -14,3 +17,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+@for (evento of eventos; track evento.id) {
+  <app-evento class="eventos-list" [evento]="evento"></app-evento>
+}
+<ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>

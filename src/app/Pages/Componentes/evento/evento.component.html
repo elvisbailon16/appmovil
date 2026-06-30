@@ -1,3 +1,55 @@
-<p>
-  evento works!
-</p>
+  <div class="event-card">
+
+    <!-- Imagen / Banner -->
+    <div class="event-image-wrap">
+      <div class="image-placeholder">
+        <span>Sin imagen disponible</span>
+      </div>
+
+      <span class="chip-categoria">{{ evento.categoria }}</span>
+
+      <span class="badge-estado" [ngClass]="evento.statusevento === 'Finalizado' ? 'finalizado' : ''">
+        <span class="estado-dot"></span>
+        {{ evento.statusevento }}
+      </span>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="card-body">
+      <h2 class="event-title">{{ evento.nombre }}</h2>
+
+      <div class="meta-list">
+        <div class="meta-row">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>
+            <strong>{{ evento.fechainicio | date:'dd MMM yyyy' }}</strong>
+          </span>
+        </div>
+
+        <div class="meta-row">
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ evento.sede || evento.direccion }}</span>
+        </div>
+      </div>
+
+      <p class="event-description">{{ evento.descripcion }}</p>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      @if (evento.statusevento === 'Finalizado') {
+        <div class="badge-finalizado">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Evento finalizado
+        </div>
+      } @else {
+        <button class="btn-primary">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Inscribirme
+        </button>
+      }
+    </div>
+
+  </div>
