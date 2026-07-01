@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 
 @Component({
@@ -9,10 +9,10 @@ import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
   templateUrl: './list-evento.page.html',
   styleUrls: ['./list-evento.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent]
+  imports: [IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent]
 })
 export class ListEventoPage implements OnInit {
-
+tabActivo: 'todos' | 'mis-eventos' = 'todos';
   constructor() { }
 
   ngOnInit() {

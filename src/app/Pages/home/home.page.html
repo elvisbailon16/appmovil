@@ -1,5 +1,3 @@
-<ion-content>
-
 <ion-header class="header">
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -16,9 +14,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content>
   <div class="welcome-text">
-    <h1>Hola Terrimeet</h1>
-    <h3>Bienvenido, disfruta de tus eventos favoritos</h3>
+    <h2>Hola Terrimeet</h2>
+    <p>Bienvenido, disfruta de tus eventos favoritos</p>
   </div>
 @for (evento of eventos; track evento.id) {
   <app-evento class="eventos-list" [evento]="evento"></app-evento>
