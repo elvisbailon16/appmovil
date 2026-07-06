@@ -1,0 +1,259 @@
+// detalle-evento.page.scss
+// Guía Visual TerriMeet — ESPAM MFL
+
+$verde-bosque:  #005846;
+$verde-lima:    #44D62C;
+$verde-ceibo:   #CBDB2A;
+$verde-agua:    #08B89D;
+$blanco:        #FFFFFF;
+$texto-primario:#1A1A1A;
+$texto-muted:   #555555;
+
+// ── Estado de carga ───────────────────────────────────────
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 12px;
+  color: $texto-muted;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+}
+
+// ── Imagen banner ─────────────────────────────────────────
+.event-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, $verde-bosque 0%, $verde-agua 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  ion-icon {
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  span {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Work Sans', sans-serif;
+  }
+}
+
+// ── Badge estado sobre imagen ─────────────────────────────
+.badge-estado {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
+  padding: 4px 10px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: $verde-ceibo;
+
+  .estado-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $verde-ceibo;
+  }
+
+  &.inscrito {
+    color: $verde-lima;
+    .estado-dot { background: $verde-lima; }
+  }
+
+  &.finalizado {
+    color: #aaaaaa;
+    .estado-dot { background: #aaaaaa; }
+  }
+
+  &.en-curso {
+    color: $verde-lima;
+    .estado-dot { background: $verde-lima; }
+  }
+}
+
+// ── Chip categoría ────────────────────────────────────────
+.categoria-wrap {
+  padding: 12px 16px 0;
+}
+
+.chip-categoria {
+  display: inline-block;
+  background: $verde-agua;
+  color: $blanco;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+// ── Cuerpo del detalle ────────────────────────────────────
+.detalle-body {
+  padding: 12px 16px 100px; // 100px para que no tape el footer fijo
+}
+
+.event-title {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: $texto-primario;
+  line-height: 1.3;
+  margin: 0 0 14px;
+}
+
+// ── Metadatos ─────────────────────────────────────────────
+.meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  line-height: 1.4;
+
+  ion-icon {
+    font-size: 16px;
+    color: $verde-bosque;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  strong {
+    color: $texto-primario;
+    font-weight: 600;
+  }
+
+  .link {
+    color: $verde-agua;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+}
+
+// ── Divisor ───────────────────────────────────────────────
+.divider {
+  border: none;
+  border-top: 1px solid #eeeeee;
+  margin: 16px 0;
+}
+
+// ── Descripción ───────────────────────────────────────────
+.descripcion-wrap {
+  .event-description {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    color: $texto-muted;
+    line-height: 1.6;
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+// ── Footer fijo ───────────────────────────────────────────
+.detalle-footer {
+  position: fixed;
+  bottom: 70px; // altura del tab bar
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: $blanco;
+  border-top: 1px solid #eeeeee;
+  z-index: 100;
+}
+
+.btn-primary {
+  width: 100%;
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  ion-icon { font-size: 18px; }
+
+  &:active { background: darken($verde-bosque, 8%); }
+  &:disabled { opacity: 0.38; pointer-events: none; }
+}
+
+.badge-inscrito {
+  width: 100%;
+  background: #eafaf3;
+  border: 1.5px solid $verde-lima;
+  color: #1a6b1a;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  ion-icon { color: $verde-lima; font-size: 20px; }
+}
+
+.badge-finalizado {
+  width: 100%;
+  background: #f5f5f5;
+  color: #888;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #dddddd;
+
+  ion-icon { font-size: 18px; }
+}

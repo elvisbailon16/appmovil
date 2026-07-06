@@ -1,16 +1,56 @@
 <app-cabecera [titulo]="'Eventos'"></app-cabecera>
 <ion-content>
-    <div class="button-container">
-        <ion-button class="btn btn-primary">
-            Todos
-        </ion-button>
-        <ion-button class="btn btn-secondary">
-            Mis Eventos
-        </ion-button>
+
+  <div class="search-container">
+    <ion-searchbar placeholder="Buscar eventos..."></ion-searchbar>
+  </div>
+
+  <div class="button-container">
+    <span class="tab" [class.active]="selectedTab === 'todos'" (click)="selectTab('todos')">
+      Todos
+    </span>
+    <span class="tab" [class.active]="selectedTab === 'mis-eventos'" (click)="selectTab('mis-eventos')">
+      Mis eventos
+    </span>
+  </div>
+
+  <div class="tab-indicator-wrap">
+    <hr class="linea-base">
+    <div class="linea-activa" [class.right]="selectedTab === 'mis-eventos'"></div>
+  </div>
+
+  <!-- Cargando -->
+  @if (cargando) {
+    <div class="estado-center">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando eventos...</p>
     </div>
-    <hr class="principal">
-    <div class="content-liner">
-        <hr class="linea secondary-one">
-        <hr class="linea secondary-two">
+  }
+
+  <!-- Error -->
+  @if (error && !cargando) {
+    <div class="estado-center">
+      <p>{{ error }}</p>
+      <button class="btn-retry" (click)="cargarEventos()">Reintentar</button>
     </div>
+  }
+
+  <!-- Sin eventos -->
+  @if (!cargando && !error && eventos.length === 0) {
+    <div class="estado-center">
+      <p>No hay eventos disponibles.</p>
+    </div>
+  }
+
+  <!-- Lista -->
+  @if (!cargando && !error) {
+    @for (evento of eventos; track evento.id) {
+      <app-evento [evento]="evento"></app-evento>
+    }
+  }
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

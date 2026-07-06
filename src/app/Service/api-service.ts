@@ -33,4 +33,10 @@ export class ApiService {
     });
   }
   
+  getEventoById(id: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_evento_id/${id}`, {
+      headers: this.getHeaders()
+    });
+  }
+
 }

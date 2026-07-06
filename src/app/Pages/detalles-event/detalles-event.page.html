@@ -1,13 +1,125 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>DetallesEvent</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- detalle-evento.page.html -->
+<app-cabecera [titulo]="'Evento'"></app-cabecera>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">DetallesEvent</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  @if (cargando) {
+    <div class="estado-center">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando evento...</p>
+    </div>
+  }
+
+  @if (!cargando && evento) {
+
+    <!-- Imagen / Banner -->
+    <div class="event-image-wrap">
+      @if (evento.imagenUrl) {
+        <img [src]="evento.imagenUrl" [alt]="evento.nombre" />
+      } @else {
+        <div class="image-placeholder">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Sin imagen disponible</span>
+        </div>
+      }
+
+      <!-- Badge estado -->
+      <span class="badge-estado" [ngClass]="estadoClass">
+        <span class="estado-dot"></span>
+        {{ evento.statusevento }}
+      </span>
+    </div>
+
+    <!-- Chip categoría -->
+    <div class="categoria-wrap">
+      <span class="chip-categoria">{{ evento.categoria }}</span>
+    </div>
+
+    <!-- Título -->
+    <div class="detalle-body">
+      <h1 class="event-title">{{ evento.nombre }}</h1>
+
+      <!-- Metadatos -->
+      <div class="meta-list">
+
+        <div class="meta-row">
+          <ion-icon name="options-outline"></ion-icon>
+          <span><strong>Modalidad:</strong> {{ evento.modalidad }}</span>
+        </div>
+
+        <div class="meta-row">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>
+            <strong>Fecha:</strong>
+            {{ evento.fechainicio | date:'dd/MM/yyyy' }}
+            @if (evento.fechafin) {
+              – {{ evento.fechafin | date:'dd/MM/yyyy' }}
+            }
+          </span>
+        </div>
+
+        @if (evento.horario) {
+          <div class="meta-row">
+            <ion-icon name="time-outline"></ion-icon>
+            <span><strong>Horario:</strong> {{ evento.horario }}</span>
+          </div>
+        }
+
+        @if (evento.sede || evento.direccion) {
+          <div class="meta-row">
+            <ion-icon name="location-outline"></ion-icon>
+            <span><strong>Dirección:</strong> {{ evento.sede || evento.direccion }}</span>
+          </div>
+        }
+
+        @if (evento.contacto) {
+          <div class="meta-row">
+            <ion-icon name="mail-outline"></ion-icon>
+            <span><strong>Contactos:</strong> {{ evento.contacto }}</span>
+          </div>
+        }
+
+        @if (evento.link) {
+          <div class="meta-row">
+            <ion-icon name="footsteps-outline"></ion-icon>
+            <span>
+              <strong>Deja tu huella:</strong>
+              <a class="link" [href]="evento.link" target="_blank"> Ir al Link</a>
+            </span>
+          </div>
+        }
+
+      </div>
+
+      <hr class="divider">
+
+      <!-- Descripción -->
+      <div class="descripcion-wrap">
+        <p class="event-description">{{ evento.descripcion }}</p>
+      </div>
+
+    </div>
+
+    <!-- Footer CTA fijo -->
+    <div class="detalle-footer">
+      @if (evento.statusevento === 'Finalizado') {
+        <div class="badge-finalizado">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Evento finalizado
+        </div>
+      } @else if (inscrito) {
+        <div class="badge-inscrito">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          Inscrito ✓
+        </div>
+      } @else {
+        <button class="btn-primary" (click)="onInscribirse()" [disabled]="procesando">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          {{ procesando ? 'Procesando...' : 'Inscribirme' }}
+        </button>
+      }
+    </div>
+
+  }
+
 </ion-content>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/Service/api-service';
 import { IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-evento',
   templateUrl: './evento.component.html',
@@ -12,12 +13,15 @@ export class EventoComponent  implements OnInit {
 @Input() evento!: any;
 
  
-  constructor(private eventosService: ApiService) {}
+  constructor(private eventosService: ApiService, private router: Router) {}
  
-  ngOnInit(): void {
-    this.cargarEventos();
+  ngOnInit(){
   }
  
-  cargarEventos(): void {}
-
+  eventClick(id: string) {
+    this.router.navigate(['/detalles-event'], {
+      queryParams: { id: id }
+    });
+    console.log("hello", id);
+  }
 }
