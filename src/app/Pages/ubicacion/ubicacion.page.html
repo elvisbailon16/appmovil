@@ -1,0 +1,66 @@
+<!-- ubicacion.page.html -->
+<app-cabecera [titulo]="'Ubicación'"></app-cabecera>
+
+<ion-content>
+
+  <!-- Mapa -->
+  <div class="mapa-wrap">
+    <div id="mapa" class="mapa-contenedor"></div>
+  </div>
+
+  <!-- Card de información -->
+  <div class="ubicacion-card">
+
+    <div class="ubicacion-titulo-row">
+      <ion-icon name="location" class="location-icon"></ion-icon>
+      <div>
+        <h2 class="ubicacion-titulo">Ubicación en tiempo real</h2>
+        @if (direccion) {
+          <p class="ubicacion-lugar">{{ direccion }}</p>
+        } @else {
+          <p class="ubicacion-lugar">Obteniendo dirección...</p>
+        }
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Coordenadas -->
+    @if (coordenadas) {
+      <div class="coords-row">
+        <div class="coord-item">
+          <span class="coord-label">Latitud</span>
+          <span class="coord-valor">{{ coordenadas.lat | number:'1.6-6' }}</span>
+        </div>
+        <div class="coord-item">
+          <span class="coord-label">Longitud</span>
+          <span class="coord-valor">{{ coordenadas.lng | number:'1.6-6' }}</span>
+        </div>
+      </div>
+
+      <div class="precision-row">
+        <ion-icon name="radio-outline"></ion-icon>
+        <span><strong>Precisión aproximada:</strong> {{ precision }} metros</span>
+      </div>
+    }
+
+    @if (!coordenadas && !cargando) {
+      <p class="sin-datos">Toca "Actualizar ubicación" para obtener tu posición.</p>
+    }
+
+    @if (cargando) {
+      <div class="cargando-row">
+        <ion-spinner name="crescent"></ion-spinner>
+        <span>Obteniendo ubicación...</span>
+      </div>
+    }
+
+    <!-- Botón actualizar -->
+    <button class="btn-primary" (click)="actualizarUbicacion()" [disabled]="cargando">
+      <ion-icon name="refresh-outline"></ion-icon>
+      {{ cargando ? 'Actualizando...' : 'Actualizar ubicación' }}
+    </button>
+
+  </div>
+
+</ion-content>

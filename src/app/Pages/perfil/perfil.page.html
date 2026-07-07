@@ -1,1 +1,108 @@
 <app-cabecera [titulo]="'Perfil'"></app-cabecera>
+<!-- perfil.page.html -->
+<ion-content [fullscreen]="true">
+
+  <!-- Header verde con foto -->
+  <div class="perfil-header">
+    <div class="avatar-wrap">
+      <img class="avatar" src="assets/avatar-placeholder.png" alt="Foto de perfil" />
+    </div>
+    <h2 class="perfil-nombre">BAILON ZAMBRANO ELVIS STEEVEN</h2>
+    <div class="perfil-email-row">
+      <span class="perfil-email">elvis.bailon.0121&#64;espam.edu.ec</span>
+      <span class="badge-verificado">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        Verificado
+      </span>
+    </div>
+  </div>
+
+  <!-- Insignias e Inscripciones -->
+  <div class="stats-wrap">
+    <div class="stat-card" [class.active]="statActivo === 'insignias'" (click)="statActivo = 'insignias'">
+      <span class="stat-number">10</span>
+      <div class="stat-label-row">
+        <ion-icon name="ribbon-outline"></ion-icon>
+        <span>Insignias</span>
+      </div>
+    </div>
+    <div class="stat-card" [class.active]="statActivo === 'inscripciones'" (click)="statActivo = 'inscripciones'">
+      <span class="stat-number">10</span>
+      <div class="stat-label-row">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <span>Inscripciones</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insignias (grid) -->
+  @if (statActivo === 'insignias') {
+    <div class="insignias-grid">
+      @for (insignia of insignias; track insignia.id) {
+        <div class="insignia-card">
+          <ion-icon name="ribbon" class="insignia-icon"></ion-icon>
+          <span class="insignia-nombre">{{ insignia.nombre }}</span>
+          <span class="insignia-puntos">{{ insignia.puntos }} puntos</span>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Datos de usuario -->
+  <div class="datos-wrap">
+    <h3 class="datos-titulo">Datos de Usuarios</h3>
+
+    <div class="dato-row">
+      <span class="dato-label">Nombres</span>
+      <span class="dato-valor">BAILON ZAMBRANO ELVIS STEEVEN</span>
+    </div>
+    <div class="dato-row">
+      <span class="dato-label">Correo</span>
+      <span class="dato-valor">elvis.bailon.0121&#64;espam.edu.ec</span>
+    </div>
+    <div class="dato-row-inline">
+      <div class="dato-inline">
+        <span class="dato-label">Cédula</span>
+        <span class="dato-valor">1317467577</span>
+      </div>
+      <div class="dato-inline">
+        <span class="dato-label">Celular</span>
+        <span class="dato-valor">0960566933</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badges informativos -->
+  <div class="badges-info-wrap">
+    <div class="badge-info">Aceptación de términos 1 03/11/2025</div>
+    <div class="badge-info">Correo verificado 07/06/2025</div>
+  </div>
+
+  <!-- Botón completar perfil -->
+  <div class="completar-wrap">
+    <button class="btn-outline-primary">Completar perfil</button>
+  </div>
+
+  <div class="mapa-wrap">
+  <button class="btn-ubicacion" (click)="pageUbicacion()" [disabled]="cargandoMapa">
+    <ion-icon name="location-outline"></ion-icon>
+    {{ cargandoMapa ? 'Obteniendo...' : 'Ubicación actual' }}
+  </button>
+  <div id="mapa" class="mapa-contenedor" [class.visible]="mapaVisible"></div>
+</div>
+
+  <!-- Opciones -->
+  <div class="opciones-wrap">
+    <button class="opcion-row">
+      <ion-icon name="settings-outline"></ion-icon>
+      <span>Configuración</span>
+    </button>
+    <div class="opcion-divider"></div>
+    <button class="opcion-row cerrar" (click)="cerrarSesion()">
+      <span>Cerrar sesión</span>
+    </button>
+  </div>
+
+  <div style="height: 90px;"></div>
+
+</ion-content>

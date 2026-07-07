@@ -1,0 +1,174 @@
+// ubicacion.page.scss
+$verde-bosque:  #005846;
+$verde-lima:    #44D62C;
+$verde-agua:    #08B89D;
+$blanco:        #FFFFFF;
+$texto-primario:#1A1A1A;
+$texto-muted:   #666666;
+
+// ── Mapa ──────────────────────────────────────────────────
+.mapa-wrap {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.mapa-contenedor {
+  width: 100%;
+  height: 100%;
+}
+
+// ── Card de información ───────────────────────────────────
+.ubicacion-card {
+  background: $blanco;
+  border-radius: 20px 20px 0 0;
+  margin-top: -16px;
+  position: relative;
+  z-index: 10;
+  padding: 24px 20px 100px;
+  min-height: 60vh;
+}
+
+// ── Título y lugar ────────────────────────────────────────
+.ubicacion-titulo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.location-icon {
+  font-size: 28px;
+  color: $verde-bosque;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ubicacion-titulo {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: $texto-primario;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.ubicacion-lugar {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  margin: 0;
+  line-height: 1.4;
+}
+
+// ── Divisor ───────────────────────────────────────────────
+.divider {
+  border: none;
+  border-top: 1px solid #eeeeee;
+  margin: 16px 0;
+}
+
+// ── Coordenadas ───────────────────────────────────────────
+.coords-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.coord-item {
+  flex: 1;
+  background: #f0f8f5;
+  border: 1px solid #c8e6da;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coord-label {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: $verde-bosque;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coord-valor {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: $texto-primario;
+}
+
+// ── Precisión ─────────────────────────────────────────────
+.precision-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 24px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+
+  ion-icon {
+    font-size: 18px;
+    color: $verde-bosque;
+    flex-shrink: 0;
+  }
+
+  strong {
+    color: $texto-primario;
+    font-weight: 600;
+  }
+}
+
+// ── Sin datos / cargando ──────────────────────────────────
+.sin-datos {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  text-align: center;
+  padding: 20px 0;
+  margin-bottom: 16px;
+}
+
+.cargando-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+}
+
+// ── Botón principal ───────────────────────────────────────
+.btn-primary {
+  width: 100%;
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  ion-icon { font-size: 18px; }
+
+  &:active { background: darken($verde-bosque, 8%); }
+  &:disabled { opacity: 0.5; pointer-events: none; }
+}

@@ -1,0 +1,340 @@
+// perfil.page.scss
+$verde-bosque:  #005846;
+$verde-lima:    #44D62C;
+$verde-agua:    #08B89D;
+$blanco:        #FFFFFF;
+$texto-primario:#1A1A1A;
+$texto-muted:   #666666;
+
+// ── Header verde ──────────────────────────────────────────
+.perfil-header {
+  background: $verde-bosque;
+  padding: 48px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid $blanco;
+  overflow: hidden;
+  background: #ccc;
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.perfil-nombre {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: $blanco;
+  text-align: center;
+  margin: 4px 0 0;
+  line-height: 1.3;
+}
+
+.perfil-email-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.perfil-email {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+.badge-verificado {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: $verde-lima;
+
+  ion-icon { font-size: 14px; }
+}
+
+// ── Stats insignias / inscripciones ───────────────────────
+.stats-wrap {
+  display: flex;
+  margin: 16px 16px 0;
+  gap: 12px;
+}
+
+.stat-card {
+  flex: 1;
+  border: 1.5px solid #dddddd;
+  border-radius: 10px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: $blanco;
+
+  &.active {
+    border-color: $verde-bosque;
+    background: #f0f8f5;
+  }
+
+  .stat-number {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: $verde-bosque;
+  }
+
+  .stat-label-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    color: $texto-muted;
+
+    ion-icon { font-size: 14px; color: $verde-bosque; }
+  }
+}
+
+// ── Grid de insignias ─────────────────────────────────────
+.insignias-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.insignia-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  padding: 12px 8px;
+  background: $blanco;
+
+  .insignia-icon {
+    font-size: 32px;
+    color: $verde-bosque;
+  }
+
+  .insignia-nombre {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: $texto-primario;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .insignia-puntos {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    color: $texto-muted;
+  }
+}
+
+// ── Datos de usuario ──────────────────────────────────────
+.datos-wrap {
+  padding: 20px 16px 8px;
+
+  .datos-titulo {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: $texto-primario;
+    margin: 0 0 16px;
+  }
+}
+
+.dato-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.dato-row-inline {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 16px;
+
+  .dato-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.dato-label {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: $texto-primario;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dato-valor {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: $texto-muted;
+}
+
+// ── Badges informativos ───────────────────────────────────
+.badges-info-wrap {
+  padding: 4px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.badge-info {
+  background: #f0f8f5;
+  border: 1px solid #c8e6da;
+  color: $verde-bosque;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+// ── Completar perfil ──────────────────────────────────────
+.completar-wrap {
+  padding: 4px 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  border: 1.5px solid $verde-bosque;
+  color: $verde-bosque;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active {
+    background: $verde-bosque;
+    color: $blanco;
+  }
+}
+
+// ── Mapa ──────────────────────────────────────────────────
+.mapa-wrap {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-ubicacion {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1.5px solid $verde-bosque;
+  color: $verde-bosque;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+
+  ion-icon { font-size: 16px; }
+}
+
+.mapa-placeholder {
+  width: 100%;
+  height: 180px;
+  background: #e8f0ed;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: $texto-muted;
+
+  ion-icon { font-size: 36px; color: $verde-bosque; }
+
+  span {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 0 24px;
+  }
+}
+
+// ── Opciones ──────────────────────────────────────────────
+.opciones-wrap {
+  margin: 0 16px 16px;
+  background: $blanco;
+  border-radius: 12px;
+  border: 1px solid #eeeeee;
+  overflow: hidden;
+}
+
+.opcion-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: $texto-primario;
+  text-align: left;
+
+  ion-icon { font-size: 18px; color: $verde-bosque; }
+
+  &.cerrar {
+    color: #E53935;
+    justify-content: center;
+    font-weight: 600;
+  }
+}
+
+.opcion-divider {
+  height: 1px;
+  background: #eeeeee;
+  margin: 0 16px;
+}
+
+.mapa-contenedor {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: none;
+
+  &.visible { display: block; }
+}
