@@ -93,6 +93,18 @@
 
       <hr class="divider">
 
+      <div class="acciones-wrap">
+        <button class="btn-accion" (click)="verPonentes()">
+          <ion-icon name="people-outline"></ion-icon>
+          Ponentes
+        </button>
+        <button class="btn-accion" (click)="verActividades()">
+          <ion-icon name="list-outline"></ion-icon>
+          Actividades
+        </button>
+      </div>
+
+
       <!-- Descripción -->
       <div class="descripcion-wrap">
         <p class="event-description">{{ evento.descripcion }}</p>

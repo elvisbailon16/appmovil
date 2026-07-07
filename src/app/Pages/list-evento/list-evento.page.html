@@ -19,6 +19,8 @@
     <div class="linea-activa" [class.right]="selectedTab === 'mis-eventos'"></div>
   </div>
 
+
+
   <!-- Cargando -->
   @if (cargando) {
     <div class="estado-center">
@@ -45,7 +47,7 @@
   <!-- Lista -->
   @if (!cargando && !error) {
     @for (evento of eventos; track evento.id) {
-      <app-evento [evento]="evento"></app-evento>
+      <app-evento class="eventos-list" [evento]="evento"></app-evento>
     }
   }
 

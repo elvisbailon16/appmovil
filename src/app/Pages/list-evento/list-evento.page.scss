@@ -19,20 +19,34 @@
   }
 }
 
-.content-liner {
-  display: flex;
+.tab-indicator-wrap {
+  position: relative;
+  width: 100%;
 
-  .linea {
-    flex: 1;
-    height: 3px;
-    background: transparent;
+  .linea-base {
+    width: 100%;
     border: none;
+    border-top: 2px solid #eeeeee;
     margin: 0;
-    transition: background 0.2s ease;
+  }
 
-    &.active {
-      background: #1a7a4c;
-      border-radius: 2px;
+  .linea-activa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background: #005846;
+    border-radius: 2px;
+    transition: left 0.25s ease;
+
+    &.right {
+      left: 50%;
     }
   }
+}
+
+.eventos-list {
+  margin-left: 16px;  // 16px a los lados para todas las cards
+  margin-top: 5px;
 }

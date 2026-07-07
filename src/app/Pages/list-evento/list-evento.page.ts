@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent,IonSearchbar, IonHeader, IonTitle, IonToolbar, IonButton, InfiniteScrollCustomEvent, IonInfiniteScroll, IonInfiniteScrollContent, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent,IonSearchbar, IonHeader, IonTitle, IonToolbar, IonButton, InfiniteScrollCustomEvent, IonInfiniteScroll, IonInfiniteScrollContent, IonSpinner, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { EventoComponent } from '../Componentes/evento/evento.component';
@@ -10,7 +10,7 @@ import { EventoComponent } from '../Componentes/evento/evento.component';
   templateUrl: './list-evento.page.html',
   styleUrls: ['./list-evento.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonInfiniteScroll, EventoComponent, IonButton, IonContent, IonSearchbar, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent, IonInfiniteScrollContent]
+  imports: [IonIcon, IonSpinner, IonInfiniteScroll, EventoComponent, IonButton, IonContent, IonSearchbar, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent, IonInfiniteScrollContent]
 })
 export class ListEventoPage implements OnInit {
 eventos: any;
@@ -35,6 +35,8 @@ selectTab(tab: 'todos' | 'mis-eventos') {
     this.misEventos();
   }
 }
+
+
 
 cargarEventos(): void {
   this.cargando = true;

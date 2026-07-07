@@ -76,6 +76,9 @@ export class DetallesEventPage implements OnInit {
     }
   }
 
+  verPonentes(){}
+  verActividades(){}
+
 
 }
  
