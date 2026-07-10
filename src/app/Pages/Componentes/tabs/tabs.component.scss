@@ -17,7 +17,7 @@ $speed:  200ms;
   right: 0;
   z-index: 9999;
 
-  height: 64px;
+  height: 70px;
   padding-bottom: env(safe-area-inset-bottom);
 
   background: $verde-bosque;
@@ -76,7 +76,7 @@ $speed:  200ms;
   // ── Hover ──────────────────────────────────
   @media (hover: hover) {
     &:hover:not(.tab-selected) {
-      transform: translateY(-3px);
+      // transform: translateY(-3px);
 
       .tab-label { color: rgba($verde-agua, 0.9); }
 
@@ -99,7 +99,7 @@ $speed:  200ms;
 
   // ── Activo ─────────────────────────────────
   &.tab-selected {
-    transform: translateY(-6px);
+    transform: translateY(-2px);
 
     .tab-label {
       color: $verde-lima;

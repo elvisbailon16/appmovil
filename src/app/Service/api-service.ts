@@ -39,4 +39,11 @@ export class ApiService {
     });
   }
 
+
+  getCategorias() {
+    return this.httpclient.get('https://ws.espam.edu.ec/api/appmovil/get_categorias', {
+      headers: this.getHeaders()
+    });
+  }
+
 }

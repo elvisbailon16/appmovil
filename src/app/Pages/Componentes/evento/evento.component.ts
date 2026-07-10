@@ -16,6 +16,7 @@ export class EventoComponent  implements OnInit {
   constructor(private eventosService: ApiService, private router: Router) {}
  
   ngOnInit(){
+    console.log(this.evento.imgprincipal)
   }
  
   eventClick(id: string) {

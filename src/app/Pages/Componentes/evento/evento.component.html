@@ -2,9 +2,15 @@
 
     <!-- Imagen / Banner -->
     <div class="event-image-wrap">
-      <div class="image-placeholder">
-        <span>Sin imagen disponible</span>
-      </div>
+
+      @if (evento.imgprincipal) {
+        <img src="{{evento.imgprincipal}}" alt="Imagen del evento" class="event-img">
+      } @else {
+        <div class="image-placeholder">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Sin imagen disponible</span>
+        </div>
+      }
 
       <span class="chip-categoria">{{ evento.categoria }}</span>
 

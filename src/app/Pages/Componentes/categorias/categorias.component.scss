@@ -1,0 +1,96 @@
+// categorias.component.scss
+$verde-bosque: #005846;
+$verde-agua:   #08B89D;
+$blanco:       #FFFFFF;
+$texto-muted:  #666666;
+
+.categorias-wrap {
+  padding: 16px 0 8px;
+}
+
+.categorias-titulo {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+  padding: 0 16px;
+}
+
+// Scroll horizontal sin scrollbar visible
+.categorias-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 16px 8px;
+  scrollbar-width: none;        // Firefox
+  -ms-overflow-style: none;     // IE
+
+  &::-webkit-scrollbar {
+    display: none;              // Chrome/Safari
+  }
+}
+
+// Cada ítem del carrusel
+.categoria-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 72px;        // ← ancho fijo en vez de min-width
+  min-width: 72px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px 0 8px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+
+  &.active {
+    border-bottom-color: $verde-bosque;
+
+    .categoria-icono-wrap {
+      border-color: $verde-bosque;
+      background: #f0f8f5;
+      ion-icon { color: $verde-bosque; }
+    }
+
+    .categoria-nombre {
+      color: $verde-bosque;
+      font-weight: 700;
+    }
+  }
+}
+
+// Círculo del ícono
+.categoria-icono-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid #dddddd;
+  background: $blanco;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    font-size: 26px;
+    color: #aaaaaa;
+    transition: color 0.2s ease;
+  }
+}
+
+.categoria-nombre {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: $texto-muted;
+  text-align: center;
+  width: 100%;           // ← ocupa el ancho del contenedor
+  white-space: normal;   // ← permite salto de línea
+  word-break: break-word;// ← rompe palabras largas si es necesario
+  line-height: 1.3;
+  max-height: 2.6em;     // ← máximo 2 líneas
+  overflow: hidden;
+}
