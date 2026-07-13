@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://ws.espam.edu.ec",
+    "changeOrigin": true,
+    "secure": false
+  }
+}

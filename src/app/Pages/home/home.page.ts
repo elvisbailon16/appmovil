@@ -5,6 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonBut
 import { EventoComponent } from '../Componentes/evento/evento.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { CategoriasComponent } from '../Componentes/categorias/categorias.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -13,6 +14,7 @@ import { CategoriasComponent } from '../Componentes/categorias/categorias.compon
   imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, EventoComponent]
 })
 export class HomePage implements OnInit {
+  
   eventos: any;
   cargando = false;
   error: string | null = null;
@@ -40,11 +42,49 @@ export class HomePage implements OnInit {
     });
   }
 
-    onIonInfinite(event: InfiniteScrollCustomEvent) {
+
+ categoriaActiva: string | null = null;
+
+onCategoriaSeleccionada(id: string | null): void {
+  this.categoriaActiva = id; // ← guarda la categoría activa
+  if (id) {
+    this.cargando = true;
+    this.eventosService.getEventosByCategoria(id).subscribe({
+      next: (data) => {
+        this.eventos = data;
+        console.log("Eventos filtrados por categoría:", data);
+        this.cargando = false;
+      },
+      error: () => { this.cargando = false; }
+    });
+  } else {
     this.cargarEventos();
-    setTimeout(() => {
-      event.target.complete();
-    }, 500);
   }
+}
+
+// onIonInfinite(event: InfiniteScrollCustomEvent) {
+//   // Si hay categoría activa recarga por categoría, sino carga todos
+//   if (this.categoriaActiva) {
+//     this.eventosService.getEventosByCategoria(this.categoriaActiva).subscribe({
+//       next: (data) => {
+//         this.eventos = data;
+//         setTimeout(() => event.target.complete(), 500);
+//       },
+//       error: () => event.target.complete()
+//     });
+//   } else {
+//     this.cargarEventos();
+//     setTimeout(() => event.target.complete(), 500);
+//   }
+// }
+
+onIonInfinite(event: InfiniteScrollCustomEvent) {
+  if (this.categoriaActiva) {
+    this.onCategoriaSeleccionada(this.categoriaActiva);
+  }else{
+    this.cargarEventos(); 
+  }
+  setTimeout(() => event.target.complete(), 500);
+}
 
 }

@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // ubicacion.page.scss
 $verde-bosque:  #005846;
 $verde-lima:    #44D62C;
@@ -169,6 +171,6 @@ $texto-muted:   #666666;
 
   ion-icon { font-size: 18px; }
 
-  &:active { background: darken($verde-bosque, 8%); }
+  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
   &:disabled { opacity: 0.5; pointer-events: none; }
 }

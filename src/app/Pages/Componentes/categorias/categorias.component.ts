@@ -58,14 +58,26 @@ export class CategoriasComponent implements OnInit {
     return this.iconos[descripcion] ?? 'apps-outline';
   }
 
-  seleccionar(descripcion: string): void {
+  seleccionar(descripcion: string, id: string): void {
     // Si toca la misma categoría la deselecciona (toggle)
     if (this.categoriaActiva === descripcion) {
       this.categoriaActiva = null;
       this.categoriaSeleccionada.emit(null);
     } else {
       this.categoriaActiva = descripcion;
-      this.categoriaSeleccionada.emit(descripcion);
+      this.categoriaSeleccionada.emit(id); // Emitir el ID de la categoría seleccionada
     }
   }
+
+  // filter(id_categoria: string){
+  //   this.apiService.getEventosByCategoria(id_categoria).subscribe({
+  //     next: (data) => {
+  //       console.log('Eventos filtrados por categoría:', data);
+        
+  //     },
+  //     error: (err) => {
+  //       console.error('Error filtrando eventos por categoría:', err);
+  //     },
+  //   });
+  // }
 }

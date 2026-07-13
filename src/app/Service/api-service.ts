@@ -46,4 +46,10 @@ export class ApiService {
     });
   }
 
+  getEventosByCategoria(id_categoria: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_eventos_categoria/${id_categoria}`, {
+      headers: this.getHeaders()
+    });
+  }
+
 }

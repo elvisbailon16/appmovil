@@ -1,5 +1,5 @@
+@use 'sass:color';
 
- 
 // ── Paleta de colores ─────────────────────────────────────
 $verde-bosque:  #005846;
 $verde-lima:    #44D62C;
@@ -10,7 +10,7 @@ $fondo-claro:   #F5F5F5;
 $texto-primario:#1A1A1A;
 $texto-muted:   #555555;
 $rojo-error:    #E53935;
- 
+
 // ── Card contenedora ──────────────────────────────────────
 .event-card {
   background: $blanco;
@@ -20,22 +20,22 @@ $rojo-error:    #E53935;
   margin: 8px 16px;
   font-family: 'Work Sans', sans-serif;
 }
- 
+
 // ── Imagen / Banner ───────────────────────────────────────
 .event-image-wrap {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
- 
-  img {
+
+  img, .event-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 }
- 
+
 .image-placeholder {
   width: 100%;
   height: 100%;
@@ -45,19 +45,19 @@ $rojo-error:    #E53935;
   align-items: center;
   justify-content: center;
   gap: 8px;
- 
+
   ion-icon {
     font-size: 40px;
     color: rgba(255, 255, 255, 0.45);
   }
- 
+
   span {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
     font-family: 'Work Sans', sans-serif;
   }
 }
- 
+
 // ── Chips y badges sobre imagen ───────────────────────────
 .chip-categoria {
   position: absolute;
@@ -73,7 +73,7 @@ $rojo-error:    #E53935;
   padding: 4px 10px;
   border-radius: 100px;
 }
- 
+
 .badge-estado {
   position: absolute;
   top: 10px;
@@ -88,45 +88,42 @@ $rojo-error:    #E53935;
   align-items: center;
   gap: 5px;
   color: $verde-ceibo;
- 
+
   .estado-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: $verde-ceibo;
   }
- 
-  // Variantes de estado
+
   &.inscrito {
     color: $verde-lima;
     .estado-dot { background: $verde-lima; }
   }
- 
+
   &.finalizado {
     color: #aaaaaa;
     .estado-dot { background: #aaaaaa; }
   }
 }
- 
+
 // ── Cuerpo de la card ─────────────────────────────────────
 .card-body {
   padding: 14px 14px 10px;
 }
- 
+
 .event-title {
   font-size: 16px;
   font-weight: 700;
   color: $texto-primario;
   line-height: 1.35;
   margin-bottom: 10px;
- 
-  // Máximo 2 líneas
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
- 
+
 // ── Metadatos ─────────────────────────────────────────────
 .meta-list {
   display: flex;
@@ -134,42 +131,42 @@ $rojo-error:    #E53935;
   gap: 7px;
   margin-bottom: 12px;
 }
- 
+
 .meta-row {
   display: flex;
   align-items: center;
   gap: 7px;
   font-size: 13px;
   color: $texto-muted;
- 
+
   ion-icon {
     font-size: 16px;
     color: $verde-bosque;
     flex-shrink: 0;
   }
- 
+
   strong {
     color: $verde-bosque;
     font-weight: 600;
   }
- 
+
   .meta-hora {
     color: $texto-muted;
     font-size: 12px;
   }
 }
- 
-// Barra de cupos
+
+// ── Barra de cupos ────────────────────────────────────────
 .cupos-row {
   align-items: center;
- 
+
   .cupos-bar {
     flex: 1;
     height: 4px;
     background: #e0e0e0;
     border-radius: 100px;
     overflow: hidden;
- 
+
     .cupos-fill {
       height: 100%;
       background: $verde-lima;
@@ -177,14 +174,14 @@ $rojo-error:    #E53935;
       transition: width 0.4s ease;
     }
   }
- 
+
   .cupos-label {
     font-size: 11px;
     color: #888;
     white-space: nowrap;
   }
 }
- 
+
 // ── Descripción ───────────────────────────────────────────
 .event-description {
   font-size: 13px;
@@ -192,25 +189,24 @@ $rojo-error:    #E53935;
   line-height: 1.5;
   font-weight: 400;
   margin-bottom: 4px;
- 
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
- 
+
 // ── Divisor ───────────────────────────────────────────────
 .card-divider {
   height: 0.5px;
   background: #eeeeee;
   margin: 0 14px;
 }
- 
+
 // ── Footer / CTA ──────────────────────────────────────────
 .card-footer {
   padding: 12px 14px 14px;
 }
- 
+
 .btn-primary {
   width: 100%;
   background: $verde-bosque;
@@ -227,19 +223,19 @@ $rojo-error:    #E53935;
   gap: 8px;
   cursor: pointer;
   transition: background 0.15s ease;
- 
+
   ion-icon { font-size: 18px; }
- 
+
   &:active {
-    background: darken($verde-bosque, 8%);
+    background: color.adjust($verde-bosque, $lightness: -8%);
   }
- 
+
   &:disabled {
     opacity: 0.38;
     pointer-events: none;
   }
 }
- 
+
 .badge-inscrito {
   width: 100%;
   background: #eafaf3;
@@ -254,13 +250,13 @@ $rojo-error:    #E53935;
   align-items: center;
   justify-content: center;
   gap: 8px;
- 
+
   ion-icon {
     color: $verde-lima;
     font-size: 20px;
   }
 }
- 
+
 .badge-finalizado {
   width: 100%;
   background: #f5f5f5;
@@ -275,22 +271,8 @@ $rojo-error:    #E53935;
   justify-content: center;
   gap: 8px;
   border: 1px solid #ddd;
- 
+
   ion-icon {
     font-size: 18px;
-  }
-}
-
-.event-image-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-
-  .event-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 }

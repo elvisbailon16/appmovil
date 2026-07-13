@@ -1,3 +1,4 @@
+@use 'sass:color';
 /* ========== VARIABLES ========== */
 $primary-green: #005846;
 $white: #FFFFFF;
@@ -178,9 +179,10 @@ $gray-dark: #212121;
   color: $white;
   border-color: $primary-green;
 
+// Por esto
   &:hover {
-    background: darken($primary-green, 8%);
-    border-color: darken($primary-green, 8%);
+    background: color.adjust($primary-green, $lightness: -8%);
+    border-color: color.adjust($primary-green, $lightness: -8%);
   }
 
   &:active {

@@ -19,10 +19,10 @@
     <h2>Hola Terrimeet</h2>
     <p>Bienvenido, disfruta de tus eventos favoritos</p>
   </div>
-  <app-categorias></app-categorias>
-@for (evento of eventos; track evento.id) {
-  <app-evento class="eventos-list" [evento]="evento"></app-evento>
-}
+  <app-categorias (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-categorias>
+  @for (evento of eventos; track evento.id) {
+    <app-evento class="eventos-list" [evento]="evento"></app-evento>
+  }
 <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
   <ion-infinite-scroll-content></ion-infinite-scroll-content>
 </ion-infinite-scroll>

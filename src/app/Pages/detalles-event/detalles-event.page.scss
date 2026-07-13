@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // detalle-evento.page.scss
 // Guía Visual TerriMeet — ESPAM MFL
 
@@ -118,7 +120,7 @@ $texto-muted:   #555555;
 
 // ── Cuerpo del detalle ────────────────────────────────────
 .detalle-body {
-  padding: 12px 16px 100px; // 100px para que no tape el footer fijo
+  padding: 12px 16px 100px;
 }
 
 .event-title {
@@ -190,7 +192,7 @@ $texto-muted:   #555555;
 // ── Footer fijo ───────────────────────────────────────────
 .detalle-footer {
   position: fixed;
-  bottom: 70px; // altura del tab bar
+  bottom: 70px;
   left: 0;
   right: 0;
   padding: 12px 16px;
@@ -218,7 +220,7 @@ $texto-muted:   #555555;
 
   ion-icon { font-size: 18px; }
 
-  &:active { background: darken($verde-bosque, 8%); }
+  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
   &:disabled { opacity: 0.38; pointer-events: none; }
 }
 
@@ -258,7 +260,7 @@ $texto-muted:   #555555;
   ion-icon { font-size: 18px; }
 }
 
-// button css ponentes y actividades
+// ── Botones ponentes y actividades ────────────────────────
 .acciones-wrap {
   display: flex;
   gap: 10px;
@@ -268,8 +270,8 @@ $texto-muted:   #555555;
     flex: 1;
     height: 44px;
     background: transparent;
-    border: 1.5px solid #005846;
-    color: #005846;
+    border: 1.5px solid $verde-bosque;
+    color: $verde-bosque;
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -284,8 +286,8 @@ $texto-muted:   #555555;
     ion-icon { font-size: 18px; }
 
     &:active {
-      background: #005846;
-      color: #ffffff;
+      background: $verde-bosque;
+      color: $blanco;
     }
   }
 }
