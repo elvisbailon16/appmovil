@@ -52,4 +52,15 @@ export class ApiService {
     });
   }
 
+  getPonentesByEvento(id_evento: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_ponentes_por_evento/${id_evento}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  getDetallePonente(id_ponente: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_detalle_ponente/${id_ponente}`, {
+      headers: this.getHeaders()
+    });
+  }
 }

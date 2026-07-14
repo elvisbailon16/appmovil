@@ -1,0 +1,25 @@
+<!-- ponente-card.component.html -->
+<div class="ponente-card" (click)="verDetalle()">
+
+  <!-- Foto -->
+  <div class="ponente-avatar">
+    @if (ponente.foto) {
+      <img [src]="ponente.foto" [alt]="ponente.nombre" class="avatar-img" />
+    } @else {
+      <div class="avatar-placeholder">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+    }
+  </div>
+
+  <!-- Info -->
+  <div class="ponente-info">
+    <h3 class="ponente-nombre">{{ ponente.nombre }}</h3>
+    <span class="ponente-etiqueta">{{ ponente.etiqueta }}</span>
+    <span class="ponente-org">{{ ponente.organizacion }}</span>
+  </div>
+
+  <!-- Flecha -->
+  <ion-icon name="chevron-forward-outline" class="ponente-arrow"></ion-icon>
+
+</div>

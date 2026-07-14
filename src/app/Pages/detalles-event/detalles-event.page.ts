@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonContent, IonSpinner, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import { ApiService } from 'src/app/Service/api-service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-detalles-event',
   templateUrl: './detalles-event.page.html',
@@ -28,6 +28,7 @@ export class DetallesEventPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
+    private router: Router
   ) {}
  
   ngOnInit(): void {
@@ -76,7 +77,11 @@ export class DetallesEventPage implements OnInit {
     }
   }
 
-  verPonentes(){}
+  verPonentes(){
+    this.router.navigate(['/ponentes'], {
+      queryParams: { id: this.evento.id }
+    });
+  }
   verActividades(){}
 
 

@@ -1,0 +1,71 @@
+// ponentes.page.scss
+$verde-bosque: #005846;
+$verde-agua:   #08B89D;
+$blanco:       #FFFFFF;
+$texto-muted:  #666666;
+
+// ── Header decorativo ─────────────────────────────────────
+.ponentes-header {
+  background: linear-gradient(135deg, $verde-bosque 0%, $verde-agua 100%);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  ion-icon {
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  h2 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  p {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+}
+
+// ── Lista ─────────────────────────────────────────────────
+.ponentes-list {
+  padding: 4px 0 100px;
+}
+
+// ── Estados ───────────────────────────────────────────────
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  gap: 12px;
+  color: $texto-muted;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+
+  ion-icon {
+    font-size: 48px;
+    color: #cccccc;
+  }
+}
+
+.btn-retry {
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+}
