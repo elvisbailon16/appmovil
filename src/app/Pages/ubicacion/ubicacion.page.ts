@@ -18,28 +18,17 @@ export class UbicacionPage {
   precision: number = 0;
   direccion: string = '';
   cargando = false;
-  cargandoMapa = true; // controla el skeleton del mapa
+  cargandoMapa = true;
   private mapa: L.Map | null = null;
   private marcador: L.Marker | null = null;
 
-  // ✅ ionViewDidEnter garantiza que el div#mapa ya existe en el DOM
-  ionViewDidEnter(): void {
-    this.iniciarMapa(-0.8, -80.7);
+  ngOnInit(): void {
     this.actualizarUbicacion();
-  }
-
-  // ✅ Destruye el mapa al salir para evitar "Map container already initialized"
-  ionViewDidLeave(): void {
-    if (this.mapa) {
-      this.mapa.remove();
-      this.mapa = null;
-      this.marcador = null;
-      this.cargandoMapa = true; // resetea el skeleton para la próxima entrada
-    }
   }
 
   actualizarUbicacion(): void {
     this.cargando = true;
+    this.cargandoMapa = true;
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -50,49 +39,38 @@ export class UbicacionPage {
         this.precision   = Math.round(pos.coords.accuracy);
         this.cargando    = false;
 
-        this.centrarMapa(lat, lng);
+        // ✅ Mismo principio que perfil — setTimeout espera que el DOM esté listo
+        setTimeout(() => this.iniciarMapa(lat, lng), 150);
+
         this.obtenerDireccion(lat, lng);
       },
       (err) => {
         console.error('Error ubicación:', err);
         this.cargando = false;
+        this.cargandoMapa = false;
       },
       { enableHighAccuracy: true }
     );
   }
 
   private iniciarMapa(lat: number, lng: number): void {
-    if (this.mapa) return;
+    if (this.mapa) {
+      this.mapa.remove();
+      this.mapa = null;
+      this.marcador = null;
+    }
 
-    this.mapa = L.map('mapa', { zoomControl: false }).setView([lat, lng], 14);
+    this.mapa = L.map('mapa', { zoomControl: false }).setView([lat, lng], 17);
 
-    // Capa satelital ESRI
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       { attribution: '© Esri', maxZoom: 19 }
     ).addTo(this.mapa);
 
-    // Etiquetas encima del satélite
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       { opacity: 0.8, maxZoom: 19 }
     ).addTo(this.mapa);
-
-    // ✅ Cuando los tiles terminan de cargar, oculta el skeleton
-    this.mapa.once('load', () => {
-      this.cargandoMapa = false;
-    });
-
-    // ✅ Fallback: si en 3 segundos no cargó, muestra el mapa igual
-    setTimeout(() => {
-      this.cargandoMapa = false;
-    }, 3000);
-  }
-
-  private centrarMapa(lat: number, lng: number): void {
-    if (!this.mapa) return;
-
-    this.mapa.setView([lat, lng], 17);
 
     const icono = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -103,14 +81,20 @@ export class UbicacionPage {
       popupAnchor: [1, -34],
     });
 
-    if (this.marcador) {
-      this.marcador.setLatLng([lat, lng]);
-    } else {
-      this.marcador = L.marker([lat, lng], { icon: icono })
-        .addTo(this.mapa!)
-        .bindPopup('Tu ubicación actual')
-        .openPopup();
-    }
+    this.marcador = L.marker([lat, lng], { icon: icono })
+      .addTo(this.mapa)
+      .bindPopup('Tu ubicación actual')
+      .openPopup();
+
+    // ✅ Oculta el skeleton cuando los tiles carguen
+    this.mapa.once('load', () => {
+      this.cargandoMapa = false;
+    });
+
+    // ✅ Fallback por si el evento load no dispara
+    setTimeout(() => {
+      this.cargandoMapa = false;
+    }, 3000);
   }
 
   private obtenerDireccion(lat: number, lng: number): void {

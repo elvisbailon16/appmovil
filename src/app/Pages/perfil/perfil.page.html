@@ -84,7 +84,7 @@
   </div>
 
   <div class="mapa-wrap">
-  <button class="btn-ubicacion" (click)="pageUbicacion()" [disabled]="cargandoMapa">
+  <button class="btn-ubicacion"  [disabled]="cargandoMapa">
     <ion-icon name="location-outline"></ion-icon>
     {{ cargandoMapa ? 'Obteniendo...' : 'Ubicación actual' }}
   </button>

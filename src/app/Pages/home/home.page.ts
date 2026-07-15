@@ -52,7 +52,7 @@ onCategoriaSeleccionada(id: string | null): void {
     this.eventosService.getEventosByCategoria(id).subscribe({
       next: (data) => {
         this.eventos = data;
-        console.log("Eventos filtrados por categoría:", data);
+        //  console.log("Eventos filtrados por categoría:", data);
         this.cargando = false;
       },
       error: () => { this.cargando = false; }

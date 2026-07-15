@@ -33,13 +33,13 @@ export class PerfilPage {
 
   cerrarSesion(): void {
     localStorage.removeItem('token');
-    // this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
-  pageUbicacion(){
-    this.router.navigate(['/ubicacion'])
+  // pageUbicacion(){
+  //   this.router.navigate(['/ubicacion'])
 
-  }
+  // }
 
   obtenerUbicacion(): void {
     this.cargandoMapa = true;

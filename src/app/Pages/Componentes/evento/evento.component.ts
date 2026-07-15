@@ -16,13 +16,13 @@ export class EventoComponent  implements OnInit {
   constructor(private eventosService: ApiService, private router: Router) {}
  
   ngOnInit(){
-    console.log(this.evento.imgprincipal)
+    // console.log(this.evento.imgprincipal)
   }
  
   eventClick(id: string) {
     this.router.navigate(['/detalles-event'], {
       queryParams: { id: id }
     });
-    console.log("hello", id);
+    // console.log("hello", id);
   }
 }
