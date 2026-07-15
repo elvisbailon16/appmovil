@@ -37,7 +37,7 @@ export const routes: Routes = [
   },
   {
     path: 'qr',
-    loadComponent: () => import('./Pages/qr/qr.page').then( m => m.QRPage)
+    loadComponent: () => import('./Pages/qr/qr.page').then( m => m.QrPage)
   },
   {
     path: 'wallet-c',
@@ -58,5 +58,9 @@ export const routes: Routes = [
   {
     path: 'ubicacion',
     loadComponent: () => import('./Pages/ubicacion/ubicacion.page').then( m => m.UbicacionPage)
+  },
+  {
+    path: 'detalle-ponente',
+    loadComponent: () => import('./Pages/detalle-ponente/detalle-ponente.page').then( m => m.DetallePonentePage)
   },
 ];

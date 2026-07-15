@@ -8,16 +8,80 @@ $blanco:        #FFFFFF;
 $texto-primario:#1A1A1A;
 $texto-muted:   #666666;
 
+ion-content {
+  --overflow: hidden;
+}
+
 // ── Mapa ──────────────────────────────────────────────────
 .mapa-wrap {
+  position: relative;
   width: 100%;
-  height: 280px;
+  height: 30vh;
   overflow: hidden;
 }
 
 .mapa-contenedor {
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+// ── Skeleton del mapa ─────────────────────────────────────
+.mapa-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .skeleton-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      #e0eeea 25%,
+      #c8e6da 50%,
+      #e0eeea 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-center {
+    position: relative;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: $verde-bosque;
+
+    ion-icon {
+      font-size: 40px;
+      opacity: 0.5;
+    }
+
+    span {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 // ── Card de información ───────────────────────────────────
@@ -27,8 +91,12 @@ $texto-muted:   #666666;
   margin-top: -16px;
   position: relative;
   z-index: 10;
-  padding: 24px 20px 100px;
-  min-height: 60vh;
+  padding: 20px 20px 24px;
+  height: calc(55vh - 56px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 // ── Título y lugar ────────────────────────────────────────
@@ -36,7 +104,7 @@ $texto-muted:   #666666;
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .location-icon {
@@ -67,14 +135,14 @@ $texto-muted:   #666666;
 .divider {
   border: none;
   border-top: 1px solid #eeeeee;
-  margin: 16px 0;
+  margin: 12px 0;
 }
 
 // ── Coordenadas ───────────────────────────────────────────
 .coords-row {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .coord-item {
@@ -82,7 +150,7 @@ $texto-muted:   #666666;
   background: #f0f8f5;
   border: 1px solid #c8e6da;
   border-radius: 10px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -99,7 +167,7 @@ $texto-muted:   #666666;
 
 .coord-valor {
   font-family: 'Work Sans', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: $texto-primario;
 }
@@ -111,8 +179,8 @@ $texto-muted:   #666666;
   gap: 8px;
   background: #f5f5f5;
   border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 24px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
   font-family: 'Work Sans', sans-serif;
   font-size: 13px;
   color: $texto-muted;
@@ -135,8 +203,8 @@ $texto-muted:   #666666;
   font-size: 13px;
   color: $texto-muted;
   text-align: center;
-  padding: 20px 0;
-  margin-bottom: 16px;
+  padding: 12px 0;
+  margin-bottom: 12px;
 }
 
 .cargando-row {
@@ -144,8 +212,8 @@ $texto-muted:   #666666;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 16px 0;
-  margin-bottom: 16px;
+  padding: 12px 0;
+  margin-bottom: 12px;
   font-family: 'Work Sans', sans-serif;
   font-size: 13px;
   color: $texto-muted;

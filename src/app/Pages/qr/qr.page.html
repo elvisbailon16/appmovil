@@ -1,1 +1,48 @@
-<app-cabecera [titulo]="'QR'"></app-cabecera>
+<!-- qr.page.html -->
+<app-cabecera [titulo]="'Mi QR'"></app-cabecera>
+
+<ion-content>
+
+  <div class="qr-container">
+
+    <!-- Encabezado -->
+    <div class="qr-header">
+      <div class="avatar-wrap">
+        <ion-icon name="person-outline" class="avatar-icon"></ion-icon>
+      </div>
+      <h2 class="usuario-nombre">BAILON ZAMBRANO ELVIS STEEVEN</h2>
+      <span class="usuario-id">ID: 1317467577</span>
+    </div>
+
+    <!-- Card del QR -->
+    <div class="qr-card">
+      <p class="qr-instruccion">Presenta este código en el evento para registrar tu asistencia</p>
+
+      <!-- Imagen QR hipotética -->
+      <div class="qr-wrap">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TerriMeet-ESPAM-MFL-1317467577&color=005846"
+          alt="Código QR"
+          class="qr-img"
+        />
+        <!-- Marco decorativo en las esquinas -->
+        <div class="qr-corner top-left"></div>
+        <div class="qr-corner top-right"></div>
+        <div class="qr-corner bottom-left"></div>
+        <div class="qr-corner bottom-right"></div>
+      </div>
+
+      <span class="qr-label">TerriMeet · ESPAM MFL</span>
+    </div>
+
+    <!-- Info badge -->
+    <div class="info-badge">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+      <span>Este código es personal e intransferible</span>
+    </div>
+
+
+
+  </div>
+
+</ion-content>

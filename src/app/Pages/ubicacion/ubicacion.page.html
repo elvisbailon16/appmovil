@@ -3,9 +3,27 @@
 
 <ion-content>
 
-  <!-- Mapa -->
+  <!-- Mapa con skeleton de carga -->
   <div class="mapa-wrap">
-    <div id="mapa" class="mapa-contenedor"></div>
+
+    <!-- Skeleton visible mientras carga el mapa -->
+    @if (cargandoMapa) {
+      <div class="mapa-skeleton">
+        <div class="skeleton-pulse"></div>
+        <div class="skeleton-center">
+          <ion-icon name="map-outline"></ion-icon>
+          <span>Cargando mapa...</span>
+        </div>
+      </div>
+    }
+
+    <!-- El div del mapa siempre existe en el DOM pero se oculta hasta estar listo -->
+    <div
+      id="mapa"
+      class="mapa-contenedor"
+      [class.visible]="!cargandoMapa">
+    </div>
+
   </div>
 
   <!-- Card de información -->
@@ -15,17 +33,18 @@
       <ion-icon name="location" class="location-icon"></ion-icon>
       <div>
         <h2 class="ubicacion-titulo">Ubicación en tiempo real</h2>
-        @if (direccion) {
+        @if (cargando) {
+          <p class="ubicacion-lugar">Obteniendo dirección...</p>
+        } @else if (direccion) {
           <p class="ubicacion-lugar">{{ direccion }}</p>
         } @else {
-          <p class="ubicacion-lugar">Obteniendo dirección...</p>
+          <p class="ubicacion-lugar">Dirección no disponible</p>
         }
       </div>
     </div>
 
     <hr class="divider">
 
-    <!-- Coordenadas -->
     @if (coordenadas) {
       <div class="coords-row">
         <div class="coord-item">
@@ -45,7 +64,7 @@
     }
 
     @if (!coordenadas && !cargando) {
-      <p class="sin-datos">Toca "Actualizar ubicación" para obtener tu posición.</p>
+      <p class="sin-datos">No se pudo obtener la ubicación.</p>
     }
 
     @if (cargando) {
@@ -55,7 +74,6 @@
       </div>
     }
 
-    <!-- Botón actualizar -->
     <button class="btn-primary" (click)="actualizarUbicacion()" [disabled]="cargando">
       <ion-icon name="refresh-outline"></ion-icon>
       {{ cargando ? 'Actualizando...' : 'Actualizar ubicación' }}

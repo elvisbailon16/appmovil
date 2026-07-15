@@ -1,5 +1,5 @@
 // ubicacion.page.ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
@@ -12,20 +12,30 @@ import * as L from 'leaflet';
   standalone: true,
   imports: [CommonModule, DecimalPipe, IonContent, IonIcon, IonSpinner, CabeceraComponent],
 })
-export class UbicacionPage implements OnInit {
+export class UbicacionPage {
 
   coordenadas: { lat: number; lng: number } | null = null;
   precision: number = 0;
   direccion: string = '';
   cargando = false;
+  cargandoMapa = true; // controla el skeleton del mapa
   private mapa: L.Map | null = null;
   private marcador: L.Marker | null = null;
 
-  ngOnInit(): void {
-    // Inicia el mapa vacío centrado en Ecuador
-    setTimeout(() => this.iniciarMapa(-0.8, -80.7), 100);
-    // Obtiene ubicación automáticamente al entrar
+  // ✅ ionViewDidEnter garantiza que el div#mapa ya existe en el DOM
+  ionViewDidEnter(): void {
+    this.iniciarMapa(-0.8, -80.7);
     this.actualizarUbicacion();
+  }
+
+  // ✅ Destruye el mapa al salir para evitar "Map container already initialized"
+  ionViewDidLeave(): void {
+    if (this.mapa) {
+      this.mapa.remove();
+      this.mapa = null;
+      this.marcador = null;
+      this.cargandoMapa = true; // resetea el skeleton para la próxima entrada
+    }
   }
 
   actualizarUbicacion(): void {
@@ -67,17 +77,23 @@ export class UbicacionPage implements OnInit {
       'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       { opacity: 0.8, maxZoom: 19 }
     ).addTo(this.mapa);
+
+    // ✅ Cuando los tiles terminan de cargar, oculta el skeleton
+    this.mapa.once('load', () => {
+      this.cargandoMapa = false;
+    });
+
+    // ✅ Fallback: si en 3 segundos no cargó, muestra el mapa igual
+    setTimeout(() => {
+      this.cargandoMapa = false;
+    }, 3000);
   }
 
   private centrarMapa(lat: number, lng: number): void {
-    if (!this.mapa) {
-      setTimeout(() => this.centrarMapa(lat, lng), 200);
-      return;
-    }
+    if (!this.mapa) return;
 
     this.mapa.setView([lat, lng], 17);
 
-    // Ícono personalizado
     const icono = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
       iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -87,24 +103,21 @@ export class UbicacionPage implements OnInit {
       popupAnchor: [1, -34],
     });
 
-    // Mueve el marcador si ya existe
     if (this.marcador) {
       this.marcador.setLatLng([lat, lng]);
     } else {
       this.marcador = L.marker([lat, lng], { icon: icono })
-        .addTo(this.mapa)
+        .addTo(this.mapa!)
         .bindPopup('Tu ubicación actual')
         .openPopup();
     }
   }
 
-  // Obtiene la dirección legible usando OpenStreetMap Nominatim (gratis, sin API key)
   private obtenerDireccion(lat: number, lng: number): void {
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
       .then(res => res.json())
       .then(data => {
         const d = data.address;
-        // Arma una dirección legible con los campos disponibles
         const partes = [
           d.road || d.pedestrian || d.neighbourhood,
           d.city || d.town || d.village || d.county,

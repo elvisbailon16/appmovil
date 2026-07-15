@@ -1,0 +1,75 @@
+<!-- detalle-ponente.page.html -->
+<app-cabecera [titulo]="'Ponente'"></app-cabecera>
+
+<ion-content>
+
+  @if (cargando) {
+    <div class="estado-center">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando ponente...</p>
+    </div>
+  }
+
+  @if (!cargando && ponente) {
+
+    <!-- Header verde con foto -->
+    <div class="ponente-header">
+      <div class="avatar-wrap">
+        @if (ponente.foto) {
+          <img [src]="ponente.foto" [alt]="ponente.nombre" class="avatar-img" />
+        } @else {
+          <div class="avatar-placeholder">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+        }
+      </div>
+      <h2 class="ponente-nombre">{{ ponente.nombre }}</h2>
+      <span class="ponente-etiqueta">{{ ponente.etiqueta }}</span>
+      <span class="ponente-org">{{ ponente.organizacion }}</span>
+    </div>
+
+    <!-- Card de datos -->
+    <div class="detalle-body">
+
+      @if (ponente.bio) {
+        <div class="seccion">
+          <h3 class="seccion-titulo">Biografía</h3>
+          <p class="seccion-texto">{{ ponente.bio }}</p>
+        </div>
+        <hr class="divider">
+      }
+
+      <div class="seccion">
+        <h3 class="seccion-titulo">Información</h3>
+
+        <div class="dato-row">
+          <ion-icon name="mail-outline"></ion-icon>
+          <div>
+            <span class="dato-label">Correo</span>
+            <span class="dato-valor">{{ ponente.email }}</span>
+          </div>
+        </div>
+
+        <div class="dato-row">
+          <ion-icon name="flag-outline"></ion-icon>
+          <div>
+            <span class="dato-label">País</span>
+            <span class="dato-valor">{{ ponente.pais }}</span>
+          </div>
+        </div>
+
+        <div class="dato-row">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <div>
+            <span class="dato-label">Evento</span>
+            <span class="dato-valor">{{ ponente.nombre_evento }}</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</ion-content>
