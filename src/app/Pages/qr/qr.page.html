@@ -20,11 +20,9 @@
 
       <!-- Imagen QR hipotética -->
       <div class="qr-wrap">
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TerriMeet-ESPAM-MFL-1317467577&color=005846"
-          alt="Código QR"
-          class="qr-img"
-        />
+        <qr-code value="{{ textoQR }}" 
+         size="300" 
+         errorCorrectionLevel="M" />
         <!-- Marco decorativo en las esquinas -->
         <div class="qr-corner top-left"></div>
         <div class="qr-corner top-right"></div>

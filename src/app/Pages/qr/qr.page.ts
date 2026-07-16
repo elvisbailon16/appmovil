@@ -3,15 +3,18 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
+import { QrCodeComponent } from 'ng-qrcode';
 
 @Component({
   selector: 'app-qr',
   templateUrl: './qr.page.html',
   styleUrls: ['./qr.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonContent, IonIcon, CabeceraComponent],
+  imports: [CommonModule, IonContent, IonIcon, CabeceraComponent, QrCodeComponent],
 })
 export class QrPage {
+
+  textoQR: string = 'TerriMeet-ESPAM-MFL-1317467577'; // TODO: reemplazar con el QR real que devuelva la API
 
   // TODO: reemplazar con datos reales del usuario autenticado
   usuario = {
