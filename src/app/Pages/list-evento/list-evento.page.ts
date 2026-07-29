@@ -43,8 +43,8 @@ cargarEventos(): void {
   this.error = null;
 
   this.eventosService.getEventos().subscribe({
-    next: (data) => {
-      this.eventos = data;
+    next: (res: any) => {
+      this.eventos = res.data ?? res;
       this.cargando = false;   // ← faltaba esto
     },
     error: (err) => {

@@ -14,8 +14,8 @@
 
     <!-- Imagen / Banner -->
     <div class="event-image-wrap">
-      @if (evento.imagenUrl) {
-        <img [src]="evento.imagenUrl" [alt]="evento.nombre" />
+      @if (evento.imgprincipal) {
+        <img [src]="evento.imgprincipal" [alt]="evento.nombre" />
       } @else {
         <div class="image-placeholder">
           <ion-icon name="calendar-outline"></ion-icon>

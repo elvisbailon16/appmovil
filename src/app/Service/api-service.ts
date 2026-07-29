@@ -9,6 +9,7 @@ const X_AppMovil_Token = 'A9FZK2xJr8EwQG6V4sHJKKh5DcpT1YBvLnI3aRk7mUeWOH';
   providedIn: 'root',
 })
 export class ApiService {
+
   constructor(private httpclient: HttpClient) {}
   // Api de implementacion para la logica de consumo necesario para el logeo de la app
   loginUser(email:string, password:string){
@@ -17,6 +18,18 @@ export class ApiService {
       password: password
     })
   }
+
+
+  // refreshAuthToken() {
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   if (!refreshToken) {
+  //     return Promise.reject('No refresh token available');
+  //   }
+
+  //   return this.httpclient.post('https://ws.espam.edu.ec/api/auth/refresh', {
+  //     refresh_token: refreshToken
+  //   });
+  // }
 
     // ── Solo X-AppMovil-Token (endpoints públicos) ─────────
   private getPublicHeaders(): HttpHeaders {
@@ -44,7 +57,7 @@ export class ApiService {
   
   getEventoById(id: string) {
     return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_evento_id/${id}`, {
-      headers: this.getHeaders()
+      headers: this.getPublicHeaders()
     });
   }
 
@@ -63,13 +76,13 @@ export class ApiService {
 
   getPonentesByEvento(id_evento: string) {
     return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_ponentes_por_evento/${id_evento}`, {
-      headers: this.getHeaders()
+      headers: this.getPublicHeaders()
     });
   }
 
   getDetallePonente(id_ponente: string) {
     return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_detalle_ponente/${id_ponente}`, {
-      headers: this.getHeaders()
+      headers: this.getPublicHeaders()
     });
   }
 
