@@ -1,0 +1,98 @@
+<!-- scanerqr.component.html -->
+<div class="modal-overlay" (click)="onCerrar()">
+  <div class="modal-sheet" (click)="$event.stopPropagation()">
+
+    <!-- Handle -->
+    <div class="modal-handle"></div>
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h3>Escanear QR</h3>
+      <button class="modal-close" (click)="onCerrar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Área escaner -->
+    <div class="scanner-wrap">
+      <div class="scanner-frame">
+
+        <!-- Esquinas decorativas -->
+        <div class="scanner-corner top-left"></div>
+        <div class="scanner-corner top-right"></div>
+        <div class="scanner-corner bottom-left"></div>
+        <div class="scanner-corner bottom-right"></div>
+
+        <!-- Línea animada solo mientras escanea -->
+        @if (escaneando) {
+          <div class="scanner-line"></div>
+        }
+
+        <!-- Estado idle -->
+        @if (!escaneando && !resultadoTexto && !error) {
+          <div class="scanner-idle">
+            <ion-icon name="qr-code-outline"></ion-icon>
+            <span>Toca "Escanear" para iniciar</span>
+          </div>
+        }
+
+        <!-- Cargando -->
+        @if (escaneando) {
+          <div class="scanner-loading">
+            <ion-spinner name="crescent"></ion-spinner>
+          </div>
+        }
+
+        <!-- Resultado exitoso -->
+        @if (resultadoTexto && !escaneando) {
+          <div class="scanner-success">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            <span>¡QR leído!</span>
+          </div>
+        }
+
+        <!-- Error -->
+        @if (error && !escaneando) {
+          <div class="scanner-error">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+      </div>
+
+      <!-- Instrucción -->
+      @if (!resultadoTexto) {
+        <p class="scanner-instruccion">
+          Apunta la cámara al código QR del evento
+        </p>
+      } @else {
+        <p class="scanner-resultado">{{ resultadoTexto }}</p>
+      }
+
+    </div>
+
+    <!-- Botones -->
+    <div class="modal-actions">
+      @if (!resultadoTexto) {
+        <button
+          class="btn-escanear"
+          (click)="iniciarEscaneo()"
+          [disabled]="escaneando">
+          <ion-icon name="scan-outline"></ion-icon>
+          {{ escaneando ? 'Escaneando...' : 'Escanear' }}
+        </button>
+      } @else {
+        <button class="btn-escanear" (click)="iniciarEscaneo()">
+          <ion-icon name="refresh-outline"></ion-icon>
+          Escanear otro
+        </button>
+      }
+
+      <button class="btn-cancelar" (click)="onCerrar()">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+</div>

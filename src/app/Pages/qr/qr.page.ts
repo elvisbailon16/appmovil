@@ -1,5 +1,5 @@
 // qr.page.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
@@ -12,9 +12,9 @@ import { QrCodeComponent } from 'ng-qrcode';
   standalone: true,
   imports: [CommonModule, IonContent, IonIcon, CabeceraComponent, QrCodeComponent],
 })
-export class QrPage {
+export class QrPage implements OnInit {
 
-  textoQR: string = 'TerriMeet-ESPAM-MFL-1317467577'; // TODO: reemplazar con el QR real que devuelva la API
+  // textoQR: string = 'App'; // TODO: reemplazar con el QR real que devuelva la API
 
   // TODO: reemplazar con datos reales del usuario autenticado
   usuario = {
@@ -22,8 +22,14 @@ export class QrPage {
     cedula: '1317467577',
   };
 
+  user: any = null;
+
   // TODO: reemplazar con el QR real que devuelva la API
   // qrUrl = this.apiService.getQR(this.usuario.cedula);
+
+  ngOnInit() {
+    this.cargarQR();
+  }
 
   compartirQR(): void {
     // TODO: implementar compartir con Capacitor Share
@@ -35,4 +41,11 @@ export class QrPage {
     // });
     console.log('Compartir QR — pendiente de implementar');
   }
+
+  cargarQR(): void {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    this.user = JSON.parse(userData);
+  }
+}
 }

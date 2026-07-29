@@ -1,0 +1,32 @@
+$verde-bosque: #005846;
+$verde-lima:   #44D62C;
+$verde-agua:   #08B89D;
+$blanco:       #FFFFFF;
+
+.fab-qr {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: $verde-bosque;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 4px;
+  box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  ion-icon {
+    font-size: 28px;
+    color: $blanco;
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.92);
+  }
+}

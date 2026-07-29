@@ -45,8 +45,8 @@ export class CategoriasComponent implements OnInit {
 
   cargarCategorias(): void {
     this.apiService.getCategorias().subscribe({
-      next: (data) => {
-        this.categorias = data;
+      next: (res:any) => {
+        this.categorias = res.data ?? res;
       },
       error: (err) => {
         console.error('Error cargando categorías:', err);

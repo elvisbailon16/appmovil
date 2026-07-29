@@ -42,3 +42,15 @@
 ion-content {
   --padding-bottom: 80px;
 }
+
+// Hace transparente el fondo para ver la cámara
+body.barcode-scanner-active {
+  visibility: hidden;
+  --background: transparent;
+  --ion-background-color: transparent;
+}
+
+// Solo el modal del scanner es visible
+app-scanerqr {
+  visibility: visible;
+}

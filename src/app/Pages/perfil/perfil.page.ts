@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonSpinner, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import * as L from 'leaflet';
 import { Router } from '@angular/router';
+import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-perfil',
@@ -13,14 +15,16 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, CommonModule, FormsModule, CabeceraComponent]
 })
-export class PerfilPage {
+export class PerfilPage implements OnInit {
 
   mapaVisible = false;
   cargandoMapa = false;
+  errorUbicacion: string | null = null;
   private mapa: L.Map | null = null;
   statActivo: 'insignias' | 'inscripciones' = 'insignias';
 
   constructor(private router: Router) { }
+
   ngOnInit(): void {
     this.obtenerUbicacion();
   }
@@ -36,28 +40,50 @@ export class PerfilPage {
     this.router.navigate(['/login']);
   }
 
-  // pageUbicacion(){
-  //   this.router.navigate(['/ubicacion'])
-
-  // }
-
-  obtenerUbicacion(): void {
+  async obtenerUbicacion(): Promise<void> {
     this.cargandoMapa = true;
+    this.errorUbicacion = null;
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        this.mapaVisible = true;
-        setTimeout(() => this.iniciarMapa(lat, lng), 150);
-        this.cargandoMapa = false;
-      },
-      (err) => {
-        console.error('Error obteniendo ubicación:', err);
-        this.cargandoMapa = false;
-      },
-      { enableHighAccuracy: true }
-    );
+    try {
+      let lat: number;
+      let lng: number;
+
+      if (Capacitor.isNativePlatform()) {
+        // Dispositivo / emulador real -> plugin nativo de Capacitor
+        let estado = await Geolocation.checkPermissions();
+
+        if (estado.location !== 'granted') {
+          estado = await Geolocation.requestPermissions();
+        }
+
+        if (estado.location !== 'granted') {
+          this.errorUbicacion = 'Debes conceder el permiso de ubicación en los ajustes del dispositivo.';
+          this.cargandoMapa = false;
+          return;
+        }
+
+        const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+        lat = pos.coords.latitude;
+        lng = pos.coords.longitude;
+
+      } else {
+        // Navegador (ionic serve) -> API web nativa
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true })
+        );
+        lat = pos.coords.latitude;
+        lng = pos.coords.longitude;
+      }
+
+      this.mapaVisible = true;
+      setTimeout(() => this.iniciarMapa(lat, lng), 150);
+
+    } catch (err) {
+      console.error('Error obteniendo ubicación:', err);
+      this.errorUbicacion = 'No se pudo obtener tu ubicación.';
+    } finally {
+      this.cargandoMapa = false;
+    }
   }
 
   private iniciarMapa(lat: number, lng: number): void {
@@ -68,13 +94,11 @@ export class PerfilPage {
 
     this.mapa = L.map('mapa', { zoomControl: true }).setView([lat, lng], 16);
 
-    // Capa satelital
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       { attribution: '© Esri', maxZoom: 19 }
     ).addTo(this.mapa);
 
-    // Capa de etiquetas encima
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       { opacity: 0.8, maxZoom: 19 }
@@ -84,5 +108,8 @@ export class PerfilPage {
       .addTo(this.mapa)
       .bindPopup('Tu ubicación actual')
       .openPopup();
+
+    // Por si el contenedor no tenía el tamaño correcto al montar
+    setTimeout(() => this.mapa?.invalidateSize(), 200);
   }
 }

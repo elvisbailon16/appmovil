@@ -18,19 +18,28 @@ export class HomePage implements OnInit {
   eventos: any;
   cargando = false;
   error: string | null = null;
+  usuario: any = null;
   constructor( private eventosService: ApiService) { }
 
   ngOnInit() {
     this.cargarEventos();
+    this.cargarUsuario();
   }
+
+  cargarUsuario(): void {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    this.usuario = JSON.parse(userData);
+  }
+}
 
     cargarEventos(): void {
     this.cargando = true;
     this.error    = null;
  
     this.eventosService.getEventos().subscribe({
-      next: (data) => {
-        this.eventos  = data;
+      next: (res:any) => {
+        this.eventos  = res.data ?? res;
         this.cargando = false;
       },
       error: (err) => {
@@ -50,8 +59,8 @@ onCategoriaSeleccionada(id: string | null): void {
   if (id) {
     this.cargando = true;
     this.eventosService.getEventosByCategoria(id).subscribe({
-      next: (data) => {
-        this.eventos = data;
+      next: (res:any) => {
+        this.eventos = res.data ?? res;
         //  console.log("Eventos filtrados por categoría:", data);
         this.cargando = false;
       },

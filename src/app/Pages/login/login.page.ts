@@ -20,14 +20,15 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-    login(username:any, password:any){
-    this.apiService.loginUser(username.value, password.value).subscribe({
+    login(email:any, password:any){
+    this.apiService.loginUser(email.value, password.value).subscribe({
       next: (datos:any)=>{
         this.valor = datos.success;
 
         if(this.valor){
           localStorage.setItem('token', datos.data.access_token);
           localStorage.setItem('refresh_token', datos.data.refresh_token);
+          localStorage.setItem('user', JSON.stringify(datos.data.user));
 
           this.router.navigate(['/home'])
         }

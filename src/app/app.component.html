@@ -3,4 +3,17 @@
   @if (showTabs) {
     <app-tabs></app-tabs>
   }
+
+  @if (showTabs) {
+    <div class="fab-qr" (click)="modalVisible = true">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </div>
+  }
+
+  @if (modalVisible) {
+    <app-scanerqr
+      (cerrar)="modalVisible = false"
+      (resultado)="onResultadoQR($event)">
+    </app-scanerqr>
+  }
 </ion-app>

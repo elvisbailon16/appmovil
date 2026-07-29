@@ -1,0 +1,274 @@
+// scanerqr.component.scss
+$verde-bosque: #005846;
+$verde-lima:   #44D62C;
+$verde-agua:   #08B89D;
+$blanco:       #FFFFFF;
+$texto-muted:  #666666;
+
+// ── Overlay ───────────────────────────────────────────────
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+
+// ── Sheet ─────────────────────────────────────────────────
+.modal-sheet {
+  width: 100%;
+  background: $blanco;
+  border-radius: 24px 24px 0 0;
+  padding: 12px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideUp 0.3s ease;
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: #dddddd;
+  border-radius: 100px;
+  margin: 0 auto 4px;
+}
+
+// ── Header ────────────────────────────────────────────────
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h3 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0;
+  }
+}
+
+.modal-close {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon { font-size: 18px; color: #555; }
+}
+
+// ── Scanner ───────────────────────────────────────────────
+.scanner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.scanner-frame {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Esquinas
+$c: $verde-bosque;
+.scanner-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 2;
+
+  &.top-left    { top: 0; left: 0; border-top: 3px solid $c; border-left: 3px solid $c; border-radius: 4px 0 0 0; }
+  &.top-right   { top: 0; right: 0; border-top: 3px solid $c; border-right: 3px solid $c; border-radius: 0 4px 0 0; }
+  &.bottom-left { bottom: 0; left: 0; border-bottom: 3px solid $c; border-left: 3px solid $c; border-radius: 0 0 0 4px; }
+  &.bottom-right{ bottom: 0; right: 0; border-bottom: 3px solid $c; border-right: 3px solid $c; border-radius: 0 0 4px 0; }
+}
+
+// Línea animada
+.scanner-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: $verde-lima;
+  box-shadow: 0 0 8px $verde-lima;
+  z-index: 1;
+  animation: scan 2s ease-in-out infinite;
+}
+
+// Estados internos del frame
+.scanner-idle,
+.scanner-loading,
+.scanner-success,
+.scanner-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.scanner-idle {
+  color: #aaa;
+  ion-icon { font-size: 48px; color: #ccc; }
+}
+
+.scanner-loading {
+  ion-spinner { --color: #{$verde-bosque}; }
+}
+
+.scanner-success {
+  color: $verde-bosque;
+  ion-icon { font-size: 48px; color: $verde-lima; }
+  span { font-weight: 700; color: $verde-bosque; }
+}
+
+.scanner-error {
+  color: #E53935;
+  ion-icon { font-size: 40px; }
+}
+
+// Textos debajo del frame
+.scanner-instruccion {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  text-align: center;
+  margin: 0;
+}
+
+.scanner-resultado {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: $verde-bosque;
+  text-align: center;
+  background: #f0f8f5;
+  border: 1px solid #c8e6da;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin: 0;
+  word-break: break-all;
+}
+
+// ── Botones ───────────────────────────────────────────────
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-escanear {
+  width: 100%;
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  ion-icon { font-size: 20px; }
+
+  &:disabled { opacity: 0.5; pointer-events: none; }
+  &:active { background: #003d31; }
+}
+
+.btn-cancelar {
+  width: 100%;
+  background: #f5f5f5;
+  color: #333;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  height: 50px;
+  cursor: pointer;
+
+  &:active { background: #ebebeb; }
+}
+
+// ── Animaciones ───────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes scan {
+  0%   { top: 0; }
+  50%  { top: calc(100% - 2px); }
+  100% { top: 0; }
+}
+
+
+.qr-fab {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50% 0 0 50%; // media esfera pegada al borde
+  background: linear-gradient(135deg, $verde-bosque, $verde-agua);
+  border: none;
+  box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 4px;
+  z-index: 1500;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  ion-icon {
+    font-size: 28px;
+    color: $blanco;
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.92);
+  }
+
+  // Efecto de "respiración" para llamar la atención
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: -2px 2px 12px rgba(0, 0, 0, 0.25), 0 0 0 0 rgba($verde-lima, 0.5);
+  }
+  50% {
+    box-shadow: -2px 2px 16px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba($verde-lima, 0);
+  }
+}
