@@ -11,8 +11,8 @@ import {
 import { Capacitor } from '@capacitor/core';
 
 // ─── Tus datos de Azure ───────────────────────────────────────────
-const CLIENT_ID = 'TU_CLIENT_ID';    // Application (client) ID de Azure Portal
-const TENANT_ID = 'TU_TENANT_ID';   // Directory (tenant) ID de Azure Portal
+const CLIENT_ID = '299fc278-48be-4c9a-ba51-314ad90350a0';    // Application (client) ID de Azure Portal
+const TENANT_ID = '58340878-4f37-4827-9f69-97e18b833421';   // Directory (tenant) ID de Azure Portal
 
 // El redirect URI cambia según la plataforma
 function getRedirectUri(): string {
