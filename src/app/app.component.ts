@@ -5,6 +5,7 @@ import { IonApp, IonRouterOutlet, IonIcon } from '@ionic/angular/standalone';
 import { TabsComponent } from './Pages/Componentes/tabs/tabs.component';
 import { filter } from 'rxjs/operators';
 import { ScanerqrComponent } from './Pages/Componentes/scanerqr/scanerqr.component';
+import { NotificacionesService } from './Service/notificaciones-service';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +21,16 @@ export class AppComponent {
   // Páginas donde NO se muestran los tabs ni el botón
   private rutasOcultas = ['/login'];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private notificacionesService: NotificacionesService) {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: any) => {
         this.showTabs = !this.rutasOcultas.includes(e.urlAfterRedirects);
       });
+  }
+
+  ngOnInit() {
+    this.notificacionesService.InitPush();
   }
 
   abrirEscaner(): void {

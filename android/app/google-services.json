@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202512578210",
+    "project_id": "terrimeetapp",
+    "storage_bucket": "terrimeetapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202512578210:android:351a1608ecad1f7f2249fb",
+        "android_client_info": {
+          "package_name": "ec.espam.terrimeet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVfJ5LSp8ttj62SoyhbUHLuvuCLN8sQ3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

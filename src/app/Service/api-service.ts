@@ -19,6 +19,17 @@ export class ApiService {
     })
   }
 
+  loginMicrosoft(email:string){
+    return this.httpclient.post('https://ws.espam.edu.ec/api/auth/microsoft', {
+      email: email
+    })
+  }
+
+  getPerfilUsuario() {
+    return this.httpclient.get('https://ws.espam.edu.ec/api/appmovil/perfil_usuario', {
+      headers: this.getHeaders()
+    });
+  }
 
   // refreshAuthToken() {
   //   const refreshToken = localStorage.getItem('refreshToken');
@@ -44,7 +55,7 @@ export class ApiService {
     const jwt = localStorage.getItem('token') ?? '';
  
     return new HttpHeaders({
-      'X-AppMovil-Token': X_AppMovil_Token,
+      // 'X-AppMovil-Token': X_AppMovil_Token,
       'Authorization':    `Bearer ${jwt}`,
       'Content-Type':     'application/json',
     });
@@ -74,6 +85,13 @@ export class ApiService {
     });
   }
 
+    getEventosDestacados(id_categoria: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_eventos_destacados`, {
+      headers: this.getPublicHeaders()
+    });
+  }
+  
+
   getPonentesByEvento(id_evento: string) {
     return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_ponentes_por_evento/${id_evento}`, {
       headers: this.getPublicHeaders()
@@ -85,5 +103,7 @@ export class ApiService {
       headers: this.getPublicHeaders()
     });
   }
+
+
 
 }
