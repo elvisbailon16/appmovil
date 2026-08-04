@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package ec.espam.terrimeet;
 
 import com.getcapacitor.BridgeActivity;
 
