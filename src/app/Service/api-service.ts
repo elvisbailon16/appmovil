@@ -20,10 +20,15 @@ export class ApiService {
   }
 
   loginMicrosoft(email:string){
-    debugger;
     return this.httpclient.post('https://ws.espam.edu.ec/api/auth/microsoft', {
       email: email
     })
+  }
+
+  cerrarSesion() {
+    return this.httpclient.post('https://ws.espam.edu.ec/api/auth/logout', {}, {
+      headers: this.getHeaders()
+    });
   }
 
   getPerfilUsuario() {
@@ -32,16 +37,6 @@ export class ApiService {
     });
   }
 
-  // refreshAuthToken() {
-  //   const refreshToken = localStorage.getItem('refreshToken');
-  //   if (!refreshToken) {
-  //     return Promise.reject('No refresh token available');
-  //   }
-
-  //   return this.httpclient.post('https://ws.espam.edu.ec/api/auth/refresh', {
-  //     refresh_token: refreshToken
-  //   });
-  // }
 
     // ── Solo X-AppMovil-Token (endpoints públicos) ─────────
   private getPublicHeaders(): HttpHeaders {

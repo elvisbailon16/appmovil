@@ -5,11 +5,11 @@
   <!-- Header verde con foto -->
   <div class="perfil-header">
     <div class="avatar-wrap">
-      <img class="avatar" src="assets/avatar-placeholder.png" alt="Foto de perfil" />
+      <img class="avatar" [src]="userData?.foto " alt="Foto de perfil" />
     </div>
-    <h2 class="perfil-nombre">BAILON ZAMBRANO ELVIS STEEVEN</h2>
+    <h2 class="perfil-nombre">{{ userData?.name}}</h2>
     <div class="perfil-email-row">
-      <span class="perfil-email">elvis.bailon.0121&#64;espam.edu.ec</span>
+      <span class="perfil-email">{{ userData?.email }}</span>
       <span class="badge-verificado">
         <ion-icon name="checkmark-circle"></ion-icon>
         Verificado
@@ -20,17 +20,17 @@
   <!-- Insignias e Inscripciones -->
   <div class="stats-wrap">
     <div class="stat-card" [class.active]="statActivo === 'insignias'" (click)="statActivo = 'insignias'">
-      <span class="stat-number">10</span>
+      <span class="stat-number">{{ userData?.totalinsignias }}</span>
       <div class="stat-label-row">
         <ion-icon name="ribbon-outline"></ion-icon>
         <span>Insignias</span>
       </div>
     </div>
     <div class="stat-card" [class.active]="statActivo === 'inscripciones'" (click)="statActivo = 'inscripciones'">
-      <span class="stat-number">10</span>
+      <span class="stat-number">{{ userData?.certificados }}</span>
       <div class="stat-label-row">
         <ion-icon name="calendar-outline"></ion-icon>
-        <span>Inscripciones</span>
+        <span>Certificados</span>
       </div>
     </div>
   </div>
@@ -54,28 +54,28 @@
 
     <div class="dato-row">
       <span class="dato-label">Nombres</span>
-      <span class="dato-valor">BAILON ZAMBRANO ELVIS STEEVEN</span>
+      <span class="dato-valor">{{ userData?.name }}</span>
     </div>
     <div class="dato-row">
       <span class="dato-label">Correo</span>
-      <span class="dato-valor">elvis.bailon.0121&#64;espam.edu.ec</span>
+      <span class="dato-valor">{{ userData?.email }}</span>
     </div>
     <div class="dato-row-inline">
       <div class="dato-inline">
         <span class="dato-label">Cédula</span>
-        <span class="dato-valor">1317467577</span>
+        <span class="dato-valor">{{ userData?.identificacion }}</span>
       </div>
       <div class="dato-inline">
         <span class="dato-label">Celular</span>
-        <span class="dato-valor">0960566933</span>
+        <span class="dato-valor">{{ userData?.celular }}</span>
       </div>
     </div>
   </div>
 
   <!-- Badges informativos -->
   <div class="badges-info-wrap">
-    <div class="badge-info">Aceptación de términos 1 03/11/2025</div>
-    <div class="badge-info">Correo verificado 07/06/2025</div>
+    <div class="badge-info">Aceptación de términos {{ userData?.terms_accepted }}</div>
+    <div class="badge-info">Correo verificado {{ userData?.email_verified_at }}</div>
   </div>
 
   <!-- Botón completar perfil -->

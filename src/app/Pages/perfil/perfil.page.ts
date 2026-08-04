@@ -7,6 +7,7 @@ import * as L from 'leaflet';
 import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
+import { ApiService } from 'src/app/Service/api-service';
 
 @Component({
   selector: 'app-perfil',
@@ -22,12 +23,20 @@ export class PerfilPage implements OnInit {
   errorUbicacion: string | null = null;
   private mapa: L.Map | null = null;
   statActivo: 'insignias' | 'inscripciones' = 'insignias';
+  userData: any;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.obtenerUbicacion();
+    this.apiService.getPerfilUsuario().subscribe({
+      next: (datos: any) => {
+        this.userData = datos.data;
+      },
+      error: (e) => console.log('Error obteniendo perfil:', e)
+    })
   }
+
 
   insignias = [
     { id: 1, nombre: 'Congreso estudiantil de investigación', puntos: 3 },
@@ -36,8 +45,16 @@ export class PerfilPage implements OnInit {
   ];
 
   cerrarSesion(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.apiService.cerrarSesion().subscribe({
+      next: () => {
+        localStorage.clear();
+        // localStorage.removeItem('refresh_token');
+        // localStorage.removeItem('user');
+        // localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+      },
+      error: (e) => console.log('Error cerrando sesión:', e)
+    });
   }
 
   async obtenerUbicacion(): Promise<void> {
