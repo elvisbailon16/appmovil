@@ -1,64 +1,34 @@
-import {
-  BrowserCacheLocation,
-  InteractionType,
-  IPublicClientApplication,
-  PublicClientApplication,
-} from '@azure/msal-browser';
-import {
-  MsalGuardConfiguration,
-  MsalInterceptorConfiguration,
-} from '@azure/msal-angular';
+import { BrowserCacheLocation, IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
+import { MsalGuardConfiguration, MsalInterceptorConfiguration } from '@azure/msal-angular';
 import { Capacitor } from '@capacitor/core';
 
 // ─── Tus datos de Azure ───────────────────────────────────────────
-const CLIENT_ID = '299fc278-48be-4c9a-ba51-314ad90350a0';    // Application (client) ID de Azure Portal
+const CLIENT_ID = '28710e21-ff7e-402f-8506-9b338db2d15b';    // Application (client) ID de Azure Portal
 const TENANT_ID = '58340878-4f37-4827-9f69-97e18b833421';   // Directory (tenant) ID de Azure Portal
 
-// El redirect URI cambia según la plataforma
-function getRedirectUri(): string {
-  if (Capacitor.isNativePlatform()) {
-    // Deep link: debe coincidir con el registrado en Azure → plataforma "Móvil y escritorio"
-    return 'msauth://ec.espam.terrimeet/callback';
-  }
-  return 'http://localhost:8100'; // Web local
-}
 
-// ─── Configuración principal de MSAL ─────────────────────────────
-export const msalConfig = {
-  auth: {
-    clientId: CLIENT_ID,
-    authority: `https://login.microsoftonline.com/${TENANT_ID}`,
-    redirectUri: getRedirectUri(),
-    postLogoutRedirectUri: 'http://localhost:8100',
-  },
-  cache: {
-    cacheLocation: BrowserCacheLocation.LocalStorage,
-    storeAuthStateInCookie: false,
-  },
-};
+export const loginRequest = { scopes: ['User.Read'] };
 
-// ─── Scopes: solo lo necesario para recuperar el correo ──────────
-export const loginRequest = {
-  scopes: ['openid', 'profile', 'email', 'User.Read'],
-};
-
-// ─── Factories para proveedores de Angular ────────────────────────
 export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication(msalConfig);
+  return new PublicClientApplication({
+    auth: {
+      clientId: CLIENT_ID,
+      authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+      redirectUri: Capacitor.isNativePlatform()
+        ? 'msauth://ec.espam.terrimeet/callback'
+        : 'http://localhost:8100',
+    },
+    cache: { cacheLocation: BrowserCacheLocation.LocalStorage },
+  });
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return {
-    interactionType: InteractionType.Redirect,
-    authRequest: loginRequest,
-  };
+  return { interactionType: InteractionType.Redirect, authRequest: loginRequest };
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   return {
     interactionType: InteractionType.Redirect,
-    protectedResourceMap: new Map([
-      ['https://graph.microsoft.com/v1.0/me', ['User.Read']],
-    ]),
+    protectedResourceMap: new Map([['https://graph.microsoft.com/v1.0/me', ['User.Read']]]),
   };
 }

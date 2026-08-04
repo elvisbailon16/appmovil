@@ -20,6 +20,7 @@ export class ApiService {
   }
 
   loginMicrosoft(email:string){
+    debugger;
     return this.httpclient.post('https://ws.espam.edu.ec/api/auth/microsoft', {
       email: email
     })
