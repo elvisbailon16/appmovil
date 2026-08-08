@@ -1,284 +1,246 @@
+/* login.page.scss */
 @use 'sass:color';
 
-/* ========== VARIABLES ========== */
-$primary-green: #005846;
+/* ========== BRAND VARIABLES ========== */
+$verde-bosque: #005846;
+$verde-lima: #44D62C;
+$verde-ceibo: #CBDB2A;
+$verde-agua: #08B89D;
 $white: #FFFFFF;
-$gray-light: #E0E0E0;
 $gray-medium: #757575;
 $gray-dark: #212121;
 
-/* ========== MIXINS (Reusable) ========== */
-@mixin flex-center {
+/* ========== CONTENT ========== */
+.login-content {
+  --background: transparent;
+  font-family: 'Work Sans', sans-serif;
+}
+
+/* ========== BACKGROUND IMAGE + OVERLAY ========== */
+.bg-image {
+  position: fixed;
+  inset: 0;
+  background: url('https://terrimeet.espam.edu.ec/images/fondo_login.png') center center / cover no-repeat;
+  z-index: 0;
+}
+
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba($verde-bosque, 0.75) 0%,
+    rgba($verde-bosque, 0.55) 45%,
+    rgba($verde-bosque, 0.85) 100%
+  );
+}
+
+/* ========== WRAPPER (centrado con safe-area) ========== */
+.login-wrapper {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 24px);
 }
 
-@mixin flex-between {
+/* ========== CARD ========== */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: $white;
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
+  padding: 24px;
+  background: rgba($verde-lima, 0.08);
 }
 
-/* ========== ION CONTENT ========== */
-ion-content {
-  --overflow: hidden;
-}
-
-/* ========== MAIN CONTAINER ========== */
-.login-container {
-  width: 90%;
-  max-width: 400px;
-  min-height: 1px;
-  margin: auto;
-  margin-top: 20%;
+.mascot-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
   background: $white;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .mascot-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
 }
 
-/* ========== HEADER ========== */
-.login-header {
-  background: $primary-green;
-  padding: 40px 24px;
-  text-align: center;
-  border-radius: 16px 16px 0 0;
+.header-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .brand-title {
-  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.375rem;
   font-weight: 700;
-  color: $white;
-  letter-spacing: 0.5px;
+  color: $verde-bosque;
+  margin: 0;
+
+  .brand-check {
+    font-size: 1.125rem;
+    color: $verde-agua;
+  }
 }
 
 .brand-subtitle {
-  font-size: 0.875rem;
-  color: rgba($white, 0.85);
-  margin-top: 4px;
+  font-size: 0.8125rem;
+  color: $gray-medium;
+  margin: 2px 0 0;
+  line-height: 1.3;
+}
+
+.card-divider {
+  height: 3px;
+  background: linear-gradient(90deg, $verde-bosque, $verde-lima, $verde-ceibo);
 }
 
 /* ========== BODY / FORM ========== */
-.login-body {
-  flex: 1;
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
+.card-body {
+  padding: 24px;
 }
 
-.login-title {
-  font-size: 1.5rem;
+.section-title {
+  font-size: 1.25rem;
   font-weight: 600;
   color: $gray-dark;
-  margin: 0 0 24px 0;
+  margin: 0 0 20px;
 }
 
-/* ========== FORM ELEMENTS ========== */
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: $gray-medium;
-  margin-bottom: 8px;
-}
-
-.input-wrapper {
-  position: relative;
-  display: flex;
+/* ========== IONIC INPUTS (theming vía CSS vars nativas) ========== */
+.custom-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 14px;
   align-items: center;
 }
 
-.input-icon {
-  position: absolute;
-  left: 14px;
-  font-size: 1.25rem;
+.item-icon {
+  font-size: 1.125rem;
   color: $gray-medium;
-  pointer-events: none;
-  z-index: 1;
+  margin-inline-end: 8px;
 }
 
-.form-input {
-  width: 100%;
-  padding: 14px 14px 14px 48px;
+.custom-input {
+  --background: #FAFAFA;
+  --border-radius: 12px;
+  --border-color: #E0E0E0;
+  --highlight-color-focused: #{$verde-bosque};
+  --padding-start: 14px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
   font-size: 1rem;
-  border: 1px solid $gray-light;
-  border-radius: 12px;
-  background: $white;
-  color: $gray-dark;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-  &::placeholder {
-    color: $gray-medium;
-    opacity: 0.7;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-green;
-    box-shadow: 0 0 0 3px rgba($primary-green, 0.15);
-  }
 }
 
 /* ========== ACTIONS ROW ========== */
 .actions-row {
-  @include flex-between;
-  margin: 20px 0 24px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.remember-me {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: $gray-medium;
-  cursor: pointer;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 22px;
+}
 
-  input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: $primary-green;
-    cursor: pointer;
-  }
+.remember-checkbox {
+  --size: 18px;
+  --checkbox-background-checked: #{$verde-bosque};
+  --border-color-checked: #{$verde-bosque};
+  font-size: 0.8125rem;
+  color: $gray-medium;
 }
 
 .forgot-link {
-  font-size: 0.875rem;
-  color: $primary-green;
-  text-decoration: none;
+  font-size: 0.8125rem;
+  color: $verde-bosque;
   font-weight: 500;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* ========== BUTTONS ========== */
-.btn-primary,
-.btn-secondary {
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-  margin-bottom: 12px;
-  border: 2px solid transparent;
-
-  ion-icon {
-    font-size: 1.125rem;
-  }
-}
-
 .btn-primary {
-  background: $primary-green;
-  color: $white;
-  border-color: $primary-green;
-
-  &:hover {
-    background: color.adjust($primary-green, $lightness: -8%);
-    border-color: color.adjust($primary-green, $lightness: -8%);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
+  --background: #{$verde-bosque};
+  --background-activated: #{color.adjust($verde-bosque, $lightness: -8%)};
+  --background-hover: #{color.adjust($verde-bosque, $lightness: -6%)};
+  --border-radius: 50px;
+  --box-shadow: none;
+  height: 52px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: none;
+  margin-bottom: 10px;
 }
 
-.btn-secondary {
-  background: $white;
-  color: $primary-green;
-  border-color: $primary-green;
+.btn-microsoft {
+  --border-radius: 50px;
+  --border-color: #{$gray-medium};
+  --color: #{$gray-dark};
+  --background: #{$white};
+  height: 52px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-transform: none;
+  margin-bottom: 4px;
 
-  &:hover {
-    background: rgba($primary-green, 0.05);
-  }
-
-  &:active {
-    transform: scale(0.98);
+  .ms-icon {
+    width: 18px;
+    height: 18px;
+    margin-inline-end: 10px;
   }
 }
 
 /* ========== REGISTER TEXT ========== */
 .register-text {
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: $gray-medium;
-  margin: 16px 0 0;
-  padding-top: 16px;
+  margin: 14px 0 0;
 
   a {
-    color: $primary-green;
+    color: $verde-bosque;
     font-weight: 600;
     text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    cursor: pointer;
   }
 }
 
-/* ========== RESPONSIVE ADJUSTMENTS ========== */
-@media (max-height: 700px) {
-  .login-header {
-    padding: 28px 24px;
-  }
-
-  .brand-title {
-    font-size: 1.5rem;
-  }
-
-  .login-body {
-    padding: 24px 24px;
-  }
-
-  .login-title {
-    font-size: 1.25rem;
-    margin-bottom: 20px;
-  }
-}
-
+/* ========== RESPONSIVE ========== */
 @media (max-width: 360px) {
-  .login-container {
-    width: 90%;
-  }
-
-  .login-header {
-    padding: 24px 20px;
+  .card-header,
+  .card-body {
+    padding: 18px;
   }
 
   .brand-title {
-    font-size: 1.375rem;
-  }
-
-  .login-body {
-    padding: 20px;
-  }
-
-  .actions-row {
-    flex-direction: column;
-    align-items: flex-start;
+    font-size: 1.25rem;
   }
 }
 
 @media (min-width: 768px) {
-  .login-container {
-    width: 50%;
-    max-width: 420px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    min-height: auto;
-    border-radius: 16px;
+  .login-card {
+    max-width: 440px;
   }
 }
