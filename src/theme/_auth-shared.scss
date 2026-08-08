@@ -1,0 +1,97 @@
+// src/theme/_auth-shared.scss
+@use 'sass:color';
+@use './colors' as colors; // solo para funciones de compilación (color.adjust)
+
+@mixin auth-content {
+  --background: transparent;
+  font-family: 'Work Sans', sans-serif;
+}
+
+@mixin auth-bg-image($url) {
+  position: fixed;
+  inset: 0;
+  background: url($url) center center / cover no-repeat;
+  z-index: 0;
+}
+
+@mixin auth-bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 88, 70, 0.75) 0%,
+    rgba(0, 88, 70, 0.55) 45%,
+    rgba(0, 88, 70, 0.85) 100%
+  );
+  // nota: rgba() no acepta var() directamente en todos los navegadores webview antiguos,
+  // por eso aquí sí usamos el valor Sass. Si tu target mínimo es Android 10+/iOS 14+,
+  // puedes cambiar a color-mix(in srgb, var(--verde-bosque) 75%, transparent) sin problema.
+}
+
+@mixin auth-wrapper {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 24px);
+}
+
+@mixin auth-card($max-width: 400px) {
+  width: 100%;
+  max-width: $max-width;
+  background: var(--white, #FFFFFF);
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+@mixin auth-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px;
+  background: rgba(68, 214, 44, 0.08); // verde-lima al 8%
+}
+
+@mixin auth-brand-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--verde-bosque);
+  margin: 0;
+
+  ion-icon {
+    font-size: 1.125rem;
+    color: var(--verde-agua);
+  }
+}
+
+@mixin auth-input {
+  --background: #FAFAFA;
+  --border-radius: 12px;
+  --border-color: #E0E0E0;
+  --highlight-color-focused: var(--verde-bosque);
+  --padding-start: 14px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  font-size: 1rem;
+}
+
+@mixin auth-btn-primary {
+  --background: var(--verde-bosque);
+  --background-activated: #{color.adjust(colors.$verde-bosque, $lightness: -8%)};
+  --background-hover: #{color.adjust(colors.$verde-bosque, $lightness: -6%)};
+  --border-radius: 50px;
+  --box-shadow: none;
+  height: 52px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: none;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,13 @@
+// src/theme/_colors.scss
+// Fuente única de verdad de la paleta de marca
+@use 'sass:color';
+
+$verde-bosque: #005846;
+$verde-lima: #44D62C;
+$verde-ceibo: #CBDB2A;
+$verde-agua: #08B89D;
+
+$white: #FFFFFF;
+$gray-light: #E0E0E0;
+$gray-medium: #757575;
+$gray-dark: #212121;

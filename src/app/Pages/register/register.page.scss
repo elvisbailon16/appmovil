@@ -1,11 +1,11 @@
-// login.page.scss
+// register.page.scss
 @use '../../theme/auth-shared' as auth;
 
-.login-content { @include auth.auth-content; }
+.register-content { @include auth.auth-content; }
 .bg-image { @include auth.auth-bg-image('https://terrimeet.espam.edu.ec/images/fondo_login.png'); }
 .bg-overlay { @include auth.auth-bg-overlay; }
-.login-wrapper { @include auth.auth-wrapper; }
-.login-card { @include auth.auth-card(400px); }
+.register-wrapper { @include auth.auth-wrapper; }
+.register-card { @include auth.auth-card(420px); }
 
 .card-header { @include auth.auth-card-header; }
 .mascot-badge { @include auth.auth-mascot-badge; }
@@ -24,47 +24,40 @@
 .item-icon { @include auth.auth-item-icon; }
 .custom-input { @include auth.auth-input; }
 
-/* ========== ACTIONS ROW (propio de login) ========== */
-.actions-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 8px 0 22px;
+/* ========== TÉRMINOS Y CONDICIONES (propio de register) ========== */
+.terms-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: auto;
+  margin: 4px 0 20px;
 }
 
-.remember-checkbox {
+.terms-checkbox {
   --size: 18px;
   --checkbox-background-checked: var(--verde-bosque);
   --border-color-checked: var(--verde-bosque);
+  margin-inline-end: 10px;
+}
+
+.terms-label {
   font-size: 0.8125rem;
   color: var(--gray-medium);
-}
+  white-space: normal;
 
-.forgot-link {
-  font-size: 0.8125rem;
-  color: var(--verde-bosque);
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* ========== BUTTONS ========== */
-.btn-primary { @include auth.auth-btn-primary; }
-
-.btn-microsoft {
-  @include auth.auth-btn-secondary;
-
-  .ms-icon {
-    width: 18px;
-    height: 18px;
-    margin-inline-end: 10px;
+  a {
+    color: var(--verde-bosque);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
   }
 }
 
-/* ========== REGISTER LINK ========== */
-.register-text { @include auth.auth-footer-text; }
+/* ========== BUTTON ========== */
+.btn-primary { @include auth.auth-btn-primary; }
+
+/* ========== LOGIN LINK ========== */
+.login-text { @include auth.auth-footer-text; }
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 360px) {
@@ -75,11 +68,5 @@
 
   .brand-title {
     font-size: 1.25rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .login-card {
-    max-width: 440px;
   }
 }

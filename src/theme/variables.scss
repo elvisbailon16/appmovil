@@ -1,2 +1,33 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+// src/theme/variables.scss
+// (agrega esto a tu archivo variables.scss existente de Ionic, dentro de :root)
+@use './colors' as colors;
+@use 'sass:color';
+
+:root {
+  /* ===== Paleta de marca (uso directo en cualquier componente) ===== */
+  --verde-bosque: #{colors.$verde-bosque};
+  --verde-lima: #{colors.$verde-lima};
+  --verde-ceibo: #{colors.$verde-ceibo};
+  --verde-agua: #{colors.$verde-agua};
+
+  --gray-light: #{colors.$gray-light};
+  --gray-medium: #{colors.$gray-medium};
+  --gray-dark: #{colors.$gray-dark};
+
+  /* ===== Integración con el sistema de color de Ionic ===== */
+  --ion-color-primary: var(--verde-bosque);
+  --ion-color-primary-rgb: 0, 88, 70;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #{color.adjust(colors.$verde-bosque, $lightness: -8%)};
+  --ion-color-primary-tint: #{color.adjust(colors.$verde-bosque, $lightness: 8%)};
+
+  --ion-color-secondary: var(--verde-agua);
+  --ion-color-secondary-rgb: 8, 184, 157;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #{color.adjust(colors.$verde-agua, $lightness: -8%)};
+  --ion-color-secondary-tint: #{color.adjust(colors.$verde-agua, $lightness: 8%)};
+}
