@@ -20,8 +20,20 @@
     <p>Bienvenido, disfruta de tus eventos favoritos</p>
   </div>
   <app-categorias (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-categorias>
-  @for (evento of eventos; track evento.id) {
+  <!-- @for (evento of eventos; track evento.id) {
     <app-evento class="eventos-list" [evento]="evento"></app-evento>
+  } -->
+      <!-- Sin eventos -->
+  @if (!cargando && !error && eventos.length === 0) {
+        <app-empty-state
+          imageSrc="assets/img/terri-mascot.png"
+          title="Aún no hay eventos"
+          message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
+        ></app-empty-state>
+  }@else{
+    @for (evento of eventos; track evento.id) {
+      <app-evento class="eventos-list" [evento]="evento"></app-evento>
+    }
   }
 <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
   <ion-infinite-scroll-content></ion-infinite-scroll-content>

@@ -13,19 +13,7 @@ import { QrCodeComponent } from 'ng-qrcode';
   imports: [CommonModule, IonContent, IonIcon, CabeceraComponent, QrCodeComponent],
 })
 export class QrPage implements OnInit {
-
-  // textoQR: string = 'App'; // TODO: reemplazar con el QR real que devuelva la API
-
-  // TODO: reemplazar con datos reales del usuario autenticado
-  usuario = {
-    nombre: 'BAILON ZAMBRANO ELVIS STEEVEN',
-    cedula: '1317467577',
-  };
-
   user: any = null;
-
-  // TODO: reemplazar con el QR real que devuelva la API
-  // qrUrl = this.apiService.getQR(this.usuario.cedula);
 
   ngOnInit() {
     this.cargarQR();

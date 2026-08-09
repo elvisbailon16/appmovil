@@ -1,17 +1,19 @@
 <app-cabecera [titulo]="'Eventos'"></app-cabecera>
 <ion-content>
 
-  <div class="search-container">
-    <ion-searchbar placeholder="Buscar eventos..."></ion-searchbar>
-  </div>
+  <div class="caja">
+      <div class="search-container">
+      <ion-searchbar placeholder="Buscar eventos..."></ion-searchbar>
+    </div>
 
-  <div class="button-container">
-    <span class="tab" [class.active]="selectedTab === 'todos'" (click)="selectTab('todos')">
-      Todos
-    </span>
-    <span class="tab" [class.active]="selectedTab === 'mis-eventos'" (click)="selectTab('mis-eventos')">
-      Mis eventos
-    </span>
+    <div class="button-container">
+      <span class="tab" [class.active]="selectedTab === 'todos'" (click)="selectTab('todos')">
+        Todos
+      </span>
+      <span class="tab" [class.active]="selectedTab === 'mis-eventos'" (click)="selectTab('mis-eventos')">
+        Mis eventos
+      </span>
+    </div>
   </div>
 
   <div class="tab-indicator-wrap">
@@ -39,17 +41,18 @@
 
   <!-- Sin eventos -->
   @if (!cargando && !error && eventos.length === 0) {
-    <div class="estado-center">
-      <p>No hay eventos disponibles.</p>
-    </div>
-  }
-
-  <!-- Lista -->
-  @if (!cargando && !error) {
+        <app-empty-state
+          imageSrc="assets/img/terri-mascot.png"
+          title="Aún no hay eventos"
+          message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
+        ></app-empty-state>
+  }@else{
     @for (evento of eventos; track evento.id) {
       <app-evento class="eventos-list" [evento]="evento"></app-evento>
     }
   }
+
+  
 
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

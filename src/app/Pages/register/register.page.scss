@@ -1,5 +1,5 @@
 // register.page.scss
-@use '../../theme/auth-shared' as auth;
+@use '../../../theme/auth-shared' as auth;
 
 .register-content { @include auth.auth-content; }
 .bg-image { @include auth.auth-bg-image('https://terrimeet.espam.edu.ec/images/fondo_login.png'); }

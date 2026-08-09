@@ -5,13 +5,13 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonBut
 import { EventoComponent } from '../Componentes/evento/evento.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { CategoriasComponent } from '../Componentes/categorias/categorias.component';
-
+import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, EventoComponent]
+  imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, EventoComponent, EmptyStateComponent]
 })
 export class HomePage implements OnInit {
   

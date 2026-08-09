@@ -1,0 +1,58 @@
+// src/app/shared/components/empty-state/empty-state.component.scss
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  min-height: 280px;
+}
+
+.empty-state__image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.empty-state__icon-wrapper {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(0, 88, 70, 0.08); // verde-bosque al 8%
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.empty-state__icon {
+  font-size: 2.5rem;
+  color: var(--verde-bosque);
+}
+
+.empty-state__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-dark);
+  margin: 0 0 8px;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.empty-state__message {
+  font-size: 0.9375rem;
+  color: var(--gray-medium);
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.empty-state__action {
+  --border-radius: 50px;
+  --border-color: var(--verde-bosque);
+  --color: var(--verde-bosque);
+  margin-top: 20px;
+  font-weight: 500;
+  text-transform: none;
+}

@@ -5,12 +5,13 @@ import { IonContent,IonSearchbar, IonHeader, IonTitle, IonToolbar, IonButton, In
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { EventoComponent } from '../Componentes/evento/evento.component';
+import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
 @Component({
   selector: 'app-list-evento',
   templateUrl: './list-evento.page.html',
   styleUrls: ['./list-evento.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonSpinner, IonInfiniteScroll, EventoComponent, IonButton, IonContent, IonSearchbar, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent, IonInfiniteScrollContent]
+  imports: [IonIcon, IonSpinner, IonInfiniteScroll, EventoComponent, IonButton, IonContent, IonSearchbar, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent, IonInfiniteScrollContent, EmptyStateComponent]
 })
 export class ListEventoPage implements OnInit {
 eventos: any;
@@ -39,6 +40,7 @@ selectTab(tab: 'todos' | 'mis-eventos') {
 
 
 cargarEventos(): void {
+
   this.cargando = true;
   this.error = null;
 
@@ -63,7 +65,6 @@ misEventos(): void {
 }
 
 onIonInfinite(event: InfiniteScrollCustomEvent) {
-  this.cargarEventos();
   setTimeout(() => event.target.complete(), 500);
 }
 

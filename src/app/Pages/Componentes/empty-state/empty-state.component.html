@@ -1,0 +1,25 @@
+<!-- src/app/shared/components/empty-state/empty-state.component.html -->
+<div class="empty-state">
+
+  @if (imageSrc) {
+    <!-- <img [src]="imageSrc" alt="" class="empty-state__image" /> -->
+    <img src="https://terrimeet.espam.edu.ec/images/logo.png" alt="Terri" class="empty-state__image" />
+  } @else {
+    <div class="empty-state__icon-wrapper">
+      <ion-icon [name]="icon" class="empty-state__icon"></ion-icon>
+    </div>
+  }
+
+  <h3 class="empty-state__title">{{ title }}</h3>
+  <p class="empty-state__message">{{ message }}</p>
+
+  @if (actionText) {
+    <ion-button
+      fill="outline"
+      class="empty-state__action"
+      (click)="onAction()">
+      {{ actionText }}
+    </ion-button>
+  }
+
+</div>

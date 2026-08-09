@@ -1,22 +1,20 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
 // src/theme/variables.scss
-// (agrega esto a tu archivo variables.scss existente de Ionic, dentro de :root)
 @use './colors' as colors;
 @use 'sass:color';
 
 :root {
-  /* ===== Paleta de marca (uso directo en cualquier componente) ===== */
+  /* ===== Paleta de marca ===== */
   --verde-bosque: #{colors.$verde-bosque};
   --verde-lima: #{colors.$verde-lima};
   --verde-ceibo: #{colors.$verde-ceibo};
   --verde-agua: #{colors.$verde-agua};
 
+  --white: #{colors.$white};
   --gray-light: #{colors.$gray-light};
   --gray-medium: #{colors.$gray-medium};
   --gray-dark: #{colors.$gray-dark};
 
-  /* ===== Integración con el sistema de color de Ionic ===== */
+  /* ===== Ionic color system ===== */
   --ion-color-primary: var(--verde-bosque);
   --ion-color-primary-rgb: 0, 88, 70;
   --ion-color-primary-contrast: #ffffff;
