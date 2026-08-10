@@ -22,7 +22,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   showTabs = false;
   modalVisible = false;
-  private rutasOcultas = ['/login'];
+  private rutasOcultas = ['/login', '/register'];
 
   constructor(
     private msal: MsalService,
