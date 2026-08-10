@@ -1,0 +1,62 @@
+// loading-overlay.component.scss
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999; // por encima de todo, incluidos modales de Ionic
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(2px);
+}
+
+.loading-overlay__logo-wrapper {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--verde-lima);
+  animation: rotate-glow 1.6s linear infinite;
+}
+
+.loading-overlay__logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.loading-overlay__text {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--verde-bosque);
+  margin: 0;
+  animation: pulse-text 1.6s ease-in-out infinite;
+}
+
+// El anillo gira Y cambia de tono verde en cada vuelta — efecto "cycling through green shades"
+@keyframes rotate-glow {
+  0% {
+    transform: rotate(0deg);
+    border-color: var(--verde-lima);
+  }
+  33% {
+    border-color: var(--verde-agua);
+  }
+  66% {
+    border-color: var(--verde-ceibo);
+  }
+  100% {
+    transform: rotate(360deg);
+    border-color: var(--verde-lima);
+  }
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}

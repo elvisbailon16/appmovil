@@ -1,3 +1,13 @@
-<p>
-  loanding-overlay works!
-</p>
+<!-- loading-overlay.component.html -->
+@if (isLoading()) {
+  <div class="loading-overlay">
+    <div class="loading-overlay__logo-wrapper">
+      <img
+        src="https://terrimeet.espam.edu.ec/images/logo.png"
+        alt="Cargando..."
+        class="loading-overlay__logo"
+      />
+    </div>
+    <p class="loading-overlay__text">Cargando...</p>
+  </div>
+}

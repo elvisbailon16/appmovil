@@ -11,13 +11,13 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from './Service/api-service';
 import { Auth } from './core/services/auth';
 import { filter } from 'rxjs/operators';
-
+import {LoandingOverlayComponent} from './Pages/Componentes/loanding-overlay/loanding-overlay.component';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonApp, IonRouterOutlet, IonIcon, TabsComponent, ScanerqrComponent],
+  imports: [CommonModule, IonApp, IonRouterOutlet, IonIcon, TabsComponent, ScanerqrComponent, LoandingOverlayComponent],
 })
 export class AppComponent implements OnInit {
   showTabs = false;
