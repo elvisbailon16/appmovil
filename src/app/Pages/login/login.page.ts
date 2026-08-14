@@ -33,11 +33,11 @@ export class LoginPage {
   login(email: any, password: any): void {
     this.cargando = true;
     this.apiService.loginUser(email.value, password.value).subscribe({
-      next: (datos: any) => {
+      next: async (datos: any) => {
         this.cargando = false;
         if (datos.success) {
-          this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
-          localStorage.setItem('user', JSON.stringify(datos.data.user));
+          await this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
+          await this.authService.setUser(datos.data.user);
           this.router.navigate(['/home']);
         }
       },

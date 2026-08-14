@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonButtons, InfiniteScrollCustomEvent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { EventoComponent } from '../Componentes/evento/evento.component';
 import { ApiService } from 'src/app/Service/api-service';
+import { Auth } from 'src/app/core/services/auth';
 import { CategoriasComponent } from '../Componentes/categorias/categorias.component';
 import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
 @Component({
@@ -19,19 +20,16 @@ export class HomePage implements OnInit {
   cargando = false;
   error: string | null = null;
   usuario: any = null;
-  constructor( private eventosService: ApiService) { }
+  constructor( private eventosService: ApiService, private authService: Auth) { }
 
   ngOnInit() {
     this.cargarEventos();
     this.cargarUsuario();
   }
 
-  cargarUsuario(): void {
-  const userData = localStorage.getItem('user');
-  if (userData) {
-    this.usuario = JSON.parse(userData);
+  async cargarUsuario(): Promise<void> {
+    this.usuario = await this.authService.getUser();
   }
-}
 
     cargarEventos(): void {
     this.cargando = true;

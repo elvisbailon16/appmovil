@@ -46,14 +46,11 @@ export class ApiService {
     });
   }
 
-  // Headers para la autenticacion de la app movil con los dos tokens
-    private getHeaders(): HttpHeaders {
-    const jwt = localStorage.getItem('token') ?? '';
- 
+  // Headers para los endpoints autenticados: el Authorization lo agrega automáticamente
+  // el authInterceptor (lee el token desde Preferences), acá solo va el resto.
+  private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      // 'X-AppMovil-Token': X_AppMovil_Token,
-      'Authorization':    `Bearer ${jwt}`,
-      'Content-Type':     'application/json',
+      'Content-Type': 'application/json',
     });
   }
   getEventos() {

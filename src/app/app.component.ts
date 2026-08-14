@@ -11,7 +11,8 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from './Service/api-service';
 import { Auth } from './core/services/auth';
 import { filter } from 'rxjs/operators';
-import {LoandingOverlayComponent} from './Pages/Componentes/loanding-overlay/loanding-overlay.component';
+import { LoandingOverlayComponent } from './Pages/Componentes/loanding-overlay/loanding-overlay.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -40,33 +41,44 @@ export class AppComponent implements OnInit {
       });
   }
 
-ngOnInit(): void {
-  this.notificacionesService.InitPush();
+  async ngOnInit(): Promise<void> {
+    this.notificacionesService.InitPush();
 
-  this.msal.initialize().subscribe(() => {
-    this.msal.handleRedirectObservable().subscribe({
-      next: (result) => {
-        if (result) {
-          // ✅ El correo viene directo en el resultado, sin necesidad de Graph API
-          const email = result.account?.username;
-          console.log('Email obtenido:', email);
+    // 1️⃣ Primero verificamos si ya hay una sesión válida guardada (login propio o Microsoft)
+    const hasSession = await this.authService.tryRestoreSession();
 
-          this.apiService.loginMicrosoft(email).subscribe({
-            next: (datos: any) => {
-              if (datos.success) {
-                this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
-                localStorage.setItem('user', JSON.stringify(datos.data.user));
-                this.router.navigate(['/home'], { replaceUrl: true });
-              }
-            },
-            error: (e: any) => console.log('Error auth ESPAM:', e)
-          });
-        }
-      },
-      error: (e) => console.log('Error redirect:', e)
+    if (hasSession) {
+      // Ya está logueado de una sesión anterior → directo a home, sin pasar por login
+      this.router.navigate(['/home'], { replaceUrl: true });
+    }
+    // Si NO hay sesión, no navegamos a ningún lado todavía —
+    // dejamos que la app siga su flujo normal hacia /login,
+    // y de paso procesamos si el usuario viene de un redirect de Microsoft:
+
+    this.msal.initialize().subscribe(() => {
+      this.msal.handleRedirectObservable().subscribe({
+        next: async (result) => {
+          if (result) {
+            const email = result.account?.username;
+            console.log('Email obtenido:', email);
+
+            this.apiService.loginMicrosoft(email).subscribe({
+              next: async (datos: any) => {
+                if (datos.success) {
+                  // ⚠️ setTokens/setUser son async (usan Preferences) — hay que esperarlos
+                  await this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
+                  await this.authService.setUser(datos.data.user);
+                  this.router.navigate(['/home'], { replaceUrl: true });
+                }
+              },
+              error: (e: any) => console.log('Error auth ESPAM:', e)
+            });
+          }
+        },
+        error: (e) => console.log('Error redirect:', e)
+      });
     });
-  });
-}
+  }
 
   abrirEscaner(): void { this.modalVisible = true; }
   cerrarModal(): void { this.modalVisible = false; }

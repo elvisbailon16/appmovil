@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
 import { ApiService } from 'src/app/Service/api-service';
+import { Auth } from 'src/app/core/services/auth';
 
 @Component({
   selector: 'app-perfil',
@@ -25,7 +26,7 @@ export class PerfilPage implements OnInit {
   statActivo: 'insignias' | 'inscripciones' = 'insignias';
   userData: any;
 
-  constructor(private router: Router, private apiService: ApiService) { }
+  constructor(private router: Router, private apiService: ApiService, private authService: Auth) { }
 
   ngOnInit(): void {
     this.obtenerUbicacion();
@@ -46,14 +47,16 @@ export class PerfilPage implements OnInit {
 
   cerrarSesion(): void {
     this.apiService.cerrarSesion().subscribe({
-      next: () => {
-        localStorage.clear();
-        // localStorage.removeItem('refresh_token');
-        // localStorage.removeItem('user');
-        // localStorage.removeItem('token');
-        this.router.navigate(['/login']);
+      next: async () => {
+        await this.authService.clearSession();
+        this.router.navigate(['/login'], { replaceUrl: true });
       },
-      error: (e) => console.log('Error cerrando sesión:', e)
+      error: async (e) => {
+        console.log('Error cerrando sesión:', e);
+        // Aunque el backend falle (ej. sin red), no dejamos al usuario atascado logueado localmente.
+        await this.authService.clearSession();
+        this.router.navigate(['/login'], { replaceUrl: true });
+      }
     });
   }
 

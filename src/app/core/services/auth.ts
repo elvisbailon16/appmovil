@@ -1,11 +1,13 @@
+// src/app/core/services/auth.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-
+import { Preferences } from '@capacitor/preferences';
 
 const ACCESS_TOKEN_KEY = 'token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 const EXPIRES_AT_KEY = 'expiresAt';
+const USER_KEY = 'user';
 const TOKEN_LIFETIME_MS = 3600 * 1000;
 
 @Injectable({
@@ -16,50 +18,68 @@ export class Auth {
 
   constructor(private httpclient: HttpClient) {}
 
-  // Logica de refresh token para la app movil, se guarda en el local storage y se refresca cada 1 hora
-
-  getAccessToken(): string | null {
-    return localStorage.getItem(ACCESS_TOKEN_KEY);
+  async getAccessToken(): Promise<string | null> {
+    const result = await Preferences.get({ key: ACCESS_TOKEN_KEY });
+    return result.value;
   }
 
-  getRefreshToken(): string | null {
-    return localStorage.getItem(REFRESH_TOKEN_KEY);
+  async getRefreshToken(): Promise<string | null> {
+    const result = await Preferences.get({ key: REFRESH_TOKEN_KEY });
+    return result.value;
   }
 
-  setTokens(accessToken: string, refreshToken?: string): void {
-    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+  async setTokens(accessToken: string, refreshToken?: string): Promise<void> {
+    await Preferences.set({ key: ACCESS_TOKEN_KEY, value: accessToken });
+    if (refreshToken) {
+      await Preferences.set({ key: REFRESH_TOKEN_KEY, value: refreshToken });
+    }
     const expiresAt = Date.now() + TOKEN_LIFETIME_MS;
-    localStorage.setItem(EXPIRES_AT_KEY, expiresAt.toString());
+    await Preferences.set({ key: EXPIRES_AT_KEY, value: expiresAt.toString() });
   }
 
-  isTokenExpired(marginMs = 10000): boolean {
-    const expiresAt = localStorage.getItem(EXPIRES_AT_KEY);
-    if (!expiresAt) return true;
-    return Date.now() > (Number(expiresAt) - marginMs);
+  async isTokenExpired(marginMs = 10000): Promise<boolean> {
+    const result = await Preferences.get({ key: EXPIRES_AT_KEY });
+    if (!result.value) return true;
+    return Date.now() > (Number(result.value) - marginMs);
   }
 
-  clearTokens(): void {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    localStorage.removeItem(EXPIRES_AT_KEY);
+  async setUser(user: unknown): Promise<void> {
+    await Preferences.set({ key: USER_KEY, value: JSON.stringify(user) });
+  }
+
+  async getUser<T = any>(): Promise<T | null> {
+    const result = await Preferences.get({ key: USER_KEY });
+    return result.value ? JSON.parse(result.value) : null;
+  }
+
+  /**
+   * Borra todo lo de la sesión (tokens + usuario). Se usa tanto en logout
+   * explícito como cuando el refresh falla y la sesión ya no es recuperable.
+   */
+  async clearSession(): Promise<void> {
+    await Promise.all([
+      Preferences.remove({ key: ACCESS_TOKEN_KEY }),
+      Preferences.remove({ key: REFRESH_TOKEN_KEY }),
+      Preferences.remove({ key: EXPIRES_AT_KEY }),
+      Preferences.remove({ key: USER_KEY }),
+    ]);
   }
 
   async refreshAccessToken(): Promise<string> {
-    if (this.refreshPromise) return this.refreshPromise; // evita refrescos duplicados
+    if (this.refreshPromise) return this.refreshPromise;
 
     this.refreshPromise = (async () => {
-      const refreshToken = this.getRefreshToken();
+      const refreshToken = await this.getRefreshToken();
       if (!refreshToken) throw new Error('No hay refresh token');
 
       try {
         const data: any = await firstValueFrom(
           this.httpclient.post(`https://ws.espam.edu.ec/api/auth/refresh`, { refresh_token: refreshToken })
         );
-        this.setTokens(data.access_token, data.refresh_token);
+        await this.setTokens(data.access_token, data.refresh_token);
         return data.access_token;
       } catch (err) {
-        this.clearTokens();
+        await this.clearSession();
         throw err;
       }
     })();
@@ -70,5 +90,24 @@ export class Auth {
       this.refreshPromise = null;
     }
   }
-  
+
+  /**
+   * NUEVO — se llama UNA vez al arrancar la app.
+   * Determina si hay sesión válida sin obligar al usuario a loguearse de nuevo.
+   */
+  async tryRestoreSession(): Promise<boolean> {
+    const accessToken = await this.getAccessToken();
+    if (!accessToken) return false;
+
+    const expired = await this.isTokenExpired();
+    if (!expired) return true;
+
+    // el access_token venció → intenta refrescar silenciosamente
+    try {
+      await this.refreshAccessToken();
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
