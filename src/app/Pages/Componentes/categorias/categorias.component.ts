@@ -16,7 +16,7 @@ export class CategoriasComponent implements OnInit {
   // Emite la categoría seleccionada al padre
   @Output() categoriaSeleccionada = new EventEmitter<string | null>();
 
-  categorias: any;
+  categorias: any[] = [];
   categoriaActiva: string | null = null;
 
   // Mapeo de categoría → ícono de Ionicons
@@ -68,16 +68,4 @@ export class CategoriasComponent implements OnInit {
       this.categoriaSeleccionada.emit(id); // Emitir el ID de la categoría seleccionada
     }
   }
-
-  // filter(id_categoria: string){
-  //   this.apiService.getEventosByCategoria(id_categoria).subscribe({
-  //     next: (data) => {
-  //       console.log('Eventos filtrados por categoría:', data);
-        
-  //     },
-  //     error: (err) => {
-  //       console.error('Error filtrando eventos por categoría:', err);
-  //     },
-  //   });
-  // }
 }

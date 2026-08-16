@@ -12,11 +12,11 @@ import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.comp
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, EventoComponent, EmptyStateComponent]
+  imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, EventoComponent, EmptyStateComponent]
 })
 export class HomePage implements OnInit {
   
-  eventos: any;
+  eventos: any[] = [];
   cargando = false;
   error: string | null = null;
   usuario: any = null;
@@ -50,6 +50,8 @@ export class HomePage implements OnInit {
   }
 
 
+
+
  categoriaActiva: string | null = null;
 
 onCategoriaSeleccionada(id: string | null): void {
@@ -68,22 +70,6 @@ onCategoriaSeleccionada(id: string | null): void {
     this.cargarEventos();
   }
 }
-
-// onIonInfinite(event: InfiniteScrollCustomEvent) {
-//   // Si hay categoría activa recarga por categoría, sino carga todos
-//   if (this.categoriaActiva) {
-//     this.eventosService.getEventosByCategoria(this.categoriaActiva).subscribe({
-//       next: (data) => {
-//         this.eventos = data;
-//         setTimeout(() => event.target.complete(), 500);
-//       },
-//       error: () => event.target.complete()
-//     });
-//   } else {
-//     this.cargarEventos();
-//     setTimeout(() => event.target.complete(), 500);
-//   }
-// }
 
 onIonInfinite(event: InfiniteScrollCustomEvent) {
   if (this.categoriaActiva) {

@@ -26,9 +26,6 @@ export class DetallePonentePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.queryParamMap.get('id');
-    if (id) this.cargarPonente(id);
-
     this.queryParamSub = this.route.queryParamMap.subscribe(params => {
     const id = params.get('id');
     if (id && id !== this.eventoId) {

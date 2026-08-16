@@ -1,11 +1,11 @@
 .header {
-  ion-toolbar {
+ion-toolbar {
     --background: #005846;
     --color: #FFFFFF;
     --border-width: 0;
-    --min-height: 56px; // alto del contenido, sin contar el safe area
-    --padding-top: env(safe-area-inset-top); // ← la clave: compensa notch/status bar
+    --min-height: 56px;
     --padding-bottom: 0;
+    
   }
 
   .brand-text {

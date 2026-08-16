@@ -1,0 +1,24 @@
+
+  <div class="cert-card" (click)="eventClick(inscripcion)">
+
+    <div class="cert-icon">
+      <ion-icon name="ribbon-outline"></ion-icon>
+    </div>
+
+    <div class="cert-body">
+      <h2 class="cert-title">{{ inscripcion.nombre }}</h2>
+
+      <div class="cert-meta">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <span>
+          {{ inscripcion.fechainicio | date:'dd MMM yyyy' }}
+          @if (inscripcion.fechafin) {
+            – {{ inscripcion.fechafin | date:'dd MMM yyyy' }}
+          }
+        </span>
+      </div>
+    </div>
+
+    <ion-icon class="cert-chevron" name="chevron-forward-outline"></ion-icon>
+
+  </div>

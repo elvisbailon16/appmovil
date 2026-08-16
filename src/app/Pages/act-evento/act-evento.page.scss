@@ -1,0 +1,458 @@
+@use 'sass:color';
+
+// act-evento.page.scss
+// Guía Visual TerriMeet — ESPAM MFL
+
+$verde-bosque:   #005846;
+$verde-lima:     #44D62C;
+$verde-ceibo:    #CBDB2A;
+$verde-agua:     #08B89D;
+$blanco:         #FFFFFF;
+$fondo-claro:    #F5F5F5;
+$texto-primario: #1A1A1A;
+$texto-muted:    #555555;
+
+// ── Estados de carga / error / vacío ──────────────────────
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  gap: 12px;
+  color: $texto-muted;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 44px;
+    color: #cccccc;
+  }
+}
+
+.estado-vacio {
+  padding: 32px 24px;
+}
+
+.btn-retry {
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+}
+
+// ── Banner del evento ──────────────────────────────────────
+.evento-banner {
+  background: linear-gradient(135deg, $verde-bosque 0%, $verde-agua 100%);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.evento-banner-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+
+  h1 {
+    flex: 1;
+    min-width: 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: clamp(17px, 4.5vw, 20px);
+    font-weight: 700;
+    color: $blanco;
+    line-height: 1.3;
+    margin: 0;
+    word-break: break-word;
+  }
+}
+
+.evento-banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.9);
+
+    ion-icon {
+      font-size: 15px;
+      color: $verde-ceibo;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ── Badge de estado (reutilizable) ────────────────────────
+.badge-estado {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 100px;
+
+  ion-icon {
+    font-size: 13px;
+  }
+
+  &.sm {
+    background: #f0f0f0;
+    border: none;
+    color: $texto-muted;
+    padding: 4px 9px;
+    font-size: 10.5px;
+
+    ion-icon { font-size: 12px; color: $texto-muted; }
+  }
+
+  &.finalizado.sm {
+    background: #f0f0f0;
+    color: #888888;
+    ion-icon { color: #888888; }
+  }
+
+  &.en-curso.sm {
+    background: rgba(68, 214, 44, 0.14);
+    color: #1a7a1a;
+    ion-icon { color: #1a7a1a; }
+  }
+
+  &.proximo.sm {
+    background: rgba(8, 184, 157, 0.14);
+    color: $verde-bosque;
+    ion-icon { color: $verde-bosque; }
+  }
+}
+
+// ── Sección agenda ─────────────────────────────────────────
+.agenda-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 18px 16px 8px;
+}
+
+.agenda-title {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: $texto-primario;
+  margin: 0 0 12px;
+}
+
+.agenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agenda-item-wrap {
+  padding-left: calc(var(--nivel, 0) * 16px);
+}
+
+.agenda-hijos {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 12px;
+  border-left: 2px solid #eef2f0;
+}
+
+.agenda-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: $blanco;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &.selected {
+    border-color: $verde-bosque;
+    background: rgba(0, 88, 70, 0.04);
+  }
+
+  input[type='radio'] {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .radio-dot {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: $verde-bosque;
+      transform: scale(0);
+      transition: transform 0.15s ease;
+    }
+  }
+
+  input[type='radio']:checked + .radio-dot {
+    border-color: $verde-bosque;
+
+    &::after { transform: scale(1); }
+  }
+}
+
+.agenda-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.agenda-item-nombre {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: $texto-primario;
+  line-height: 1.35;
+}
+
+.agenda-item-fecha {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: $texto-muted;
+}
+
+// ── Detalle de actividad seleccionada ─────────────────────
+// Se despliega en línea, justo debajo del ítem de agenda seleccionado,
+// con look de "modal corto" (esquinas redondeadas, sombra elevada).
+.detalle-actividad {
+  margin-top: 10px;
+  background: $blanco;
+  border-top: 3px solid $verde-agua;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: detalle-aparece 0.2s ease;
+}
+
+@keyframes detalle-aparece {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detalle-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+
+  h3 {
+    flex: 1;
+    min-width: 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: $texto-primario;
+    margin: 0;
+    line-height: 1.3;
+  }
+}
+
+.btn-cerrar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #f2f2f2;
+  color: $texto-muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon { font-size: 18px; }
+}
+
+.detalle-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12.5px;
+  color: $texto-muted;
+
+  ion-icon { font-size: 15px; color: $verde-bosque; }
+}
+
+.detalle-descripcion {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  line-height: 1.55;
+  margin: 0;
+}
+
+// ── Grid de reacciones (emojis) ───────────────────────────
+// Grid compacto de 5 columnas con scroll vertical propio, para que el
+// selector de emojis no ocupe demasiado espacio (estilo "modal corto").
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px 6px;
+  max-height: 38vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  margin-top: 2px;
+  padding: 2px 2px 4px;
+}
+
+.emoji-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: $fondo-claro;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 8px 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  .emoji-icono { font-size: 21px; line-height: 1; }
+
+  .emoji-titulo {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: $texto-muted;
+    text-align: center;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.activo {
+    background: rgba(8, 184, 157, 0.12);
+    border-color: $verde-agua;
+
+    .emoji-titulo { color: $verde-bosque; }
+  }
+
+  &:active { transform: scale(0.88); }
+}
+
+// ── Lluvia de emojis (efecto tipo TikTok Live) ────────────
+// Overlay a pantalla completa donde "llueven" copias del emoji elegido
+// durante unos segundos tras reaccionar.
+.lluvia-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+  contain: strict;
+}
+
+.lluvia-item {
+  position: absolute;
+  top: -10%;
+  will-change: transform, opacity;
+  animation-name: emoji-lluvia-caer;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  contain: layout style paint;
+  // Nada de `filter: drop-shadow(...)` acá: con 50+ elementos animando a la vez
+  // ese filtro fuerza un pase de rasterizado por elemento y es lo que causaba
+  // el lag en dispositivos físicos. text-shadow da una profundidad similar
+  // muchísimo más barata de componer.
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes emoji-lluvia-caer {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  8% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(115vh) translateX(var(--drift, 0px)) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+// ── Botón primario ─────────────────────────────────────────
+.btn-primary {
+  width: 100%;
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.15s ease;
+
+  ion-icon { font-size: 18px; }
+
+  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
+}
+
+// ── Ajustes para pantallas muy pequeñas ───────────────────
+@media (max-width: 340px) {
+  .evento-banner-top h1 { font-size: 16px; }
+  .agenda-item { padding: 10px; gap: 10px; }
+  .agenda-item-nombre { font-size: 13px; }
+}

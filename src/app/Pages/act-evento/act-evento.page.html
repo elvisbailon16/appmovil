@@ -1,13 +1,180 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ActEvento</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- act-evento.page.html -->
+<app-cabecera [titulo]=" 'Agenda del evento'"></app-cabecera>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ActEvento</ion-title>
-    </ion-toolbar>
-  </ion-header>
+@if (lluviaEmojis.length) {
+  <div class="lluvia-overlay" aria-hidden="true">
+    @for (p of lluviaEmojis; track p.id) {
+      <span
+        class="lluvia-item"
+        [style.left.%]="p.left"
+        [style.font-size.px]="p.size"
+        [style.animation-duration.s]="p.duration"
+        [style.animation-delay.s]="p.delay"
+        [style.--drift.px]="p.drift"
+      >{{ p.icono }}</span>
+    }
+  </div>
+}
+
+<ion-content>
+
+  @if (cargando) {
+    <div class="estado-center">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando actividades...</p>
+    </div>
+  }
+
+  @if (error && !cargando) {
+    <div class="estado-center">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>{{ error }}</p>
+      <button class="btn-retry" (click)="cargarActividades()">Reintentar</button>
+    </div>
+  }
+
+  @if (!cargando && !error && evento) {
+
+    <!-- Banner del evento -->
+    <div class="evento-banner">
+      <div class="evento-banner-top">
+        <h1>{{ evento.nombre }}</h1>
+        <span class="badge-estado" [ngClass]="estadoClass(evento.estado)">
+          <ion-icon [name]="estadoIcon(evento.estado)"></ion-icon>
+          {{ evento.estado }}
+        </span>
+      </div>
+
+      <div class="evento-banner-meta">
+        @if (evento.sede || evento.direccion) {
+          <span class="meta-item">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ evento.sede || evento.direccion }}
+          </span>
+        }
+        <span class="meta-item">
+          <ion-icon name="calendar-outline"></ion-icon>
+          {{ evento.fechainicio | date:'dd MMM, yyyy' }}
+          @if (evento.fechafin && evento.fechafin !== evento.fechainicio) {
+            – {{ evento.fechafin | date:'dd MMM, yyyy' }}
+          }
+        </span>
+      </div>
+    </div>
+
+    <!-- Agenda -->
+    <div class="agenda-wrap">
+      <h2 class="agenda-title">Agenda de actividades</h2>
+
+      @if (evento.hijos && evento.hijos.length) {
+        <div class="agenda-list">
+          <ng-container
+            *ngTemplateOutlet="actividadTpl; context: { $implicit: evento.hijos, nivel: 0 }"
+          ></ng-container>
+        </div>
+      } @else {
+        <div class="estado-center estado-vacio">
+          <ion-icon name="calendar-clear-outline"></ion-icon>
+          <p>Aún no hay actividades programadas.</p>
+        </div>
+      }
+    </div>
+
+  }
+
 </ion-content>
+
+<!-- Plantilla recursiva: soporta actividades con sub-actividades anidadas -->
+<ng-template #actividadTpl let-actividades let-nivel="nivel">
+  @for (actividad of actividades; track actividad.id_encrypt) {
+    <div class="agenda-item-wrap" [style.--nivel]="nivel">
+      <label class="agenda-item" [class.selected]="actividadSeleccionada?.id_encrypt === actividad.id_encrypt">
+        <input
+          type="radio"
+          name="agenda-activity"
+          [checked]="actividadSeleccionada?.id_encrypt === actividad.id_encrypt"
+          (change)="seleccionarActividad(actividad)"
+        />
+        <span class="radio-dot"></span>
+
+        <div class="agenda-item-info">
+          <span class="agenda-item-nombre">{{ actividad.nombre }}</span>
+          <span class="agenda-item-fecha">
+            {{ actividad.fechainicio | date:'dd MMM, yyyy' }} ·
+            {{ formatHora(actividad.horainicio) }} – {{ formatHora(actividad.horafin) }}
+          </span>
+        </div>
+
+        <span class="badge-estado sm" [ngClass]="estadoClass(actividad.estado)">
+          <ion-icon [name]="estadoIcon(actividad.estado)"></ion-icon>
+          {{ actividad.estado }}
+        </span>
+      </label>
+
+      <!-- Detalle de la actividad seleccionada: se despliega justo debajo del ítem -->
+      @if (actividadSeleccionada?.id_encrypt === actividad.id_encrypt) {
+        <div class="detalle-actividad">
+          <div class="detalle-header">
+            <h3>{{ actividadSeleccionada.nombre }}</h3>
+            <button class="btn-cerrar" (click)="cerrarDetalle()" aria-label="Cerrar detalle">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+
+          <span class="badge-estado sm" [ngClass]="estadoClass(actividadSeleccionada.estado)">
+            <ion-icon [name]="estadoIcon(actividadSeleccionada.estado)"></ion-icon>
+            {{ actividadSeleccionada.estado }}
+          </span>
+
+          <div class="detalle-meta">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ actividadSeleccionada.fechainicio | date:'dd MMM, yyyy' }} ·
+            {{ formatHora(actividadSeleccionada.horainicio) }} – {{ formatHora(actividadSeleccionada.horafin) }}
+          </div>
+
+          @if (actividadSeleccionada.sede || actividadSeleccionada.direccion) {
+            <div class="detalle-meta">
+              <ion-icon name="location-outline"></ion-icon>
+              {{ actividadSeleccionada.sede || actividadSeleccionada.direccion }}
+            </div>
+          }
+
+          @if (actividadSeleccionada.descripcion) {
+            <p class="detalle-descripcion">{{ actividadSeleccionada.descripcion }}</p>
+          }
+
+          @if (emojis.length && actividadSeleccionada.permiteinteraccion) {
+            <div class="emoji-grid">
+              @for (emoji of emojis; track emoji.title) {
+                <button
+                  class="emoji-btn"
+                  [class.activo]="emojiSeleccionado?.title === emoji.title"
+                  [title]="emoji.title"
+                  (click)="reaccionar(emoji)"
+                >
+                  <span class="emoji-icono">{{ emoji.icono }}</span>
+                  <span class="emoji-titulo">{{ emoji.title }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          @if (actividadSeleccionada.permitepreguntas) {
+            <button class="btn-primary">
+              <ion-icon name="help-circle-outline"></ion-icon>
+              Hacer una pregunta
+            </button>
+          }
+        </div>
+      }
+
+      @if (actividad.hijos && actividad.hijos.length) {
+        <div class="agenda-hijos">
+          <ng-container
+            *ngTemplateOutlet="actividadTpl; context: { $implicit: actividad.hijos, nivel: nivel + 1 }"
+          ></ng-container>
+        </div>
+      }
+    </div>
+  }
+</ng-template>

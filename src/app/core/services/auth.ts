@@ -1,8 +1,11 @@
 // src/app/core/services/auth.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
+
+/** Se lanza cuando no se pudo ni siquiera contactar al servidor (sin internet). */
+class ErrorSinConexion extends Error {}
 
 const ACCESS_TOKEN_KEY = 'token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -65,12 +68,23 @@ export class Auth {
     ]);
   }
 
+  /** true si el error es por falta de conexión, no porque el servidor haya rechazado el refresh token. */
+  esErrorDeConectividad(err: unknown): boolean {
+    if (err instanceof ErrorSinConexion) return true;
+    // status 0 = el request nunca llegó a obtener respuesta del servidor (sin internet, DNS, etc.)
+    return err instanceof HttpErrorResponse && err.status === 0;
+  }
+
   async refreshAccessToken(): Promise<string> {
     if (this.refreshPromise) return this.refreshPromise;
 
     this.refreshPromise = (async () => {
       const refreshToken = await this.getRefreshToken();
       if (!refreshToken) throw new Error('No hay refresh token');
+
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        throw new ErrorSinConexion('Sin conexión a internet');
+      }
 
       try {
         const data: any = await firstValueFrom(
@@ -79,7 +93,11 @@ export class Auth {
         await this.setTokens(data.access_token, data.refresh_token);
         return data.access_token;
       } catch (err) {
-        await this.clearSession();
+        // Si fue por falta de internet, el refresh token sigue siendo válido: no cerramos sesión,
+        // se reintentará la próxima vez que haya conexión.
+        if (!this.esErrorDeConectividad(err)) {
+          await this.clearSession();
+        }
         throw err;
       }
     })();
@@ -106,7 +124,10 @@ export class Auth {
     try {
       await this.refreshAccessToken();
       return true;
-    } catch {
+    } catch (err) {
+      // Sin internet: seguimos teniendo credenciales guardadas y válidas, no forzamos el login.
+      // La sesión se corta solo si el servidor de verdad rechazó el refresh token.
+      if (this.esErrorDeConectividad(err)) return true;
       return false;
     }
   }

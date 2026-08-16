@@ -26,6 +26,10 @@ export class PonentesPage implements OnInit {
   ) {}
 
     ngOnInit(): void {
+    if (!this.route.snapshot.queryParamMap.get('id')) {
+      this.error = 'No se encontró el evento.';
+    }
+
     // Nos suscribimos en vez de usar snapshot,
     // así reaccionamos cada vez que cambia el "id" en la URL.
     this.queryParamSub = this.route.queryParamMap.subscribe(params => {

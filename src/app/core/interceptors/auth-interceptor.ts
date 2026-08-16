@@ -27,15 +27,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (err instanceof HttpErrorResponse && err.status === 401) {
         return from(authService.refreshAccessToken()).pipe(
           switchMap((newToken) => next(withToken(req, newToken))),
-          catchError(() =>
-            from(
+          catchError((refreshErr) => {
+            // El refresh falló por falta de internet (no porque el servidor haya rechazado
+            // el refresh token) → no cerramos sesión, solo dejamos que esta petición falle.
+            if (authService.esErrorDeConectividad(refreshErr)) {
+              return throwError(() => err);
+            }
+            return from(
               (async () => {
                 await authService.clearSession();
                 router.navigate(['/login'], { replaceUrl: true });
                 throw err;
               })()
-            )
-          )
+            );
+          })
         );
       }
       return throwError(() => err);

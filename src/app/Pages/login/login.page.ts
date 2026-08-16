@@ -2,13 +2,14 @@
 import { Component } from '@angular/core';
 import {
   IonContent, IonIcon, IonButton, IonSpinner,
-  IonInput, IonInputPasswordToggle, IonItem, IonCheckbox
+  IonInput, IonInputPasswordToggle, IonItem
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/Service/api-service';
 import { Auth } from 'src/app/core/services/auth';
 import { MsalService } from '@azure/msal-angular';
 import { loginRequest } from 'src/app/auth/msal.config';
+import { CalendarSyncService } from 'src/app/Service/calendar-sync-service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ import { loginRequest } from 'src/app/auth/msal.config';
   standalone: true,
   imports: [
     IonContent, IonIcon, IonButton, IonSpinner,
-    IonInput, IonInputPasswordToggle, IonItem, IonCheckbox
+    IonInput, IonInputPasswordToggle, IonItem
   ]
 })
 export class LoginPage {
@@ -28,6 +29,7 @@ export class LoginPage {
     private apiService: ApiService,
     private authService: Auth,
     private msal: MsalService,
+    private calendarSyncService: CalendarSyncService,
   ) {}
 
   login(email: any, password: any): void {
@@ -39,6 +41,7 @@ export class LoginPage {
           await this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
           await this.authService.setUser(datos.data.user);
           this.router.navigate(['/home']);
+          this.calendarSyncService.sync();
         }
       },
       error: (e: any) => {
@@ -51,10 +54,6 @@ export class LoginPage {
   loginMicrosoft(): void {
     this.cargando = true;
     this.msal.loginRedirect(loginRequest);
-  }
-
-  goForgotPassword(): void {
-    this.router.navigate(['/forgot-password']);
   }
 
   goRegister(): void {

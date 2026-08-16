@@ -1,39 +1,38 @@
 .header {
-    width: 100%;
+  width: 100%;
+
   ion-toolbar {
     --background: #005846;
     --color: #FFFFFF;
     --border-width: 0;
-    --padding-top: 0;
+    --min-height: 56px;
+    --padding-top: env(safe-area-inset-top); // ← compensa notch/barra de estado real del dispositivo
     --padding-bottom: 0;
-    height: 70px;
-    width: 100%;
   }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px; // ajusta a 2-6px según qué tan separado lo quieras
-  padding-left: 8px;
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 8px;
 
-  .title {
-    margin-top: 6px;
-    color: #FFFFFF;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
-  }
+    .title {
+      color: #FFFFFF;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
 
-  .title2 {
-    color: rgba(255, 255, 255, 0.85);
-    font-family: 'Work Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.2;
+    .title2 {
+      color: rgba(255, 255, 255, 0.85);
+      font-family: 'Work Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
   }
 }
-
   .notification-button {
     --background: transparent;
     --color: #FFFFFF;
@@ -45,7 +44,6 @@
       color: #FFFFFF;
     }
   }
-}
 // eventos.page.scss
 .eventos-list {
   margin-left: 16px;  // 16px a los lados para todas las cards

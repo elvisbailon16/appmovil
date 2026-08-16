@@ -1,1 +1,15 @@
 <app-cabecera [titulo]="'Certificados'"></app-cabecera>
+
+<ion-content>
+  @if (!cargando && !error && inscripciones.length === 0) {
+        <app-empty-state
+          imageSrc="assets/img/terri-mascot.png"
+          title="Aún no hay eventos"
+          message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
+        ></app-empty-state>
+  }@else{
+    @for (inscripcion of inscripciones; track inscripcion.id) {
+      <app-inscripcion class="eventos-list" [inscripcion]="inscripcion"></app-inscripcion>
+    }
+  }
+</ion-content>

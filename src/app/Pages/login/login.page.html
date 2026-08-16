@@ -56,14 +56,12 @@
         </ion-item>
 
         <ion-button expand="block" class="btn-primary" (click)="login(email, password)" [disabled]="cargando">
-          <!-- @if (cargando) {
+          @if (cargando) {
             <ion-spinner name="crescent"></ion-spinner>
           } @else {
             Iniciar sesión
             <ion-icon slot="end" name="arrow-forward"></ion-icon>
-          } -->
-             Iniciar sesión
-            <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          }
         </ion-button>
 
         <ion-button expand="block" fill="outline" class="btn-microsoft" (click)="loginMicrosoft()">

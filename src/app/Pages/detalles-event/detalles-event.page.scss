@@ -22,6 +22,23 @@ $texto-muted:   #555555;
   color: $texto-muted;
   font-family: 'Work Sans', sans-serif;
   font-size: 14px;
+
+  ion-icon {
+    font-size: 48px;
+    color: #cccccc;
+  }
+}
+
+.btn-retry {
+  background: $verde-bosque;
+  color: $blanco;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
 }
 
 // ── Imagen banner ─────────────────────────────────────────

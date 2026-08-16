@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonSpinner, IonContent, IonHeader, IonTitle, IonToolbar, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import * as L from 'leaflet';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { Auth } from 'src/app/core/services/auth';
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, CommonModule, FormsModule, CabeceraComponent]
+  imports: [IonIcon, IonContent, CommonModule, FormsModule, CabeceraComponent]
 })
 export class PerfilPage implements OnInit {
 

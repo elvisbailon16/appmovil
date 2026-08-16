@@ -1,21 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
+import { ApiService } from 'src/app/Service/api-service';
+import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
+import { InscripcionComponent } from '../Componentes/inscripcion/inscripcion.component';
 
 @Component({
   selector: 'app-wallet-c',
   templateUrl: './wallet-c.page.html',
   styleUrls: ['./wallet-c.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, CabeceraComponent]
+  imports: [IonContent, CommonModule, FormsModule, CabeceraComponent, InscripcionComponent, EmptyStateComponent]
 })
 export class WalletCPage implements OnInit {
+  inscripciones: any[] = [];
+  cargando = false;
+  error: string | null = null;
 
-  constructor() { }
+  constructor(private eventosService: ApiService) { }
 
   ngOnInit() {
+    this.detallesInscripcion();
+  }
+
+  detallesInscripcion() {
+    this.cargando = true;
+    this.error = null;
+    this.eventosService.getMisCertificados().subscribe({
+      next: (res: any) => {
+        this.inscripciones = res?.data ?? res ?? [];
+        this.cargando = false;
+      },
+      error: () => {
+        this.error = 'No se pudo cargar la agenda de actividades.';
+        this.cargando = false;
+      },
+    })
   }
 
 }

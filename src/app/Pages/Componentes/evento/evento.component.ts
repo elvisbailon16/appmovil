@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/Service/api-service';
 import { IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-evento',
   templateUrl: './evento.component.html',

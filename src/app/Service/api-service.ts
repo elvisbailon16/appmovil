@@ -97,6 +97,24 @@ export class ApiService {
     });
   }
 
+  getMisEventos() {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_mis_eventos`, {
+        headers: this.getHeaders()
 
+    });
+  }
+
+  getMisCertificados() {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_certificados_usuario`, {
+      headers: this.getHeaders()
+    });
+  }
+
+
+  getActividadesByEvento(id: string) {
+    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_actividades_evento/${id}`, {
+      headers: this.getPublicHeaders()
+    });
+  }
 
 }

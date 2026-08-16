@@ -22,35 +22,39 @@ export class DetallesEventPage implements OnInit {
 
   evento: any = null;
   cargando = false;
+  error: string | null = null;
   inscrito = false;
   procesando = false;
- 
+  id: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
     private router: Router
   ) {}
- 
+
   ngOnInit(): void {
     // Recibe el id desde los query params: /detalle-evento?id=xxx
-    const id = this.route.snapshot.queryParamMap.get('id');
-    if (id) {
-      console.log(id)
-      this.cargarEvento(id);
+    this.id = this.route.snapshot.queryParamMap.get('id');
+    if (this.id) {
+      this.cargarEvento(this.id);
+    } else {
+      this.error = 'No se encontró el evento.';
     }
   }
- 
+
   cargarEvento(id: string): void {
     this.cargando = true;
- 
+    this.error = null;
+
     this.apiService.getEventoById(id).subscribe({
       next: (data) => {
         this.evento  = data;
-        console.log('Evento cargado:', this.evento);
         this.cargando = false;
       },
       error: () => {
         this.cargando = false;
+        this.error = 'No se pudo cargar el evento.';
       },
     });
   }
@@ -82,7 +86,11 @@ export class DetallesEventPage implements OnInit {
       queryParams: { id: this.evento.id }
     });
   }
-  verActividades(){}
+  verActividades(){
+    this.router.navigate(['/act-evento'], {
+      queryParams: { id: this.evento.id }
+    });
+  }
 
 
 }

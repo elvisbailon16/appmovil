@@ -12,6 +12,7 @@ import { ApiService } from './Service/api-service';
 import { Auth } from './core/services/auth';
 import { filter } from 'rxjs/operators';
 import { LoandingOverlayComponent } from './Pages/Componentes/loanding-overlay/loanding-overlay.component';
+import { CalendarSyncService } from './Service/calendar-sync-service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
     private authService: Auth,
     private router: Router,
-    private notificacionesService: NotificacionesService
+    private notificacionesService: NotificacionesService,
+    private calendarSyncService: CalendarSyncService
   ) {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
     if (hasSession) {
       // Ya está logueado de una sesión anterior → directo a home, sin pasar por login
       this.router.navigate(['/home'], { replaceUrl: true });
+      this.calendarSyncService.sync();
     }
     // Si NO hay sesión, no navegamos a ningún lado todavía —
     // dejamos que la app siga su flujo normal hacia /login,
@@ -69,6 +72,7 @@ export class AppComponent implements OnInit {
                   await this.authService.setTokens(datos.data.access_token, datos.data.refresh_token);
                   await this.authService.setUser(datos.data.user);
                   this.router.navigate(['/home'], { replaceUrl: true });
+                  this.calendarSyncService.sync();
                 }
               },
               error: (e: any) => console.log('Error auth ESPAM:', e)
