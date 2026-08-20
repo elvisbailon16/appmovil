@@ -1,0 +1,152 @@
+// src/theme/_mixins.scss
+// Componentes UI base según Guía de Lineamientos Visuales TerriMeet (sección 5).
+// Uso: @use '.../theme/mixins' as mixins;  →  @include mixins.btn-primary;
+@use 'sass:color';
+@use './colors' as colors;
+@use './typography' as typography;
+@use './shape' as shape;
+@use './elevation' as elevation;
+@use './spacing' as spacing;
+
+// ── Botones ──────────────────────────────────────────────
+@mixin btn-primary {
+  height: 48px;
+  border-radius: shape.$radius-button;
+  background: colors.$verde-bosque;
+  color: colors.$white;
+  border: none;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-button;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:active {
+    background: color.adjust(colors.$verde-bosque, $lightness: -8%);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}
+
+@mixin btn-secondary {
+  height: 48px;
+  border-radius: shape.$radius-button;
+  background: transparent;
+  color: colors.$verde-bosque;
+  border: 1.5px solid colors.$verde-bosque;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-button;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:active {
+    background: rgba(colors.$verde-bosque, 0.06);
+  }
+
+  &:disabled,
+  &.disabled {
+    border-color: colors.$gray-medium;
+    color: colors.$gray-medium;
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}
+
+// Solo para modales de confirmación (ej. cancelar inscripción)
+@mixin btn-danger {
+  height: 48px;
+  border-radius: shape.$radius-button;
+  background: colors.$rojo-error;
+  color: colors.$white;
+  border: none;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-button;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$space-2;
+  cursor: pointer;
+
+  &:active {
+    background: color.adjust(colors.$rojo-error, $lightness: -8%);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}
+
+// FAB (ej. activar modo escáner QR)
+@mixin fab($size: 56px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: colors.$verde-lima;
+  color: colors.$white;
+  border: none;
+  box-shadow: elevation.$shadow-fab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+// ── Cards ────────────────────────────────────────────────
+@mixin card-base {
+  background: colors.$white;
+  border-radius: shape.$radius-card;
+  box-shadow: elevation.$shadow-resting;
+  padding: spacing.$card-padding;
+}
+
+// Card de evento: imagen 16:9 ancho completo, radio solo en esquinas superiores
+@mixin card-evento-imagen {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: shape.$radius-card shape.$radius-card 0 0;
+  display: block;
+}
+
+// ── Chips / badges pill ──────────────────────────────────
+@mixin chip($bg: colors.$verde-agua, $color: colors.$white) {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$space-1;
+  padding: 4px spacing.$space-3;
+  border-radius: shape.$radius-pill;
+  background: $bg;
+  color: $color;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-caption;
+  font-weight: 600;
+}
+
+// ── Bottom sheet / modal ─────────────────────────────────
+@mixin modal-sheet {
+  background: colors.$white;
+  border-radius: shape.$radius-modal-top;
+  box-shadow: elevation.$shadow-modal;
+}
+
+// ── Área táctil mínima para íconos/botones pequeños ──────
+@mixin tap-target {
+  min-width: spacing.$tap-target-min;
+  min-height: spacing.$tap-target-min;
+}

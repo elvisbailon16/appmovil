@@ -3,10 +3,12 @@
 // y `colors` (Sass) solo donde se necesita color.adjust() para hover/activated.
 @use 'sass:color';
 @use './colors' as colors;
+@use './typography' as typography;
+@use './shape' as shape;
 
 @mixin auth-content {
   --background: transparent;
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
 }
 
 @mixin auth-bg-image($url) {
@@ -135,27 +137,33 @@
   font-size: 1rem;
 }
 
+// Altura 48dp / radio 8dp según Guía de Lineamientos Visuales (botón primario filled)
 @mixin auth-btn-primary {
   --background: var(--verde-bosque);
   --background-activated: #{color.adjust(colors.$verde-bosque, $lightness: -8%)};
   --background-hover: #{color.adjust(colors.$verde-bosque, $lightness: -6%)};
-  --border-radius: 50px;
+  --border-radius: #{shape.$radius-button};
   --box-shadow: none;
-  height: 52px;
-  font-weight: 600;
-  font-size: 1rem;
+  height: 48px;
+  font-family: typography.$font-principal;
+  font-weight: 700;
+  font-size: typography.$fs-button;
   text-transform: none;
   margin-bottom: 10px;
 }
 
+// Botón de proveedor externo (ej. Microsoft): se mantiene neutro a propósito
+// (no se skinnea con el verde de marca — es un botón de un tercero, no una
+// acción secundaria de la app). Altura/radio/tipografía sí siguen el estándar.
 @mixin auth-btn-secondary {
-  --border-radius: 50px;
+  --border-radius: #{shape.$radius-button};
   --border-color: var(--gray-medium);
   --color: var(--gray-dark);
   --background: var(--white);
-  height: 52px;
-  font-weight: 500;
-  font-size: 1rem;
+  height: 48px;
+  font-family: typography.$font-principal;
+  font-weight: 600;
+  font-size: typography.$fs-button;
   text-transform: none;
   margin-bottom: 4px;
 }

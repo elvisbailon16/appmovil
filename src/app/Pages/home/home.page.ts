@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonButtons, InfiniteScrollCustomEvent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { EventoComponent } from '../Componentes/evento/evento.component';
 import { ApiService } from 'src/app/Service/api-service';
-import { Auth } from 'src/app/core/services/auth';
 import { CategoriasComponent } from '../Componentes/categorias/categorias.component';
 import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
 @Component({
@@ -20,15 +19,18 @@ export class HomePage implements OnInit {
   cargando = false;
   error: string | null = null;
   usuario: any = null;
-  constructor( private eventosService: ApiService, private authService: Auth) { }
+  constructor( private eventosService: ApiService) { }
 
   ngOnInit() {
     this.cargarEventos();
     this.cargarUsuario();
   }
 
-  async cargarUsuario(): Promise<void> {
-    this.usuario = await this.authService.getUser();
+  cargarUsuario(): void {
+    this.eventosService.getPerfilUsuario().subscribe({
+      next: (datos: any) => { this.usuario = datos.data; },
+      error: (e) => console.log('Error obteniendo usuario:', e)
+    });
   }
 
     cargarEventos(): void {

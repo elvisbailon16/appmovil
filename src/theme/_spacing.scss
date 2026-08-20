@@ -1,0 +1,27 @@
+// src/theme/_spacing.scss
+// Grid base: múltiplos de 8dp para espaciados principales, múltiplos de 4dp para ajustes menores.
+
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+
+// Margen lateral de pantalla (nunca menos de 12dp)
+$screen-margin: $space-4;
+$screen-margin-min: $space-3;
+
+// Padding interno de cards
+$card-padding: $space-4;
+$card-padding-evento: $space-3 $space-4; // 12dp lateral + 16dp vertical
+
+// Espacio entre elementos de lista
+$list-gap: $space-2;        // 8dp entre cards
+$list-label-gap: $space-1;  // 4dp entre etiquetas dentro de una card
+
+// Área táctil mínima (Apple HIG / Material Design)
+$tap-target-min: 44px;
+
+// Altura de navegación inferior
+$bottom-nav-height: 56px;

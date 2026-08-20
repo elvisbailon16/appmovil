@@ -10,9 +10,15 @@
   --verde-agua: #{colors.$verde-agua};
 
   --white: #{colors.$white};
+  --off-white: #{colors.$off-white};
   --gray-light: #{colors.$gray-light};
   --gray-medium: #{colors.$gray-medium};
   --gray-dark: #{colors.$gray-dark};
+
+  --texto-principal: #{colors.$texto-principal};
+  --texto-secundario: #{colors.$texto-secundario};
+  --texto-terciario: #{colors.$texto-terciario};
+  --rojo-error: #{colors.$rojo-error};
 
   /* ===== Ionic color system ===== */
   --ion-color-primary: var(--verde-bosque);

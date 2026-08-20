@@ -11,6 +11,9 @@
     <!-- Sincronizar "Mis eventos" con el calendario nativo del dispositivo -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <!-- Requerido desde Android 13 (API 33): sin esto el sistema no muestra NINGUNA
+         notificación push, aunque el mensaje de Firebase sí llegue al dispositivo. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- La cámara es opcional: el app no depende 100% de ella (QR es una función más) -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />

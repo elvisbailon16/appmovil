@@ -119,7 +119,7 @@ export class ActEventoPage implements OnInit, OnDestroy {
 
   private dispararLluviaEmoji(icono: string): void {
     const batchId = ++this.lluviaBatchId;
-    const cantidad = 30;
+    const cantidad = 12;
 
     const nuevasParticulas = Array.from({ length: cantidad }, (_, i) => ({
       id: batchId * 1000 + i,

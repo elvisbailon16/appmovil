@@ -12,8 +12,11 @@ interface EventoSincronizado {
 }
 
 /**
- * Mantiene el calendario nativo del dispositivo alineado con las inscripciones
- * del usuario (mismos datos que se muestran en Wallet: getMisCertificados()).
+ * Mantiene el calendario nativo del dispositivo alineado con los eventos del
+ * usuario (mismos datos que se muestran en "Mis eventos": getMisEventos()).
+ * Si el evento trae horainicio/horafin se agenda con esa franja horaria exacta;
+ * si no, se agenda como fecha marcada (todo el día) entre fechainicio y fechafin.
+ * Incluye recordatorios (1 día antes y 1 hora antes del inicio).
  * Se dispara automáticamente al iniciar sesión (ver app.component.ts / login.page.ts).
  */
 @Injectable({
@@ -93,20 +96,21 @@ export class CalendarSyncService {
 
   private obtenerInscripciones(): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      this.apiService.getMisCertificados().subscribe({
+      this.apiService.getMisEventos().subscribe({
         next: (res: any) => resolve(res?.data ?? res ?? []),
         error: reject,
       });
     });
   }
 
-  private mapearEvento(evento: any): { title: string; startDate: number; endDate: number; isAllDay: boolean; location?: string; description?: string } | null {
+  private mapearEvento(evento: any): { title: string; startDate: number; endDate: number; isAllDay: boolean; location?: string; description?: string; alerts: number[] } | null {
     const fechas = this.construirFechas(evento);
     if (!fechas) return null;
 
-    const notas = [evento.descripcion, evento.horario ? `Horario: ${evento.horario}` : null]
-      .filter(Boolean)
-      .join('\n\n');
+    const horario = evento.horainicio && evento.horafin
+      ? `Horario: ${this.formatHora(evento.horainicio)} – ${this.formatHora(evento.horafin)}`
+      : null;
+    const notas = [evento.descripcion, horario].filter(Boolean).join('\n\n');
 
     return {
       title: evento.nombre || 'Evento',
@@ -115,45 +119,65 @@ export class CalendarSyncService {
       isAllDay: fechas.isAllDay,
       location: evento.sede || evento.direccion || undefined,
       description: notas || undefined,
+      // Recordatorio: 1 día antes y 1 hora antes del inicio del evento.
+      alerts: [-1440, -60],
     };
   }
 
+  private formatHora(hora: string): string {
+    return hora ? hora.slice(0, 5) : '';
+  }
+
+  // Si el evento trae horainicio (y opcionalmente horafin) se agenda con esa
+  // franja horaria exacta; si no, se agenda como fecha marcada (todo el día)
+  // entre fechainicio y fechafin (o solo fechainicio si no hay fechafin).
+  //
+  // fechainicio/fechafin llegan como "YYYY-MM-DD" y horainicio/horafin como
+  // "HH:MM:SS", ambos en hora LOCAL del evento — sin sufijo de zona horaria.
+  // `new Date('YYYY-MM-DD')` los interpreta como medianoche UTC, y luego
+  // setHours() los vuelve a anclar en hora LOCAL del dispositivo: en cualquier
+  // huso horario con offset negativo (p.ej. Ecuador, UTC-5) el evento terminaba
+  // agendado UN DÍA ANTES de la fecha real. Por eso acá se arman las fechas a
+  // mano con los componentes (año, mes, día, hora, minuto) en vez de dejar que
+  // el motor de JS interprete el string.
   private construirFechas(evento: any): { startDate: number; endDate: number; isAllDay: boolean } | null {
-    const inicio = evento.fechainicio ? new Date(evento.fechainicio) : null;
-    if (!inicio || isNaN(inicio.getTime())) return null;
+    const tieneHorario = !!evento.horainicio;
+    const inicio = this.combinarFechaHora(evento.fechainicio, evento.horainicio);
+    if (!inicio) return null;
 
-    const fin = evento.fechafin ? new Date(evento.fechafin) : new Date(inicio);
-    if (isNaN(fin.getTime())) fin.setTime(inicio.getTime());
-
-    const horas = this.extraerHoras(evento.horario);
-    if (horas) {
-      inicio.setHours(horas.inicio.h, horas.inicio.m, 0, 0);
-      const finHora = horas.fin ?? horas.inicio;
-      fin.setHours(finHora.h, finHora.m, 0, 0);
-      if (fin.getTime() <= inicio.getTime()) {
-        fin.setTime(inicio.getTime() + 60 * 60 * 1000); // fallback: 1 hora de duración
+    if (tieneHorario) {
+      let fin = this.combinarFechaHora(evento.fechafin || evento.fechainicio, evento.horafin || evento.horainicio);
+      if (!fin || fin.getTime() <= inicio.getTime()) {
+        fin = new Date(inicio.getTime() + 60 * 60 * 1000); // datos inconsistentes -> 1h por defecto
       }
       return { startDate: inicio.getTime(), endDate: fin.getTime(), isAllDay: false };
     }
 
-    // sin horario -> se agenda como evento de todo el día
+    const fin = this.combinarFechaHora(evento.fechafin || evento.fechainicio, null) ?? new Date(inicio);
     inicio.setHours(0, 0, 0, 0);
     fin.setHours(23, 59, 0, 0);
+
     return { startDate: inicio.getTime(), endDate: fin.getTime(), isAllDay: true };
   }
 
-  private extraerHoras(horario?: string): { inicio: { h: number; m: number }; fin?: { h: number; m: number } } | null {
-    if (!horario) return null;
-    const regex = /(\d{1,2}):(\d{2})/g;
-    const matches: RegExpExecArray[] = [];
-    let m: RegExpExecArray | null;
-    while ((m = regex.exec(horario)) !== null) {
-      matches.push(m);
-    }
-    if (matches.length === 0) return null;
+  // Combina una fecha "YYYY-MM-DD" con una hora opcional "HH:MM:SS" construyendo
+  // el Date a partir de sus componentes (siempre en hora local del dispositivo),
+  // en vez de pasar el string directo a `new Date(...)`.
+  private combinarFechaHora(fecha: string | null | undefined, hora: string | null | undefined): Date | null {
+    if (!fecha) return null;
+    const [anio, mes, dia] = fecha.split('T')[0].split('-').map(Number);
+    if (!anio || !mes || !dia) return null;
 
-    const aHora = (m: RegExpExecArray) => ({ h: Number(m[1]), m: Number(m[2]) });
-    return { inicio: aHora(matches[0]), fin: matches[1] ? aHora(matches[1]) : undefined };
+    let horas = 0, minutos = 0, segundos = 0;
+    if (hora) {
+      const partes = hora.split(':').map(Number);
+      horas = partes[0] || 0;
+      minutos = partes[1] || 0;
+      segundos = partes[2] || 0;
+    }
+
+    const resultado = new Date(anio, mes - 1, dia, horas, minutos, segundos);
+    return isNaN(resultado.getTime()) ? null : resultado;
   }
 
   private async crearEventoNativo(opciones: ReturnType<CalendarSyncService['mapearEvento']> & object): Promise<string | null> {

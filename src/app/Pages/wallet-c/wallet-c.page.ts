@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
 import { InscripcionComponent } from '../Componentes/inscripcion/inscripcion.component';
+
 
 @Component({
   selector: 'app-wallet-c',
   templateUrl: './wallet-c.page.html',
   styleUrls: ['./wallet-c.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, CabeceraComponent, InscripcionComponent, EmptyStateComponent]
+  imports: [IonContent, IonSpinner, IonIcon, CommonModule, FormsModule, CabeceraComponent, InscripcionComponent, EmptyStateComponent]
 })
 export class WalletCPage implements OnInit {
   inscripciones: any[] = [];

@@ -1,6 +1,6 @@
 <!-- scanerqr.component.html -->
-<div class="modal-overlay" (click)="onCerrar()">
-  <div class="modal-sheet" (click)="$event.stopPropagation()">
+<div class="modal-overlay" [class.is-scanning]="escaneando" (click)="onCerrar()">
+  <div class="modal-sheet" [class.is-scanning]="escaneando" (click)="$event.stopPropagation()">
 
     <!-- Handle -->
     <div class="modal-handle"></div>
@@ -15,7 +15,7 @@
 
     <!-- Área escaner -->
     <div class="scanner-wrap">
-      <div class="scanner-frame">
+      <div class="scanner-frame" [class.is-scanning]="escaneando">
 
         <!-- Esquinas decorativas -->
         <div class="scanner-corner top-left"></div>
@@ -23,7 +23,7 @@
         <div class="scanner-corner bottom-left"></div>
         <div class="scanner-corner bottom-right"></div>
 
-        <!-- Línea animada solo mientras escanea -->
+        <!-- Línea animada mientras escanea, sobre la cámara en vivo -->
         @if (escaneando) {
           <div class="scanner-line"></div>
         }
@@ -33,13 +33,6 @@
           <div class="scanner-idle">
             <ion-icon name="qr-code-outline"></ion-icon>
             <span>Toca "Escanear" para iniciar</span>
-          </div>
-        }
-
-        <!-- Cargando -->
-        @if (escaneando) {
-          <div class="scanner-loading">
-            <ion-spinner name="crescent"></ion-spinner>
           </div>
         }
 
@@ -68,6 +61,17 @@
         </p>
       } @else {
         <p class="scanner-resultado">{{ resultadoTexto }}</p>
+      }
+
+      <!-- Botón de linterna, solo mientras la cámara está activa -->
+      @if (escaneando && torchDisponible) {
+        <button
+          type="button"
+          class="btn-linterna"
+          [class.activa]="torchEncendida"
+          (click)="toggleLinterna()">
+          <ion-icon [name]="torchEncendida ? 'flash' : 'flash-outline'"></ion-icon>
+        </button>
       }
 
     </div>

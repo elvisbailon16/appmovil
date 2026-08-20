@@ -5,13 +5,19 @@ import {
   PushNotifications,
   Token,
 } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { Platform } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificacionesService {
-  
+  // InitPush() se llama tanto desde este constructor como desde app.component.ts —
+  // este flag evita registrar los listeners de PushNotifications dos veces (lo que
+  // hacía que cada notificación se procesara/mostrara duplicada).
+  private initialized = false;
+
   constructor(private platform:Platform) {
     if(this.platform.is('capacitor')) {
       this.InitPush();
@@ -19,25 +25,37 @@ export class NotificacionesService {
   }
 
   InitPush() {
+    if (this.initialized) return;
+    this.initialized = true;
+
     console.log('Initializing HomePage');
 
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
-    // Android will just grant without prompting
+    // Android 13+ pedirá el permiso POST_NOTIFICATIONS (declarado en AndroidManifest.xml);
+    // en versiones anteriores de Android se concede automáticamente.
     PushNotifications.requestPermissions().then(result => {
       if (result.receive === 'granted') {
         // Register with Apple / Google to receive push via APNS/FCM
         PushNotifications.register();
       } else {
-        // Show some error
+        console.warn('Permiso de notificaciones push denegado.');
       }
     });
+
+    // Notificaciones locales: se usan para poder MOSTRAR el push cuando llega con
+    // la app en primer plano (FCM no dibuja nada automáticamente en ese caso, solo
+    // entrega el payload al listener 'pushNotificationReceived' de más abajo).
+    LocalNotifications.requestPermissions().catch(err =>
+      console.error('Error pidiendo permiso de notificaciones locales:', err)
+    );
 
     // On success, we should be able to receive notifications
     PushNotifications.addListener('registration',
       (token: Token) => {
         // alert('Push registration success, token: ' + token.value);
-        localStorage.setItem('token', token.value);
+        // Clave propia (no 'token'): esa la usa Auth para el access_token de sesión.
+        Preferences.set({ key: 'push_token', value: token.value });
       }
     );
 
@@ -49,11 +67,20 @@ export class NotificacionesService {
       }
     );
 
-    // Show us the notification payload if the app is open on our device
+    // Con la app en primer plano, FCM no muestra nada por su cuenta: hay que
+    // dibujar la notificación nosotros mismos con LocalNotifications.
     PushNotifications.addListener('pushNotificationReceived',
       (notification: PushNotificationSchema) => {
-        // alert('Push received: ' + JSON.stringify(notification));
         console.log('Push received: ', notification);
+
+        LocalNotifications.schedule({
+          notifications: [{
+            id: Date.now() % 2147483647,
+            title: notification.title ?? 'TerriMeet',
+            body: notification.body ?? '',
+            extra: notification.data,
+          }],
+        }).catch(err => console.error('Error mostrando notificación local:', err));
       }
     );
 

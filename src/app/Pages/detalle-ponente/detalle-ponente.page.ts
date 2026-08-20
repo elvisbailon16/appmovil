@@ -1,5 +1,5 @@
 // detalle-ponente.page.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent, IonSpinner, IonIcon } from '@ionic/angular/standalone';
@@ -13,7 +13,7 @@ import { ApiService } from 'src/app/Service/api-service';
   standalone: true,
   imports: [CommonModule, IonContent, IonSpinner, IonIcon, CabeceraComponent],
 })
-export class DetallePonentePage implements OnInit {
+export class DetallePonentePage implements OnInit, OnDestroy {
 
   ponente: any = null;
   cargando = false;
@@ -33,6 +33,10 @@ export class DetallePonentePage implements OnInit {
         this.cargarPonente(id);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.queryParamSub?.unsubscribe();
   }
 
   cargarPonente(id: string): void {

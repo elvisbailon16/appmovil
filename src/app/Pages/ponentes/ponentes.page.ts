@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent, IonSpinner, IonIcon } from '@ionic/angular/standalone';
@@ -12,9 +12,9 @@ import { ApiService } from 'src/app/Service/api-service';
   standalone: true,
   imports: [IonContent, IonSpinner, IonIcon, CabeceraComponent, PonenteCardComponent, CommonModule]
 })
-export class PonentesPage implements OnInit {
+export class PonentesPage implements OnInit, OnDestroy {
   // @Input() id:string = '';
-  ponentes: any;
+  ponentes: any[] = [];
   cargando = false;
   error: string | null = null;
   private eventoId: string = '';
@@ -40,7 +40,11 @@ export class PonentesPage implements OnInit {
       }
     });
   }
- 
+
+  ngOnDestroy(): void {
+    this.queryParamSub?.unsubscribe();
+  }
+
   cargarPonentes(): void {
     this.cargando = true;
     this.error = null;

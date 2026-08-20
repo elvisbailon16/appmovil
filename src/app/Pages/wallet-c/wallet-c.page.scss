@@ -1,0 +1,28 @@
+@use '../../../theme/colors' as colors;
+@use '../../../theme/typography' as typography;
+@use '../../../theme/mixins' as mixins;
+
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  gap: 12px;
+  color: colors.$texto-terciario;
+  font-family: typography.$font-principal;
+  font-size: 14px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 44px;
+    color: colors.$gray-light;
+  }
+}
+
+.btn-retry {
+  @include mixins.btn-primary;
+  height: auto;
+  font-size: 14px;
+  padding: 10px 24px;
+}

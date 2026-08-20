@@ -1,0 +1,7 @@
+// src/theme/_elevation.scss
+// Escala de elevación (sombra). Sin sombras de colores, siempre negro con opacidad.
+
+$shadow-resting: 0 2px 6px rgba(0, 0, 0, 0.12); // cards en reposo — 2dp
+$shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.14);  // cards en hover — 4dp
+$shadow-fab: 0 6px 14px rgba(0, 0, 0, 0.20);    // FAB — 6dp
+$shadow-modal: 0 8px 24px rgba(0, 0, 0, 0.24);  // modal — 8dp

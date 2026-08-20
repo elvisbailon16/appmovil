@@ -1,12 +1,11 @@
 // ponentes.page.scss
-$verde-bosque: #005846;
-$verde-agua:   #08B89D;
-$blanco:       #FFFFFF;
-$texto-muted:  #666666;
+@use '../../../theme/colors' as colors;
+@use '../../../theme/typography' as typography;
+@use '../../../theme/mixins' as mixins;
 
 // ── Header decorativo ─────────────────────────────────────
 .ponentes-header {
-  background: linear-gradient(135deg, $verde-bosque 0%, $verde-agua 100%);
+  background: linear-gradient(135deg, colors.$verde-bosque 0%, colors.$verde-agua 100%);
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
@@ -20,16 +19,15 @@ $texto-muted:  #666666;
   }
 
   h2 {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
+    @include typography.fs-title;
+    color: colors.$white;
     margin: 0;
+    line-height: 1.2;
   }
 
   p {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 13px;
+    font-family: typography.$font-principal;
+    font-size: typography.$fs-caption;
     color: rgba(255, 255, 255, 0.75);
     margin: 0;
   }
@@ -48,24 +46,18 @@ $texto-muted:  #666666;
   justify-content: center;
   padding: 48px 24px;
   gap: 12px;
-  color: $texto-muted;
-  font-family: 'Work Sans', sans-serif;
+  color: colors.$texto-terciario;
+  font-family: typography.$font-principal;
   font-size: 14px;
 
   ion-icon {
     font-size: 48px;
-    color: #cccccc;
+    color: colors.$gray-light;
   }
 }
 
 .btn-retry {
-  background: $verde-bosque;
-  color: $blanco;
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  border: none;
-  border-radius: 8px;
+  @include mixins.btn-primary;
+  height: auto;
   padding: 10px 24px;
-  cursor: pointer;
 }

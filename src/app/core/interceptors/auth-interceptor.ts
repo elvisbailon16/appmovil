@@ -26,21 +26,19 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // El token que mandamos no sirvió (venció, fue revocado, etc.) → refrescamos UNA vez y reintentamos.
       if (err instanceof HttpErrorResponse && err.status === 401) {
         return from(authService.refreshAccessToken()).pipe(
-          switchMap((newToken) => next(withToken(req, newToken))),
+          // El catchError va ANTES del switchMap a propósito: así solo atrapa errores del
+          // refresh en sí. Auth.refreshAccessToken() ya limpia la sesión cuando el servidor
+          // rechaza el refresh token; acá solo nos encargamos de navegar a /login en ese caso.
+          // Si el refresh tuvo éxito y lo que falla es el REINTENTO de la petición original
+          // (otro endpoint con un error puntual, colisión con otra API, etc.), ese error sigue
+          // de largo sin pasar por este catchError, así que no se cierra sesión de más.
           catchError((refreshErr) => {
-            // El refresh falló por falta de internet (no porque el servidor haya rechazado
-            // el refresh token) → no cerramos sesión, solo dejamos que esta petición falle.
-            if (authService.esErrorDeConectividad(refreshErr)) {
-              return throwError(() => err);
+            if (!authService.esErrorDeConectividad(refreshErr)) {
+              router.navigate(['/login'], { replaceUrl: true });
             }
-            return from(
-              (async () => {
-                await authService.clearSession();
-                router.navigate(['/login'], { replaceUrl: true });
-                throw err;
-              })()
-            );
-          })
+            return throwError(() => err);
+          }),
+          switchMap((newToken) => next(withToken(req, newToken)))
         );
       }
       return throwError(() => err);

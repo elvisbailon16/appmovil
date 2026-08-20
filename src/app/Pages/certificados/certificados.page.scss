@@ -1,0 +1,84 @@
+@use '../../../theme/colors' as colors;
+@use '../../../theme/typography' as typography;
+@use '../../../theme/shape' as shape;
+@use '../../../theme/elevation' as elevation;
+@use '../../../theme/mixins' as mixins;
+@use '../../../theme/spacing' as spacing;
+
+// certificados.page.scss
+// Guía Visual TerriMeet — ESPAM MFL
+
+// ── Estados de carga / error / vacío ──────────────────────
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  gap: 12px;
+  color: colors.$texto-terciario;
+  font-family: typography.$font-principal;
+  font-size: 14px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 44px;
+    color: colors.$gray-light;
+  }
+}
+
+.btn-retry {
+  @include mixins.btn-primary;
+  height: auto;
+  font-size: 14px;
+  padding: 10px 24px;
+}
+
+// ── Banner del evento ──────────────────────────────────────
+.evento-banner {
+  background: linear-gradient(135deg, colors.$verde-bosque 0%, colors.$verde-agua 100%);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  h1 {
+    font-family: typography.$font-principal;
+    font-size: clamp(17px, 4.5vw, 20px);
+    font-weight: 700;
+    color: colors.$white;
+    line-height: 1.3;
+    margin: 0;
+    word-break: break-word;
+  }
+}
+
+.evento-banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: typography.$font-principal;
+    font-size: typography.$fs-label;
+    color: rgba(255, 255, 255, 0.9);
+
+    ion-icon {
+      font-size: 15px;
+      color: colors.$verde-ceibo;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ── Lista de certificados ──────────────────────────────────
+// Una fila app-certificado de ancho completo por certificado.
+.cert-grid {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$space-3;
+  padding: spacing.$space-4;
+}

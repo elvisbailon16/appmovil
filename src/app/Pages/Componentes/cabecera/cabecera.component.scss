@@ -1,11 +1,14 @@
+@use '../../../../theme/colors' as colors;
+@use '../../../../theme/typography' as typography;
+
 .header {
 ion-toolbar {
-    --background: #005846;
-    --color: #FFFFFF;
+    --background: #{colors.$verde-bosque};
+    --color: #{colors.$white};
     --border-width: 0;
     --min-height: 56px;
     --padding-bottom: 0;
-    
+
   }
 
   .brand-text {
@@ -14,8 +17,8 @@ ion-toolbar {
     padding-left: 8px;
 
     .title {
-      color: #FFFFFF;
-      font-family: 'Work Sans', sans-serif;
+      color: colors.$white;
+      font-family: typography.$font-principal;
       font-size: 18px;
       font-weight: 700;
       line-height: 1.2;

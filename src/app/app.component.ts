@@ -44,7 +44,8 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.notificacionesService.InitPush();
+    // NotificacionesService ya llama a InitPush() desde su propio constructor
+    // (gateado por plataforma capacitor) — no hace falta invocarlo de nuevo acá.
 
     // 1️⃣ Primero verificamos si ya hay una sesión válida guardada (login propio o Microsoft)
     const hasSession = await this.authService.tryRestoreSession();

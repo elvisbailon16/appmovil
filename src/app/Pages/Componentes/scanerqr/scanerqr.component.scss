@@ -14,6 +14,13 @@ $texto-muted:  #666666;
   display: flex;
   align-items: flex-end;
   animation: fadeIn 0.2s ease;
+  transition: background 0.2s ease;
+
+  // Mientras escanea, deja de pintar fondo para que se vea la
+  // cámara nativa embebida detrás del webview (ver global.scss)
+  &.is-scanning {
+    background: transparent;
+  }
 }
 
 // ── Sheet ─────────────────────────────────────────────────
@@ -26,6 +33,18 @@ $texto-muted:  #666666;
   flex-direction: column;
   gap: 16px;
   animation: slideUp 0.3s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  // Mientras la cámara nativa está activa, dejamos de comportarnos como
+  // una hoja anclada abajo y ocupamos toda la pantalla, como un
+  // escáner QR nativo (cámara a pantalla completa + overlay mínimo).
+  &.is-scanning {
+    height: 100%;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px calc(env(safe-area-inset-bottom, 0px) + 28px);
+  }
 }
 
 .modal-handle {
@@ -34,6 +53,35 @@ $texto-muted:  #666666;
   background: #dddddd;
   border-radius: 100px;
   margin: 0 auto 4px;
+}
+
+.modal-sheet.is-scanning .modal-handle {
+  display: none;
+}
+
+// Mientras se ve la cámara en vivo, el texto flota directo sobre la
+// imagen: le damos un fondo sutil para que siga siendo legible.
+.modal-sheet.is-scanning {
+  .modal-header h3,
+  .scanner-instruccion {
+    background: rgba(0, 0, 0, 0.45);
+    color: $blanco;
+    border-radius: 8px;
+    padding: 4px 10px;
+    width: fit-content;
+  }
+
+  .modal-close {
+    background: rgba(0, 0, 0, 0.45);
+
+    ion-icon { color: $blanco; }
+  }
+
+  // El escaneo ya inicia solo; sin botonera abajo, como un escáner nativo
+  // (se cancela con la X de arriba).
+  .modal-actions {
+    display: none;
+  }
 }
 
 // ── Header ────────────────────────────────────────────────
@@ -73,6 +121,13 @@ $texto-muted:  #666666;
   gap: 14px;
 }
 
+// Mientras escanea, el wrap ocupa el espacio disponible entre el header
+// y el fondo de pantalla, centrando el recorte del escáner verticalmente.
+.modal-sheet.is-scanning .scanner-wrap {
+  flex: 1;
+  justify-content: center;
+}
+
 .scanner-frame {
   position: relative;
   width: 220px;
@@ -83,6 +138,41 @@ $texto-muted:  #666666;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  // Mientras escanea: el marco se agranda, se vuelve transparente para
+  // dejar ver la cámara nativa embebida detrás del webview, y el resto
+  // de la pantalla se oscurece alrededor (recorte tipo escáner nativo).
+  &.is-scanning {
+    width: min(74vw, 280px);
+    height: min(74vw, 280px);
+    background: transparent;
+    border-radius: 28px;
+    box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.55);
+  }
+}
+
+// Botón de linterna, debajo del recorte de cámara
+.btn-linterna {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 20px;
+    color: $blanco;
+  }
+
+  &.activa {
+    background: $verde-lima;
+
+    ion-icon { color: $verde-bosque; }
+  }
 }
 
 // Esquinas
@@ -97,6 +187,18 @@ $c: $verde-bosque;
   &.top-right   { top: 0; right: 0; border-top: 3px solid $c; border-right: 3px solid $c; border-radius: 0 4px 0 0; }
   &.bottom-left { bottom: 0; left: 0; border-bottom: 3px solid $c; border-left: 3px solid $c; border-radius: 0 0 0 4px; }
   &.bottom-right{ bottom: 0; right: 0; border-bottom: 3px solid $c; border-right: 3px solid $c; border-radius: 0 0 4px 0; }
+}
+
+// Esquinas más grandes y de mayor contraste sobre la cámara en vivo
+.scanner-frame.is-scanning .scanner-corner {
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
+
+  &.top-left    { top: 10px; left: 10px; border-top: 4px solid $verde-lima; border-left: 4px solid $verde-lima; border-radius: 8px 0 0 0; }
+  &.top-right   { top: 10px; right: 10px; border-top: 4px solid $verde-lima; border-right: 4px solid $verde-lima; border-radius: 0 8px 0 0; }
+  &.bottom-left { bottom: 10px; left: 10px; border-bottom: 4px solid $verde-lima; border-left: 4px solid $verde-lima; border-radius: 0 0 0 8px; }
+  &.bottom-right{ bottom: 10px; right: 10px; border-bottom: 4px solid $verde-lima; border-right: 4px solid $verde-lima; border-radius: 0 0 8px 0; }
 }
 
 // Línea animada

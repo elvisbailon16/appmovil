@@ -1,12 +1,12 @@
 // scanerqr.component.ts
 import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonIcon, IonSpinner } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 import {
   BarcodeScanner,
   BarcodeFormat,
-  LensFacing,
 } from '@capacitor-mlkit/barcode-scanning';
+import type { PluginListenerHandle } from '@capacitor/core';
 import { Capacitor } from '@capacitor/core';
 
 @Component({
@@ -14,24 +14,28 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: './scanerqr.component.html',
   styleUrls: ['./scanerqr.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, IonSpinner],
+  imports: [CommonModule, IonIcon],
 })
 export class ScanerqrComponent implements OnDestroy {
 
   @Output() cerrar = new EventEmitter<void>();
   @Output() resultado = new EventEmitter<string>();
-  
-  
+
   escaneando = false;
-  resultadoTexto: any;
+  resultadoTexto: string | null = null;
   error: string | null = null;
+  torchDisponible = false;
+  torchEncendida = false;
+
+  private listenerBarcodes?: PluginListenerHandle;
+  private listenerError?: PluginListenerHandle;
 
   async iniciarEscaneo(): Promise<void> {
     this.escaneando = true;
-    this.resultadoTexto;
+    this.resultadoTexto = null;
     this.error = null;
 
-    // En web no está soportado por ML Kit — simulamos
+    // En web no hay cámara nativa disponible — simulamos para desarrollo
     if (!Capacitor.isNativePlatform()) {
       await this.simularEscaneoWeb();
       return;
@@ -40,55 +44,78 @@ export class ScanerqrComponent implements OnDestroy {
     try {
       // 1. Solicita permiso de cámara
       const permisos = await BarcodeScanner.requestPermissions();
-      if (permisos.camera !== 'granted') {
+      if (permisos.camera !== 'granted' && permisos.camera !== 'limited') {
         this.error = 'Permiso de cámara denegado.';
         this.escaneando = false;
         return;
       }
 
-      // 2. Hace el fondo transparente para ver la cámara
+      // 2. Hace el fondo transparente para ver la cámara del dispositivo detrás
       document.body.classList.add('barcode-scanner-active');
 
-      // 3. Inicia el escaneo
-      const { barcodes } = await BarcodeScanner.scan({
-        formats: [BarcodeFormat.QrCode],
-        // lensFacing: LensFacing.Back,
+      // 3. Escucha los códigos detectados en vivo (cámara embebida, sin pantalla aparte)
+      this.listenerBarcodes = await BarcodeScanner.addListener('barcodesScanned', async (event) => {
+        if (this.resultadoTexto) return;
+        const barcode = event.barcodes[0];
+        if (!barcode) return;
+        this.resultadoTexto = barcode.rawValue ?? barcode.displayValue;
+        await this.detenerCamara();
+        this.resultado.emit(this.resultadoTexto);
       });
 
-      // 4. Procesa el resultado
-      if (barcodes.length > 0) {
-        this.resultadoTexto = barcodes[0].rawValue;
-        this.resultado.emit(this.resultadoTexto);
-      }
+      this.listenerError = await BarcodeScanner.addListener('scanError', async (event) => {
+        console.error('Error escaneando:', event.message);
+        this.error = 'No se pudo escanear. Intenta de nuevo.';
+        await this.detenerCamara();
+      });
+
+      // 4. Inicia la cámara nativa del dispositivo embebida en esta pantalla
+      await BarcodeScanner.startScan({ formats: [BarcodeFormat.QrCode] });
+
+      // 5. Revisa si el dispositivo tiene linterna disponible
+      const torch = await BarcodeScanner.isTorchAvailable();
+      this.torchDisponible = torch.available;
 
     } catch (err: any) {
-      console.error('Error escaneando:', err);
+      console.error('Error iniciando la cámara:', err);
       this.error = 'No se pudo escanear. Intenta de nuevo.';
-    } finally {
-      // 5. Restaura la visibilidad del fondo
-      document.body.classList.remove('barcode-scanner-active');
-      this.escaneando = false;
+      await this.detenerCamara();
     }
   }
 
-  onCerrar(): void {
-    // Detiene la cámara si estaba activa
-    if (this.escaneando && Capacitor.isNativePlatform()) {
-      BarcodeScanner.stopScan().catch(() => {});
-      document.body.classList.remove('barcode-scanner-active');
+  async toggleLinterna(): Promise<void> {
+    if (!this.torchDisponible) return;
+    await BarcodeScanner.toggleTorch();
+    const estado = await BarcodeScanner.isTorchEnabled();
+    this.torchEncendida = estado.enabled;
+  }
+
+  async onCerrar(): Promise<void> {
+    if (this.escaneando) {
+      await this.detenerCamara();
     }
     this.cerrar.emit();
   }
 
   ngOnDestroy(): void {
-    // Limpieza al destruir el componente
-    if (Capacitor.isNativePlatform()) {
-      BarcodeScanner.stopScan().catch(() => {});
-    }
-    document.body.classList.remove('barcode-scanner-active');
+    this.detenerCamara();
   }
 
-  // Solo para desarrollo en navegador
+  private async detenerCamara(): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await BarcodeScanner.stopScan().catch(() => {});
+      await this.listenerBarcodes?.remove();
+      await this.listenerError?.remove();
+    }
+    this.listenerBarcodes = undefined;
+    this.listenerError = undefined;
+    document.body.classList.remove('barcode-scanner-active');
+    this.escaneando = false;
+    this.torchDisponible = false;
+    this.torchEncendida = false;
+  }
+
+  // Solo para desarrollo en navegador (no hay cámara nativa embebida en web)
   private simularEscaneoWeb(): Promise<void> {
     return new Promise(resolve => {
       setTimeout(() => {

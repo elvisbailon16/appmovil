@@ -14,17 +14,23 @@ export class InscripcionComponent  implements OnInit {
 @Input() inscripcion!: any;
   cargando = false;
   error: string | null = null;
+  name:any;
   constructor(private apiService: ApiService, private router:Router ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
 
   }
 
 
 
   eventClick(inscripcion: any) {
-    this.router.navigate(['/detalles-event'], {
-      queryParams: { id: inscripcion.id }
+    this.name = localStorage.getItem('inscripcion');
+    if(this.name){
+      localStorage.removeItem('inscripcion');
+    }
+    localStorage.setItem('inscripcion', inscripcion.nombre);
+    this.router.navigate(['/certificados'], {
+      queryParams: { certificados: JSON.stringify(inscripcion.certificados) }
     });
   }
 

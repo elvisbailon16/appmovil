@@ -1,4 +1,8 @@
 // src/app/shared/components/empty-state/empty-state.component.scss
+@use '../../../../theme/colors' as colors;
+@use '../../../../theme/typography' as typography;
+@use '../../../../theme/shape' as shape;
+
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -20,7 +24,7 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: rgba(0, 88, 70, 0.08); // verde-bosque al 8%
+  background: rgba(colors.$verde-bosque, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,29 +33,29 @@
 
 .empty-state__icon {
   font-size: 2.5rem;
-  color: var(--verde-bosque);
+  color: colors.$verde-bosque;
 }
 
 .empty-state__title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--gray-dark);
+  color: colors.$texto-principal;
   margin: 0 0 8px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
 }
 
 .empty-state__message {
   font-size: 0.9375rem;
-  color: var(--gray-medium);
+  color: colors.$texto-terciario;
   margin: 0;
   max-width: 320px;
   line-height: 1.5;
 }
 
 .empty-state__action {
-  --border-radius: 50px;
-  --border-color: var(--verde-bosque);
-  --color: var(--verde-bosque);
+  --border-radius: #{shape.$radius-pill};
+  --border-color: #{colors.$verde-bosque};
+  --color: #{colors.$verde-bosque};
   margin-top: 20px;
   font-weight: 500;
   text-transform: none;

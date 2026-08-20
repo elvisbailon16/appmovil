@@ -1,5 +1,10 @@
 // src/theme/_colors.scss
-// Fuente única de verdad de la paleta de marca
+// Fuente única de verdad de la paleta de marca.
+// Roles según Guía de Lineamientos Visuales TerriMeet (Manual de Marca ESPAM MFL):
+//   Verde Bosque  → primario/marca (header, CTA, iconos activos)
+//   Verde Lima    → acento/éxito (inscrito, confirmaciones, QR válido)
+//   Verde Ceibo   → secundario/énfasis (contadores, badges) — bajo contraste en blanco, solo decorativo
+//   Verde Agua    → terciario/informativo (chips de categoría, agenda)
 @use 'sass:color';
 
 $verde-bosque: #005846;
@@ -8,6 +13,16 @@ $verde-ceibo: #CBDB2A;
 $verde-agua: #08B89D;
 
 $white: #FFFFFF;
+$off-white: #F5F5F5;
 $gray-light: #E0E0E0;
 $gray-medium: #757575;
 $gray-dark: #212121;
+
+// Texto: #1A1A1A para títulos/texto principal, #333333 para texto de cuerpo secundario
+$texto-principal: #1A1A1A;
+$texto-secundario: #333333;
+// Texto terciario/muted (metadata, ayuda) — no está en el manual como color aparte,
+// se usa $gray-medium (ya definido arriba) para no inventar un gris nuevo.
+$texto-terciario: $gray-medium;
+
+$rojo-error: #E53935;

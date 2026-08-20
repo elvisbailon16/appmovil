@@ -1,24 +1,17 @@
-@use 'sass:color';
-
-// ── Paleta de colores ─────────────────────────────────────
-$verde-bosque:  #005846;
-$verde-lima:    #44D62C;
-$verde-ceibo:   #CBDB2A;
-$verde-agua:    #08B89D;
-$blanco:        #FFFFFF;
-$fondo-claro:   #F5F5F5;
-$texto-primario:#1A1A1A;
-$texto-muted:   #555555;
-$rojo-error:    #E53935;
+@use '../../../../theme/colors' as colors;
+@use '../../../../theme/typography' as typography;
+@use '../../../../theme/shape' as shape;
+@use '../../../../theme/elevation' as elevation;
+@use '../../../../theme/mixins' as mixins;
 
 // ── Card contenedora ──────────────────────────────────────
 .event-card {
-  background: $blanco;
-  border-radius: 12px;
+  background: colors.$white;
+  border-radius: shape.$radius-card;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  box-shadow: elevation.$shadow-resting;
   margin: 8px 16px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
 }
 
 // ── Imagen / Banner ───────────────────────────────────────
@@ -39,7 +32,7 @@ $rojo-error:    #E53935;
 .image-placeholder {
   width: 100%;
   height: 100%;
-  background: $verde-bosque;
+  background: colors.$verde-bosque;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,24 +47,17 @@ $rojo-error:    #E53935;
   span {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
-    font-family: 'Work Sans', sans-serif;
+    font-family: typography.$font-principal;
   }
 }
 
 // ── Chips y badges sobre imagen ───────────────────────────
 .chip-categoria {
+  @include mixins.chip(colors.$verde-agua, colors.$white);
+  @include typography.fs-uppercase-label;
   position: absolute;
   top: 10px;
   left: 10px;
-  background: $verde-agua;
-  color: $blanco;
-  font-size: 11px;
-  font-weight: 600;
-  font-family: 'Work Sans', sans-serif;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 100px;
 }
 
 .badge-estado {
@@ -81,29 +67,29 @@ $rojo-error:    #E53935;
   background: rgba(0, 0, 0, 0.55);
   font-size: 11px;
   font-weight: 600;
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
   padding: 4px 10px;
-  border-radius: 100px;
+  border-radius: shape.$radius-pill;
   display: flex;
   align-items: center;
   gap: 5px;
-  color: $verde-ceibo;
+  color: colors.$verde-ceibo;
 
   .estado-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: $verde-ceibo;
+    background: colors.$verde-ceibo;
   }
 
   &.inscrito {
-    color: $verde-lima;
-    .estado-dot { background: $verde-lima; }
+    color: colors.$verde-lima;
+    .estado-dot { background: colors.$verde-lima; }
   }
 
   &.finalizado {
-    color: #aaaaaa;
-    .estado-dot { background: #aaaaaa; }
+    color: colors.$gray-medium;
+    .estado-dot { background: colors.$gray-medium; }
   }
 }
 
@@ -115,7 +101,7 @@ $rojo-error:    #E53935;
 .event-title {
   font-size: 16px;
   font-weight: 700;
-  color: $texto-primario;
+  color: colors.$texto-principal;
   line-height: 1.35;
   margin-bottom: 10px;
   display: -webkit-box;
@@ -137,21 +123,21 @@ $rojo-error:    #E53935;
   align-items: center;
   gap: 7px;
   font-size: 13px;
-  color: $texto-muted;
+  color: colors.$texto-terciario;
 
   ion-icon {
     font-size: 16px;
-    color: $verde-bosque;
+    color: colors.$verde-bosque;
     flex-shrink: 0;
   }
 
   strong {
-    color: $verde-bosque;
+    color: colors.$verde-bosque;
     font-weight: 600;
   }
 
   .meta-hora {
-    color: $texto-muted;
+    color: colors.$texto-terciario;
     font-size: 12px;
   }
 }
@@ -163,21 +149,21 @@ $rojo-error:    #E53935;
   .cupos-bar {
     flex: 1;
     height: 4px;
-    background: #e0e0e0;
-    border-radius: 100px;
+    background: colors.$gray-light;
+    border-radius: shape.$radius-pill;
     overflow: hidden;
 
     .cupos-fill {
       height: 100%;
-      background: $verde-lima;
-      border-radius: 100px;
+      background: colors.$verde-lima;
+      border-radius: shape.$radius-pill;
       transition: width 0.4s ease;
     }
   }
 
   .cupos-label {
     font-size: 11px;
-    color: #888;
+    color: colors.$gray-medium;
     white-space: nowrap;
   }
 }
@@ -185,7 +171,7 @@ $rojo-error:    #E53935;
 // ── Descripción ───────────────────────────────────────────
 .event-description {
   font-size: 13px;
-  color: $texto-muted;
+  color: colors.$texto-terciario;
   line-height: 1.5;
   font-weight: 400;
   margin-bottom: 4px;
@@ -198,7 +184,7 @@ $rojo-error:    #E53935;
 // ── Divisor ───────────────────────────────────────────────
 .card-divider {
   height: 0.5px;
-  background: #eeeeee;
+  background: colors.$gray-light;
   margin: 0 14px;
 }
 
@@ -208,43 +194,21 @@ $rojo-error:    #E53935;
 }
 
 .btn-primary {
+  @include mixins.btn-primary;
   width: 100%;
-  background: $verde-bosque;
-  color: $blanco;
-  font-family: 'Work Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: background 0.15s ease;
 
   ion-icon { font-size: 18px; }
-
-  &:active {
-    background: color.adjust($verde-bosque, $lightness: -8%);
-  }
-
-  &:disabled {
-    opacity: 0.38;
-    pointer-events: none;
-  }
 }
 
 .badge-inscrito {
   width: 100%;
-  background: #eafaf3;
-  border: 1.5px solid $verde-lima;
-  color: #1a6b1a;
-  font-family: 'Work Sans', sans-serif;
+  background: rgba(colors.$verde-lima, 0.12);
+  border: 1.5px solid colors.$verde-lima;
+  color: colors.$verde-lima;
+  font-family: typography.$font-principal;
   font-size: 14px;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: shape.$radius-button;
   height: 48px;
   display: flex;
   align-items: center;
@@ -252,25 +216,25 @@ $rojo-error:    #E53935;
   gap: 8px;
 
   ion-icon {
-    color: $verde-lima;
+    color: colors.$verde-lima;
     font-size: 20px;
   }
 }
 
 .badge-finalizado {
   width: 100%;
-  background: #f5f5f5;
-  color: #888;
-  font-family: 'Work Sans', sans-serif;
+  background: colors.$off-white;
+  color: colors.$gray-medium;
+  font-family: typography.$font-principal;
   font-size: 14px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: shape.$radius-button;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid colors.$gray-light;
 
   ion-icon {
     font-size: 18px;

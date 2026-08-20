@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import { QrCodeComponent } from 'ng-qrcode';
-import { Auth } from 'src/app/core/services/auth';
+import { ApiService } from 'src/app/Service/api-service';
 
 @Component({
   selector: 'app-qr',
@@ -16,7 +16,7 @@ import { Auth } from 'src/app/core/services/auth';
 export class QrPage implements OnInit {
   user: any = null;
 
-  constructor(private authService: Auth) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.cargarQR();
@@ -33,7 +33,10 @@ export class QrPage implements OnInit {
     console.log('Compartir QR — pendiente de implementar');
   }
 
-  async cargarQR(): Promise<void> {
-    this.user = await this.authService.getUser();
+  cargarQR(): void {
+    this.apiService.getPerfilUsuario().subscribe({
+      next: (datos: any) => { this.user = datos.data; },
+      error: (e) => console.log('Error obteniendo usuario:', e)
+    });
   }
 }

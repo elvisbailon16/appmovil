@@ -1,0 +1,84 @@
+// src/theme/_typography.scss
+// Escala tipográfica según Guía de Lineamientos Visuales TerriMeet.
+// Fuente principal: Work Sans (institucional ESPAM MFL). Cargada vía Google Fonts en index.html.
+// Fuente decorativa: Space Mono, sustituto libre de 'Libertad Mono' (fuente de pago, pendiente de licencia).
+// Tamaño mínimo de cuerpo: 16sp (piso de accesibilidad). Interlineado: 1.4x. Tracking uppercase: +0.5px.
+
+$font-principal: 'Work Sans', sans-serif;
+$font-decorativa: 'Space Mono', monospace;
+
+$line-height-base: 1.4;
+$tracking-uppercase: 0.5px;
+
+// tamaño / peso / uso
+$fs-display: 28px;   // 900 — título de pantalla ('Mis Eventos', 'Catálogo')
+$fs-title: 20px;      // 700 — nombre de evento en card, encabezado de sección
+$fs-subtitle: 17px;   // 600 — subtítulos, fecha/hora, nombre del ponente
+$fs-body: 16px;       // 400 — descripción, cuerpo de texto, instrucciones de formulario
+$fs-caption: 13px;    // 300 — metadata secundaria, categorías, texto de ayuda
+$fs-label: 12px;      // 300 — piso mínimo absoluto
+$fs-button: 16px;     // 700 — etiqueta de botón primario/secundario
+
+@mixin fs-display {
+  font-family: $font-principal;
+  font-size: $fs-display;
+  font-weight: 900;
+  line-height: $line-height-base;
+}
+
+@mixin fs-title {
+  font-family: $font-principal;
+  font-size: $fs-title;
+  font-weight: 700;
+  line-height: $line-height-base;
+}
+
+@mixin fs-subtitle {
+  font-family: $font-principal;
+  font-size: $fs-subtitle;
+  font-weight: 600;
+  line-height: $line-height-base;
+}
+
+@mixin fs-body {
+  font-family: $font-principal;
+  font-size: $fs-body;
+  font-weight: 400;
+  line-height: $line-height-base;
+}
+
+@mixin fs-caption {
+  font-family: $font-principal;
+  font-size: $fs-caption;
+  font-weight: 300;
+  line-height: $line-height-base;
+}
+
+@mixin fs-label {
+  font-family: $font-principal;
+  font-size: $fs-label;
+  font-weight: 300;
+  line-height: $line-height-base;
+}
+
+// Etiquetas en mayúsculas (ej. chip de categoría): tracking +0.5px
+@mixin fs-uppercase-label {
+  text-transform: uppercase;
+  letter-spacing: $tracking-uppercase;
+}
+
+// Titulares institucionales decorativos (bienvenida, perfil institucional)
+@mixin fs-decorativa-title {
+  font-family: $font-decorativa;
+  font-size: 24px; // dentro del rango 20-28sp
+  font-weight: 700;
+  line-height: $line-height-base;
+}
+
+// Datos institucionales decorativos (pie de certificado, código de evento)
+@mixin fs-decorativa-caption {
+  font-family: $font-decorativa;
+  font-size: 13px; // dentro del rango 12-14sp
+  font-weight: 400;
+  line-height: $line-height-base;
+}

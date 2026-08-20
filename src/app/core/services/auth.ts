@@ -87,11 +87,17 @@ export class Auth {
       }
 
       try {
-        const data: any = await firstValueFrom(
+        const respuesta: any = await firstValueFrom(
           this.httpclient.post(`https://ws.espam.edu.ec/api/auth/refresh`, { refresh_token: refreshToken })
         );
-        await this.setTokens(data.access_token, data.refresh_token);
-        return data.access_token;
+        // El login envuelve la respuesta en { data: { access_token, ... } }; el refresh puede
+        // venir igual (envuelto) o plano. Soportamos ambos para no guardar "undefined" como token.
+        const payload = respuesta?.data ?? respuesta;
+        if (!payload?.access_token) {
+          throw new Error('Respuesta de refresh sin access_token');
+        }
+        await this.setTokens(payload.access_token, payload.refresh_token);
+        return payload.access_token;
       } catch (err) {
         // Si fue por falta de internet, el refresh token sigue siendo válido: no cerramos sesión,
         // se reintentará la próxima vez que haya conexión.

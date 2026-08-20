@@ -1,16 +1,11 @@
-@use 'sass:color';
+@use '../../../theme/colors' as colors;
+@use '../../../theme/typography' as typography;
+@use '../../../theme/shape' as shape;
+@use '../../../theme/elevation' as elevation;
+@use '../../../theme/mixins' as mixins;
 
 // act-evento.page.scss
 // Guía Visual TerriMeet — ESPAM MFL
-
-$verde-bosque:   #005846;
-$verde-lima:     #44D62C;
-$verde-ceibo:    #CBDB2A;
-$verde-agua:     #08B89D;
-$blanco:         #FFFFFF;
-$fondo-claro:    #F5F5F5;
-$texto-primario: #1A1A1A;
-$texto-muted:    #555555;
 
 // ── Estados de carga / error / vacío ──────────────────────
 .estado-center {
@@ -20,14 +15,14 @@ $texto-muted:    #555555;
   justify-content: center;
   padding: 56px 24px;
   gap: 12px;
-  color: $texto-muted;
-  font-family: 'Work Sans', sans-serif;
+  color: colors.$texto-terciario;
+  font-family: typography.$font-principal;
   font-size: 14px;
   text-align: center;
 
   ion-icon {
     font-size: 44px;
-    color: #cccccc;
+    color: colors.$gray-light;
   }
 }
 
@@ -36,20 +31,15 @@ $texto-muted:    #555555;
 }
 
 .btn-retry {
-  background: $verde-bosque;
-  color: $blanco;
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 600;
+  @include mixins.btn-primary;
+  height: auto;
   font-size: 14px;
-  border: none;
-  border-radius: 8px;
   padding: 10px 24px;
-  cursor: pointer;
 }
 
 // ── Banner del evento ──────────────────────────────────────
 .evento-banner {
-  background: linear-gradient(135deg, $verde-bosque 0%, $verde-agua 100%);
+  background: linear-gradient(135deg, colors.$verde-bosque 0%, colors.$verde-agua 100%);
   padding: 20px 16px;
   display: flex;
   flex-direction: column;
@@ -65,10 +55,10 @@ $texto-muted:    #555555;
   h1 {
     flex: 1;
     min-width: 0;
-    font-family: 'Work Sans', sans-serif;
+    font-family: typography.$font-principal;
     font-size: clamp(17px, 4.5vw, 20px);
     font-weight: 700;
-    color: $blanco;
+    color: colors.$white;
     line-height: 1.3;
     margin: 0;
     word-break: break-word;
@@ -84,13 +74,13 @@ $texto-muted:    #555555;
     display: flex;
     align-items: center;
     gap: 6px;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 12.5px;
+    font-family: typography.$font-principal;
+    font-size: typography.$fs-label;
     color: rgba(255, 255, 255, 0.9);
 
     ion-icon {
       font-size: 15px;
-      color: $verde-ceibo;
+      color: colors.$verde-ceibo;
       flex-shrink: 0;
     }
   }
@@ -104,44 +94,44 @@ $texto-muted:    #555555;
   gap: 5px;
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.35);
-  color: $blanco;
-  font-family: 'Work Sans', sans-serif;
+  color: colors.$white;
+  font-family: typography.$font-principal;
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
   padding: 5px 10px;
-  border-radius: 100px;
+  border-radius: shape.$radius-pill;
 
   ion-icon {
     font-size: 13px;
   }
 
   &.sm {
-    background: #f0f0f0;
+    background: colors.$off-white;
     border: none;
-    color: $texto-muted;
+    color: colors.$texto-terciario;
     padding: 4px 9px;
     font-size: 10.5px;
 
-    ion-icon { font-size: 12px; color: $texto-muted; }
+    ion-icon { font-size: 12px; color: colors.$texto-terciario; }
   }
 
   &.finalizado.sm {
-    background: #f0f0f0;
-    color: #888888;
-    ion-icon { color: #888888; }
+    background: colors.$off-white;
+    color: colors.$texto-terciario;
+    ion-icon { color: colors.$texto-terciario; }
   }
 
   &.en-curso.sm {
-    background: rgba(68, 214, 44, 0.14);
-    color: #1a7a1a;
-    ion-icon { color: #1a7a1a; }
+    background: rgba(colors.$verde-lima, 0.14);
+    color: colors.$verde-lima; // estado activo/en curso
+    ion-icon { color: colors.$verde-lima; }
   }
 
   &.proximo.sm {
-    background: rgba(8, 184, 157, 0.14);
-    color: $verde-bosque;
-    ion-icon { color: $verde-bosque; }
+    background: rgba(colors.$verde-agua, 0.14);
+    color: colors.$verde-bosque;
+    ion-icon { color: colors.$verde-bosque; }
   }
 }
 
@@ -153,10 +143,10 @@ $texto-muted:    #555555;
 }
 
 .agenda-title {
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
   font-size: 16px;
   font-weight: 700;
-  color: $texto-primario;
+  color: colors.$texto-principal;
   margin: 0 0 12px;
 }
 
@@ -176,7 +166,7 @@ $texto-muted:    #555555;
   flex-direction: column;
   gap: 10px;
   padding-left: 12px;
-  border-left: 2px solid #eef2f0;
+  border-left: 2px solid colors.$off-white;
 }
 
 .agenda-item {
@@ -184,17 +174,17 @@ $texto-muted:    #555555;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: $blanco;
-  border: 1px solid #ececec;
-  border-radius: 10px;
+  background: colors.$white;
+  border: 1px solid colors.$gray-light;
+  border-radius: shape.$radius-card;
   padding: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: elevation.$shadow-resting;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
 
   &.selected {
-    border-color: $verde-bosque;
-    background: rgba(0, 88, 70, 0.04);
+    border-color: colors.$verde-bosque;
+    background: rgba(colors.$verde-bosque, 0.04);
   }
 
   input[type='radio'] {
@@ -212,7 +202,7 @@ $texto-muted:    #555555;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2px solid #cccccc;
+    border: 2px solid colors.$gray-light;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -223,14 +213,14 @@ $texto-muted:    #555555;
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: $verde-bosque;
+      background: colors.$verde-bosque;
       transform: scale(0);
       transition: transform 0.15s ease;
     }
   }
 
   input[type='radio']:checked + .radio-dot {
-    border-color: $verde-bosque;
+    border-color: colors.$verde-bosque;
 
     &::after { transform: scale(1); }
   }
@@ -245,17 +235,17 @@ $texto-muted:    #555555;
 }
 
 .agenda-item-nombre {
-  font-family: 'Work Sans', sans-serif;
+  font-family: typography.$font-principal;
   font-size: 14px;
   font-weight: 600;
-  color: $texto-primario;
+  color: colors.$texto-principal;
   line-height: 1.35;
 }
 
 .agenda-item-fecha {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 12px;
-  color: $texto-muted;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-label;
+  color: colors.$texto-terciario;
 }
 
 // ── Detalle de actividad seleccionada ─────────────────────
@@ -263,11 +253,11 @@ $texto-muted:    #555555;
 // con look de "modal corto" (esquinas redondeadas, sombra elevada).
 .detalle-actividad {
   margin-top: 10px;
-  background: $blanco;
-  border-top: 3px solid $verde-agua;
-  border-radius: 12px;
+  background: colors.$white;
+  border-top: 3px solid colors.$verde-agua;
+  border-radius: shape.$radius-card;
   padding: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: elevation.$shadow-hover;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -288,23 +278,22 @@ $texto-muted:    #555555;
   h3 {
     flex: 1;
     min-width: 0;
-    font-family: 'Work Sans', sans-serif;
+    font-family: typography.$font-principal;
     font-size: 16px;
     font-weight: 700;
-    color: $texto-primario;
+    color: colors.$texto-principal;
     margin: 0;
     line-height: 1.3;
   }
 }
 
 .btn-cerrar {
+  @include mixins.tap-target;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
   border: none;
   border-radius: 50%;
-  background: #f2f2f2;
-  color: $texto-muted;
+  background: colors.$off-white;
+  color: colors.$texto-terciario;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,17 +306,17 @@ $texto-muted:    #555555;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Work Sans', sans-serif;
-  font-size: 12.5px;
-  color: $texto-muted;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-label;
+  color: colors.$texto-terciario;
 
-  ion-icon { font-size: 15px; color: $verde-bosque; }
+  ion-icon { font-size: 15px; color: colors.$verde-bosque; }
 }
 
 .detalle-descripcion {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 13px;
-  color: $texto-muted;
+  font-family: typography.$font-principal;
+  font-size: typography.$fs-caption;
+  color: colors.$texto-terciario;
   line-height: 1.55;
   margin: 0;
 }
@@ -354,9 +343,9 @@ $texto-muted:    #555555;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  background: $fondo-claro;
+  background: colors.$off-white;
   border: 1.5px solid transparent;
-  border-radius: 12px;
+  border-radius: shape.$radius-card;
   padding: 8px 2px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -364,10 +353,10 @@ $texto-muted:    #555555;
   .emoji-icono { font-size: 21px; line-height: 1; }
 
   .emoji-titulo {
-    font-family: 'Work Sans', sans-serif;
+    font-family: typography.$font-principal;
     font-size: 9.5px;
     font-weight: 600;
-    color: $texto-muted;
+    color: colors.$texto-terciario;
     text-align: center;
     line-height: 1.2;
     max-width: 100%;
@@ -377,10 +366,10 @@ $texto-muted:    #555555;
   }
 
   &.activo {
-    background: rgba(8, 184, 157, 0.12);
-    border-color: $verde-agua;
+    background: rgba(colors.$verde-agua, 0.12);
+    border-color: colors.$verde-agua;
 
-    .emoji-titulo { color: $verde-bosque; }
+    .emoji-titulo { color: colors.$verde-bosque; }
   }
 
   &:active { transform: scale(0.88); }
@@ -428,26 +417,11 @@ $texto-muted:    #555555;
 
 // ── Botón primario ─────────────────────────────────────────
 .btn-primary {
+  @include mixins.btn-primary;
   width: 100%;
-  background: $verde-bosque;
-  color: $blanco;
-  font-family: 'Work Sans', sans-serif;
-  font-size: 14.5px;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
   margin-top: 4px;
-  transition: background 0.15s ease;
 
   ion-icon { font-size: 18px; }
-
-  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
 }
 
 // ── Ajustes para pantallas muy pequeñas ───────────────────
