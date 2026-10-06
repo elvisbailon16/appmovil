@@ -13,11 +13,8 @@ import { Preferences } from '@capacitor/preferences';
   providedIn: 'root',
 })
 export class NotificacionesService {
-  // InitPush() se llama tanto desde este constructor como desde app.component.ts —
-  // este flag evita registrar los listeners de PushNotifications dos veces (lo que
-  // hacía que cada notificación se procesara/mostrara duplicada).
-  private initialized = false;
-
+  // Servicio singleton (providedIn: 'root'): el constructor corre una sola vez,
+  // así que los listeners de PushNotifications se registran una única vez.
   constructor(private platform:Platform) {
     if(this.platform.is('capacitor')) {
       this.InitPush();
@@ -25,11 +22,6 @@ export class NotificacionesService {
   }
 
   InitPush() {
-    if (this.initialized) return;
-    this.initialized = true;
-
-    console.log('Initializing HomePage');
-
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
     // Android 13+ pedirá el permiso POST_NOTIFICATIONS (declarado en AndroidManifest.xml);

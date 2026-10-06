@@ -6,12 +6,13 @@ import { EventoComponent } from '../Componentes/evento/evento.component';
 import { ApiService } from 'src/app/Service/api-service';
 import { CategoriasComponent } from '../Componentes/categorias/categorias.component';
 import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.component';
+import { DestacadosEventComponent } from '../Componentes/destacados-event/destacados-event.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [CategoriasComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, EventoComponent, EmptyStateComponent]
+  imports: [CategoriasComponent, DestacadosEventComponent, IonInfiniteScrollContent, IonInfiniteScroll, IonButtons, IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, EventoComponent, EmptyStateComponent]
 })
 export class HomePage implements OnInit {
   
@@ -74,12 +75,11 @@ onCategoriaSeleccionada(id: string | null): void {
 }
 
 onIonInfinite(event: InfiniteScrollCustomEvent) {
-  if (this.categoriaActiva) {
-    this.onCategoriaSeleccionada(this.categoriaActiva);
-  }else{
-    this.cargarEventos(); 
-  }
-  setTimeout(() => event.target.complete(), 500);
+  // El backend no pagina get_eventos/get_eventos_categoria: la carga inicial ya trae
+  // la lista completa, así que no hay nada más que pedir. Se deshabilita para no
+  // repetir la misma petición en cada scroll al final de la lista.
+  event.target.complete();
+  event.target.disabled = true;
 }
 
 }

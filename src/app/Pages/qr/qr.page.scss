@@ -1,13 +1,13 @@
 // qr.page.scss
-$verde-bosque:  #005846;
-$verde-lima:    #44D62C;
-$verde-agua:    #08B89D;
-$blanco:        #FFFFFF;
-$texto-primario:#1A1A1A;
+$verde-bosque:  var(--verde-bosque);
+$verde-lima:    var(--verde-lima);
+$verde-agua:    var(--verde-agua);
+$blanco:        var(--white);
+$texto-primario:var(--texto-principal);
 $texto-muted:   #666666;
 
 ion-content {
-  --background: #f5f5f5;
+  --background: var(--off-white);
   --overflow: hidden;
 }
 

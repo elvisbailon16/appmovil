@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
 import { ApiService } from 'src/app/Service/api-service';
-import { Auth } from 'src/app/core/services/auth';
+import { SesionService } from 'src/app/Service/sesion-service';
 
 @Component({
   selector: 'app-perfil',
@@ -17,7 +17,7 @@ import { Auth } from 'src/app/core/services/auth';
   standalone: true,
   imports: [IonIcon, IonContent, CommonModule, FormsModule, CabeceraComponent]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage implements OnInit, OnDestroy {
 
   mapaVisible = false;
   cargandoMapa = false;
@@ -26,7 +26,7 @@ export class PerfilPage implements OnInit {
   statActivo: 'insignias' | 'inscripciones' = 'insignias';
   userData: any;
 
-  constructor(private router: Router, private apiService: ApiService, private authService: Auth) { }
+  constructor(private router: Router, private apiService: ApiService, private sesionService: SesionService) { }
 
   ngOnInit(): void {
     this.obtenerUbicacion();
@@ -38,6 +38,11 @@ export class PerfilPage implements OnInit {
     })
   }
 
+  ngOnDestroy(): void {
+    this.mapa?.remove();
+    this.mapa = null;
+  }
+
 
   insignias = [
     { id: 1, nombre: 'Congreso estudiantil de investigación', puntos: 3 },
@@ -45,16 +50,20 @@ export class PerfilPage implements OnInit {
     { id: 3, nombre: 'Congreso estudiantil de investigación', puntos: 3 },
   ];
 
+  irAConfiguracion(): void {
+    this.router.navigate(['/configuracion']);
+  }
+
   cerrarSesion(): void {
     this.apiService.cerrarSesion().subscribe({
       next: async () => {
-        await this.authService.clearSession();
+        await this.sesionService.limpiarDatosUsuario();
         this.router.navigate(['/login'], { replaceUrl: true });
       },
       error: async (e) => {
         console.log('Error cerrando sesión:', e);
         // Aunque el backend falle (ej. sin red), no dejamos al usuario atascado logueado localmente.
-        await this.authService.clearSession();
+        await this.sesionService.limpiarDatosUsuario();
         this.router.navigate(['/login'], { replaceUrl: true });
       }
     });

@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IonIcon } from "@ionic/angular/standalone";
-import { ApiService } from 'src/app/Service/api-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -8,29 +7,20 @@ import { CommonModule } from '@angular/common';
   selector: 'app-inscripcion',
   templateUrl: './inscripcion.component.html',
   styleUrls: ['./inscripcion.component.scss'],
-  imports: [IonIcon, CommonModule]
+  imports: [IonIcon, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InscripcionComponent  implements OnInit {
-@Input() inscripcion!: any;
-  cargando = false;
-  error: string | null = null;
-  name:any;
-  constructor(private apiService: ApiService, private router:Router ) { }
+export class InscripcionComponent {
+  @Input() inscripcion!: any;
 
-  ngOnInit() {
-
-  }
-
-
+  constructor(private router: Router) { }
 
   eventClick(inscripcion: any) {
-    this.name = localStorage.getItem('inscripcion');
-    if(this.name){
-      localStorage.removeItem('inscripcion');
-    }
-    localStorage.setItem('inscripcion', inscripcion.nombre);
     this.router.navigate(['/certificados'], {
-      queryParams: { certificados: JSON.stringify(inscripcion.certificados) }
+      queryParams: {
+        certificados: JSON.stringify(inscripcion.certificados),
+        evento: inscripcion.nombre,
+      }
     });
   }
 

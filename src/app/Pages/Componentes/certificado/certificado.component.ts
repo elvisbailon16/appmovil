@@ -1,5 +1,5 @@
 // certificado.component.ts
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 
@@ -16,16 +16,10 @@ export interface Certificado {
   styleUrls: ['./certificado.component.scss'],
   standalone: true,
   imports: [CommonModule, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CertificadoComponent {
   @Input() certificado!: Certificado;
-
-  name: any;
-  
-  ngOnInit() {
-    this.name = localStorage.getItem('inscripcion');
-
-  }
 
   descargar(): void {
     if (this.certificado?.urldescarga) {

@@ -25,6 +25,7 @@ export class CertificadosPage implements OnInit {
 
   certificados: Certificado[] | null = null;
   evento: any = null;
+  nombreEvento: string | null = null;
   cargando = false;
   error: string | null = null;
 
@@ -34,6 +35,8 @@ export class CertificadosPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.nombreEvento = this.route.snapshot.queryParamMap.get('evento');
 
     // La lista de certificados llega como JSON serializado en el query param:
     // /certificados?certificados=[{"id":...,"codigo":...,"tipo":...,"urldescarga":...}]

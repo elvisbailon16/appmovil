@@ -1,0 +1,81 @@
+<!-- recordatorios.page.html -->
+<app-cabecera [titulo]="'Recordatorios'"></app-cabecera>
+
+<ion-content [fullscreen]="true">
+
+  <p class="intro-text">
+    Crea recordatorios que se repiten todos los días a la hora que elijas, aunque tengas la app cerrada.
+  </p>
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (cargando) {
+    <div class="estado-center">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+  } @else if (recordatorios.length === 0) {
+    <div class="estado-center">
+      <ion-icon name="alarm-outline"></ion-icon>
+      <p>Aún no tienes recordatorios.</p>
+    </div>
+  } @else {
+    <div class="lista-recordatorios">
+      @for (r of recordatorios; track r.id) {
+        <div class="recordatorio-card" [class.inactivo]="!r.activo">
+          <div class="recordatorio-hora">{{ formatHora(r) }}</div>
+
+          <div class="recordatorio-info" (click)="editar(r)">
+            <span class="recordatorio-titulo">{{ r.titulo }}</span>
+            <span class="recordatorio-mensaje">{{ r.mensaje }}</span>
+          </div>
+
+          <div class="recordatorio-acciones">
+            <ion-toggle [checked]="r.activo" (ionChange)="alternar(r, $event)"></ion-toggle>
+            <button class="btn-icono-eliminar" (click)="eliminar(r)" aria-label="Eliminar recordatorio">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <button class="btn-nuevo" (click)="abrirNuevo()">
+    <ion-icon name="add-outline"></ion-icon>
+    Nuevo recordatorio
+  </button>
+
+  <div style="height: 90px;"></div>
+
+</ion-content>
+
+@if (mostrarFormulario) {
+  <div class="form-overlay" (click)="cancelarFormulario()">
+    <div class="form-sheet" (click)="$event.stopPropagation()">
+      <div class="form-handle"></div>
+      <h3>{{ editandoId ? 'Editar recordatorio' : 'Nuevo recordatorio' }}</h3>
+
+      <label class="form-label">Título</label>
+      <input class="form-input" type="text" placeholder="Ej. Revisar eventos" [(ngModel)]="formTitulo" maxlength="60" />
+
+      <label class="form-label">Mensaje</label>
+      <input class="form-input" type="text" placeholder="Ej. No olvides revisar tus eventos" [(ngModel)]="formMensaje" maxlength="120" />
+
+      <label class="form-label">Hora</label>
+      <input class="form-input" type="time" [(ngModel)]="formHora" />
+
+      @if (error) {
+        <div class="error-banner">{{ error }}</div>
+      }
+
+      <div class="form-botones">
+        <button class="btn-cancelar" (click)="cancelarFormulario()">Cancelar</button>
+        <button class="btn-guardar" [disabled]="guardando" (click)="guardar()">
+          {{ guardando ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

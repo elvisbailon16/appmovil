@@ -15,6 +15,7 @@
     <h2>Hola {{ usuario?.name }}</h2>
     <p>Bienvenido, disfruta de tus eventos favoritos</p>
   </div>
+  <app-destacados-event></app-destacados-event>
   <app-categorias (categoriaSeleccionada)="onCategoriaSeleccionada($event)"></app-categorias>
   <!-- @for (evento of eventos; track evento.id) {
     <app-evento class="eventos-list" [evento]="evento"></app-evento>
@@ -22,7 +23,7 @@
       <!-- Sin eventos -->
   @if (!cargando && !error && eventos.length === 0) {
         <app-empty-state
-          imageSrc="assets/img/terri-mascot.png"
+          imageSrc="assets/icon/logo.png"
           title="Aún no hay eventos"
           message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
         ></app-empty-state>

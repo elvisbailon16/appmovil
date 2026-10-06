@@ -15,6 +15,8 @@ import { EmptyStateComponent } from '../Componentes/empty-state/empty-state.comp
 })
 export class ListEventoPage implements OnInit {
 eventos: any[] = [];
+private todosLosEventos: any[] = [];
+terminoBusqueda = '';
 cargando = false;
 error: string | null = null;
 selectedTab: 'todos' | 'mis-eventos' = 'todos';
@@ -28,6 +30,8 @@ ngOnInit() {
 selectTab(tab: 'todos' | 'mis-eventos') {
   this.selectedTab = tab;
   this.eventos = [];
+  this.todosLosEventos = [];
+  this.terminoBusqueda = '';
   this.error = null;
 
   if (tab === 'todos') {
@@ -37,7 +41,27 @@ selectTab(tab: 'todos' | 'mis-eventos') {
   }
 }
 
+/** Reintenta la carga de la pestaña activa (usado por el botón "Reintentar"). */
+recargar(): void {
+  if (this.selectedTab === 'todos') {
+    this.cargarEventos();
+  } else {
+    this.misEventos();
+  }
+}
 
+buscar(termino: string | null | undefined): void {
+  this.terminoBusqueda = termino ?? '';
+  const q = this.terminoBusqueda.trim().toLowerCase();
+
+  this.eventos = q
+    ? this.todosLosEventos.filter(e =>
+        (e.nombre ?? '').toLowerCase().includes(q) ||
+        (e.categoria ?? '').toLowerCase().includes(q) ||
+        (e.sede ?? e.direccion ?? '').toLowerCase().includes(q)
+      )
+    : this.todosLosEventos;
+}
 
 cargarEventos(): void {
 
@@ -46,8 +70,9 @@ cargarEventos(): void {
 
   this.eventosService.getEventos().subscribe({
     next: (res: any) => {
-      this.eventos = res.data ?? res;
-      this.cargando = false;   // ← faltaba esto
+      this.todosLosEventos = res.data ?? res;
+      this.buscar(this.terminoBusqueda);
+      this.cargando = false;
     },
     error: (err) => {
       this.error = err.status === 401
@@ -59,10 +84,14 @@ cargarEventos(): void {
 }
 
   misEventos(): void {
+    this.cargando = true;
+    this.error = null;
+
     this.eventosService.getMisEventos().subscribe({
       next: (res: any) => {
-        this.eventos = res.data ?? res;
-        this.cargando = false;   // ← faltaba esto
+        this.todosLosEventos = res.data ?? res;
+        this.buscar(this.terminoBusqueda);
+        this.cargando = false;
       },
       error: (err) => {
         this.error = err.status === 401
@@ -74,7 +103,11 @@ cargarEventos(): void {
   }
 
 onIonInfinite(event: InfiniteScrollCustomEvent) {
-  setTimeout(() => event.target.complete(), 500);
+  // El backend no pagina get_eventos/get_mis_eventos: ya se trajo la lista completa
+  // en la carga inicial, así que no hay nada más que pedir. Se deshabilita para no
+  // repetir la misma petición en cada scroll al final de la lista.
+  event.target.complete();
+  event.target.disabled = true;
 }
 
 

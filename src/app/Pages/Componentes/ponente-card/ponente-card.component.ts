@@ -1,5 +1,5 @@
 // ponente-card.component.ts
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -20,6 +20,7 @@ export interface Ponente {
   styleUrls: ['./ponente-card.component.scss'],
   standalone: true,
   imports: [CommonModule, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PonenteCardComponent {
   @Input() ponente!: Ponente;

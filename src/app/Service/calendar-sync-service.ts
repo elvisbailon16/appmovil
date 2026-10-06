@@ -3,6 +3,12 @@ import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { CapacitorCalendar, CalendarPermissionScope } from '@ebarooni/capacitor-calendar';
 import { ApiService } from './api-service';
+import { environment } from 'src/environments/environment';
+
+/** Log de diagnóstico del sync, silenciado en producción (puede incluir datos del usuario). */
+function logSync(...args: unknown[]): void {
+  if (!environment.production) console.log('[CalendarSync]', ...args);
+}
 
 const SYNC_MAP_KEY = 'calendar_sync_map';
 
@@ -31,14 +37,17 @@ export class CalendarSyncService {
   ) {}
 
   async sync(): Promise<void> {
+    logSync('sync() invocado. syncing =', this.syncing, '| es plataforma capacitor =', this.platform.is('capacitor'));
     if (this.syncing || !this.platform.is('capacitor')) return;
     this.syncing = true;
 
     try {
       const tienePermiso = await this.asegurarPermiso();
+      logSync('permiso de calendario concedido =', tienePermiso);
       if (!tienePermiso) return;
 
       const inscripciones = await this.obtenerInscripciones();
+      logSync('inscripciones obtenidas de la API =', inscripciones.length);
       const mapa = await this.obtenerMapaSincronizado();
       const idsVigentes = new Set<string>();
 
@@ -48,16 +57,21 @@ export class CalendarSyncService {
         idsVigentes.add(id);
 
         const opciones = this.mapearEvento(evento);
-        if (!opciones) continue; // sin fecha de inicio válida, no se puede agendar
+        if (!opciones) {
+          console.warn('[CalendarSync] evento sin fecha válida, se omite:', evento);
+          continue;
+        }
 
         const hash = JSON.stringify(opciones);
         const existente = mapa[id];
 
         if (!existente) {
           const nativeId = await this.crearEventoNativo(opciones);
+          logSync('evento creado en calendario nativo:', opciones.title, '| nativeId =', nativeId);
           if (nativeId) mapa[id] = { nativeId, hash };
         } else if (existente.hash !== hash) {
           const actualizado = await this.actualizarEventoNativo(existente.nativeId, opciones);
+          logSync('evento actualizado:', opciones.title, '| ok =', actualizado);
           if (actualizado) mapa[id] = { nativeId: existente.nativeId, hash };
         }
       }
@@ -76,6 +90,17 @@ export class CalendarSyncService {
     } finally {
       this.syncing = false;
     }
+  }
+
+  /** Al cerrar sesión: quita del calendario nativo los eventos del usuario y olvida el mapa de sincronización. */
+  async limpiar(): Promise<void> {
+    if (this.platform.is('capacitor')) {
+      const mapa = await this.obtenerMapaSincronizado();
+      for (const { nativeId } of Object.values(mapa)) {
+        await this.eliminarEventoNativo(nativeId);
+      }
+    }
+    await Preferences.remove({ key: SYNC_MAP_KEY });
   }
 
   private async asegurarPermiso(): Promise<boolean> {

@@ -23,10 +23,10 @@ export class WalletCPage implements OnInit {
   constructor(private eventosService: ApiService) { }
 
   ngOnInit() {
-    this.detallesInscripcion();
+    this.cargarCertificados();
   }
 
-  detallesInscripcion() {
+  cargarCertificados() {
     this.cargando = true;
     this.error = null;
     this.eventosService.getMisCertificados().subscribe({
@@ -35,7 +35,7 @@ export class WalletCPage implements OnInit {
         this.cargando = false;
       },
       error: () => {
-        this.error = 'No se pudo cargar la agenda de actividades.';
+        this.error = 'No se pudieron cargar tus certificados.';
         this.cargando = false;
       },
     })

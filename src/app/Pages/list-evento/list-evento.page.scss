@@ -1,4 +1,25 @@
 @use '../../../theme/colors' as colors;
+@use '../../../theme/shape' as shape;
+@use '../../../theme/elevation' as elevation;
+@use '../../../theme/spacing' as spacing;
+
+.search-container {
+  padding: spacing.$space-2 spacing.$space-4 spacing.$space-1;
+
+  ion-searchbar {
+    --background: var(--off-white);
+    --border-radius: #{shape.$radius-pill};
+    --box-shadow: #{elevation.$shadow-resting};
+    --placeholder-color: var(--gray-medium);
+    --icon-color: var(--verde-bosque);
+    --clear-button-color: var(--gray-medium);
+    --color: var(--texto-principal);
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
 
 .button-container {
   display: flex;

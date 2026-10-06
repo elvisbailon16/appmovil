@@ -1,9 +1,11 @@
 // ubicacion.page.ts
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { CabeceraComponent } from '../Componentes/cabecera/cabecera.component';
 import * as L from 'leaflet';
+import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-ubicacion',
@@ -12,13 +14,14 @@ import * as L from 'leaflet';
   standalone: true,
   imports: [CommonModule, DecimalPipe, IonContent, IonIcon, IonSpinner, CabeceraComponent],
 })
-export class UbicacionPage {
+export class UbicacionPage implements OnDestroy {
 
   coordenadas: { lat: number; lng: number } | null = null;
   precision: number = 0;
   direccion: string = '';
   cargando = false;
   cargandoMapa = true;
+  errorUbicacion: string | null = null;
   private mapa: L.Map | null = null;
   private marcador: L.Marker | null = null;
 
@@ -26,31 +29,63 @@ export class UbicacionPage {
     this.actualizarUbicacion();
   }
 
-  actualizarUbicacion(): void {
+  ngOnDestroy(): void {
+    this.mapa?.remove();
+    this.mapa = null;
+    this.marcador = null;
+  }
+
+  async actualizarUbicacion(): Promise<void> {
     this.cargando = true;
     this.cargandoMapa = true;
+    this.errorUbicacion = null;
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
+    try {
+      let lat: number;
+      let lng: number;
+      let precision: number;
 
-        this.coordenadas = { lat, lng };
-        this.precision   = Math.round(pos.coords.accuracy);
-        this.cargando    = false;
+      if (Capacitor.isNativePlatform()) {
+        // Dispositivo / emulador real -> plugin nativo de Capacitor (mismo enfoque que perfil.page.ts)
+        let estado = await Geolocation.checkPermissions();
+        if (estado.location !== 'granted') {
+          estado = await Geolocation.requestPermissions();
+        }
+        if (estado.location !== 'granted') {
+          this.errorUbicacion = 'Debes conceder el permiso de ubicación en los ajustes del dispositivo.';
+          this.cargando = false;
+          this.cargandoMapa = false;
+          return;
+        }
 
-        // ✅ Mismo principio que perfil — setTimeout espera que el DOM esté listo
-        setTimeout(() => this.iniciarMapa(lat, lng), 150);
+        const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+        lat = pos.coords.latitude;
+        lng = pos.coords.longitude;
+        precision = pos.coords.accuracy;
+      } else {
+        // Navegador (ionic serve) -> API web nativa
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true })
+        );
+        lat = pos.coords.latitude;
+        lng = pos.coords.longitude;
+        precision = pos.coords.accuracy;
+      }
 
-        this.obtenerDireccion(lat, lng);
-      },
-      (err) => {
-        console.error('Error ubicación:', err);
-        this.cargando = false;
-        this.cargandoMapa = false;
-      },
-      { enableHighAccuracy: true }
-    );
+      this.coordenadas = { lat, lng };
+      this.precision   = Math.round(precision);
+      this.cargando    = false;
+
+      // ✅ setTimeout espera que el DOM esté listo
+      setTimeout(() => this.iniciarMapa(lat, lng), 150);
+
+      this.obtenerDireccion(lat, lng);
+    } catch (err) {
+      console.error('Error ubicación:', err);
+      this.errorUbicacion = 'No se pudo obtener tu ubicación.';
+      this.cargando = false;
+      this.cargandoMapa = false;
+    }
   }
 
   private iniciarMapa(lat: number, lng: number): void {

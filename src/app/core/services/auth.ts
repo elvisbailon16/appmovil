@@ -1,11 +1,16 @@
 // src/app/core/services/auth.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
+import { environment } from 'src/environments/environment';
 
 /** Se lanza cuando no se pudo ni siquiera contactar al servidor (sin internet). */
 class ErrorSinConexion extends Error {}
+/** Se lanza cuando localmente no hay forma de restaurar la sesión (no es un tema de red). */
+class ErrorSesionInvalida extends Error {}
+/** Tiempo máximo que esperamos por el refresh antes de asumir que la red no responde. */
+const REFRESH_TIMEOUT_MS = 10000;
 
 const ACCESS_TOKEN_KEY = 'token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -68,11 +73,20 @@ export class Auth {
     ]);
   }
 
-  /** true si el error es por falta de conexión, no porque el servidor haya rechazado el refresh token. */
+  /** true si el error es por falta de conexión (o no se puede determinar), no porque el servidor
+   *  haya rechazado explícitamente el refresh token. Ante la duda, preferimos NO cerrar la sesión:
+   *  en la app nativa (Capacitor con CapacitorHttp habilitado, ver capacitor.config.ts) los errores
+   *  de red no siempre llegan como un HttpErrorResponse con status 0 — el bridge nativo a veces
+   *  lanza un error "crudo" sin status, o navigator.onLine reporta mal la conectividad real en
+   *  WebView. Solo tratamos el error como un rechazo real cuando el servidor efectivamente
+   *  respondió con un status HTTP. */
   esErrorDeConectividad(err: unknown): boolean {
+    if (err instanceof ErrorSesionInvalida) return false;
     if (err instanceof ErrorSinConexion) return true;
-    // status 0 = el request nunca llegó a obtener respuesta del servidor (sin internet, DNS, etc.)
-    return err instanceof HttpErrorResponse && err.status === 0;
+    if (err instanceof HttpErrorResponse) {
+      return !err.status || err.status <= 0;
+    }
+    return true;
   }
 
   async refreshAccessToken(): Promise<string> {
@@ -80,7 +94,7 @@ export class Auth {
 
     this.refreshPromise = (async () => {
       const refreshToken = await this.getRefreshToken();
-      if (!refreshToken) throw new Error('No hay refresh token');
+      if (!refreshToken) throw new ErrorSesionInvalida('No hay refresh token');
 
       if (typeof navigator !== 'undefined' && navigator.onLine === false) {
         throw new ErrorSinConexion('Sin conexión a internet');
@@ -88,7 +102,9 @@ export class Auth {
 
       try {
         const respuesta: any = await firstValueFrom(
-          this.httpclient.post(`https://ws.espam.edu.ec/api/auth/refresh`, { refresh_token: refreshToken })
+          this.httpclient
+            .post(`${environment.apiUrl}/auth/refresh`, { refresh_token: refreshToken })
+            .pipe(timeout(REFRESH_TIMEOUT_MS))
         );
         // El login envuelve la respuesta en { data: { access_token, ... } }; el refresh puede
         // venir igual (envuelto) o plano. Soportamos ambos para no guardar "undefined" como token.

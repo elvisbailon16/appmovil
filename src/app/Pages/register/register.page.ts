@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IonContent, IonIcon, IonButton, IonSpinner,
   IonInput, IonInputPasswordToggle, IonItem,
-  IonCheckbox, IonLabel
+  IonCheckbox, IonLabel, ToastController
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/Service/api-service';
@@ -27,33 +27,21 @@ export class RegisterPage {
   constructor(
     private router: Router,
     private apiService: ApiService,
+    private toastController: ToastController,
   ) {}
 
-  // register(identificacion: any, nombres: any, correo: any, password: any, confirmPassword: any): void {
-  //   if (password.value !== confirmPassword.value) {
-  //     console.log('Las contraseñas no coinciden');
-  //     return;
-  //   }
-
-  //   this.cargando = true;
-  //   this.apiService.registerUser({
-  //     identificacion: identificacion.value,
-  //     nombres: nombres.value,
-  //     correo: correo.value,
-  //     password: password.value,
-  //   }).subscribe({
-  //     next: (datos: any) => {
-  //       this.cargando = false;
-  //       if (datos.success) {
-  //         this.router.navigate(['/login']);
-  //       }
-  //     },
-  //     error: (e: any) => {
-  //       this.cargando = false;
-  //       console.log(e);
-  //     }
-  //   });
-  // }
+  // El backend todavía no expone un endpoint de registro (ApiService no tiene
+  // registerUser). Hasta que exista, el botón no debe fingir que crea la cuenta:
+  // se avisa explícitamente en vez de quedar "muerto" sin feedback.
+  async register(): Promise<void> {
+    const toast = await this.toastController.create({
+      message: 'El registro todavía no está disponible. Vuelve pronto.',
+      duration: 3000,
+      color: 'warning',
+      position: 'top',
+    });
+    await toast.present();
+  }
 
   goLogin(): void {
     this.router.navigate(['/login']);

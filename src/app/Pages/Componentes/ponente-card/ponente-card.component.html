@@ -4,7 +4,7 @@
   <!-- Foto -->
   <div class="ponente-avatar">
     @if (ponente.foto) {
-      <img [src]="ponente.foto" [alt]="ponente.nombre" class="avatar-img" />
+      <img [src]="ponente.foto" [alt]="ponente.nombre" class="avatar-img" loading="lazy" decoding="async" />
     } @else {
       <div class="avatar-placeholder">
         <ion-icon name="person-outline"></ion-icon>

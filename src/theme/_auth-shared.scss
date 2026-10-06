@@ -137,6 +137,18 @@
   font-size: 1rem;
 }
 
+// El botón interno de ion-input-password-toggle tiene un min-height fijo de ~48px
+// (objetivo táctil de Ionic) que, al ir dentro de fill="outline", infla la caja del
+// input completo por encima de la de un input sin ese slot (ver Email vs Contraseña).
+// Se saca del flujo flex y se centra con position:absolute para que no dicte la
+// altura del contenedor.
+@mixin auth-password-toggle {
+  position: absolute;
+  inset-inline-end: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 // Altura 48dp / radio 8dp según Guía de Lineamientos Visuales (botón primario filled)
 @mixin auth-btn-primary {
   --background: var(--verde-bosque);

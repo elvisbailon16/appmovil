@@ -3,7 +3,7 @@
 
   <div class="caja">
       <div class="search-container">
-      <ion-searchbar placeholder="Buscar eventos..."></ion-searchbar>
+      <ion-searchbar placeholder="Buscar eventos..." [value]="terminoBusqueda" (ionInput)="buscar($any($event).detail.value)" debounce="250"></ion-searchbar>
     </div>
 
     <div class="button-container">
@@ -35,16 +35,16 @@
   @if (error && !cargando) {
     <div class="estado-center">
       <p>{{ error }}</p>
-      <button class="btn-retry" (click)="cargarEventos()">Reintentar</button>
+      <button class="btn-retry" (click)="recargar()">Reintentar</button>
     </div>
   }
 
   <!-- Sin eventos -->
   @if (!cargando && !error && eventos.length === 0) {
         <app-empty-state
-          imageSrc="assets/img/terri-mascot.png"
-          title="Aún no hay eventos"
-          message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
+          imageSrc="assets/icon/logo.png"
+          [title]="terminoBusqueda ? 'Sin resultados' : 'Aún no hay eventos'"
+          [message]="terminoBusqueda ? 'No encontramos eventos que coincidan con &quot;' + terminoBusqueda + '&quot;.' : 'Cuando se publiquen nuevos eventos institucionales, los verás aquí.'"
         ></app-empty-state>
   }@else{
     @for (evento of eventos; track evento.id) {

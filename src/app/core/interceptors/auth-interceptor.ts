@@ -4,8 +4,15 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, from, switchMap, throwError } from 'rxjs';
 import { Auth } from '../services/auth';
+import { SesionService } from 'src/app/Service/sesion-service';
+import { environment } from 'src/environments/environment';
 
 const PUBLIC_ROUTES = ['/auth/login', '/auth/refresh', '/auth/microsoft'];
+// Dominio propio del backend. Cualquier request a otro host (Microsoft Graph vía
+// MsalInterceptor, tiles de mapas, etc.) no debe llevar nuestro Bearer token: lo
+// pisaría sobre el que ya puso el interceptor correspondiente, o lo filtraría a
+// un tercero sin necesidad.
+const API_HOST = new URL(environment.apiUrl).host;
 
 function withToken(req: HttpRequest<unknown>, token: string | null): HttpRequest<unknown> {
   return token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
@@ -14,6 +21,12 @@ function withToken(req: HttpRequest<unknown>, token: string | null): HttpRequest
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(Auth);
   const router = inject(Router);
+  const sesionService = inject(SesionService);
+
+  // Solo interceptamos peticiones a nuestro propio backend.
+  if (!req.url.includes(API_HOST)) {
+    return next(req);
+  }
 
   // no interceptar rutas públicas (evita el loop/error que viste)
   if (PUBLIC_ROUTES.some(route => req.url.includes(route))) {
@@ -34,6 +47,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           // de largo sin pasar por este catchError, así que no se cierra sesión de más.
           catchError((refreshErr) => {
             if (!authService.esErrorDeConectividad(refreshErr)) {
+              // La sesión venció del todo: se borran también los demás datos del usuario.
+              sesionService.limpiarDatosUsuario();
               router.navigate(['/login'], { replaceUrl: true });
             }
             return throwError(() => err);

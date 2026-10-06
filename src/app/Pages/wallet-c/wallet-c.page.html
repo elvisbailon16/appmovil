@@ -4,7 +4,7 @@
   @if (cargando) {
     <div class="estado-center">
       <ion-spinner name="crescent"></ion-spinner>
-      <p>Cargando inscripciones...</p>
+      <p>Cargando certificados...</p>
     </div>
   }
 
@@ -12,16 +12,16 @@
     <div class="estado-center">
       <ion-icon name="alert-circle-outline"></ion-icon>
       <p>{{ error }}</p>
-      <button class="btn-retry" (click)="detallesInscripcion()">Reintentar</button>
+      <button class="btn-retry" (click)="cargarCertificados()">Reintentar</button>
     </div>
   }
 
   @if (!cargando && !error) {
     @if (inscripciones.length === 0) {
       <app-empty-state
-        imageSrc="assets/img/terri-mascot.png"
-        title="Aún no hay eventos"
-        message="Cuando se publiquen nuevos eventos institucionales, los verás aquí."
+        imageSrc="assets/icon/logo.png"
+        title="Aún no tienes certificados"
+        message="Cuando te inscribas y participes en eventos, tus certificados aparecerán aquí."
       ></app-empty-state>
     } @else {
       @for (inscripcion of inscripciones; track inscripcion.id) {

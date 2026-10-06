@@ -1,0 +1,232 @@
+// recordatorios.page.scss
+$verde-bosque:  var(--verde-bosque);
+$verde-lima:    var(--verde-lima);
+$blanco:        var(--white);
+$texto-primario:var(--texto-principal);
+$texto-muted:   #666666;
+$rojo-error:    var(--rojo-error);
+
+.intro-text {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  color: $texto-muted;
+  padding: 16px 16px 4px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.error-banner {
+  margin: 8px 16px 0;
+  background: #fdecea;
+  border: 1px solid #f5c6c3;
+  color: $rojo-error;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.estado-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 24px;
+  color: $texto-muted;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+
+  ion-icon { font-size: 40px; color: #cccccc; }
+}
+
+.lista-recordatorios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.recordatorio-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: $blanco;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: opacity 0.2s ease;
+
+  &.inactivo {
+    opacity: 0.5;
+  }
+}
+
+.recordatorio-hora {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: $verde-bosque;
+  min-width: 54px;
+}
+
+.recordatorio-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.recordatorio-titulo {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: $texto-primario;
+}
+
+.recordatorio-mensaje {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  color: $texto-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recordatorio-acciones {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  ion-toggle {
+    --track-background-checked: #{$verde-bosque};
+  }
+}
+
+.btn-icono-eliminar {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: $rojo-error;
+
+  ion-icon { font-size: 18px; }
+}
+
+.btn-nuevo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 32px);
+  margin: 8px 16px 0;
+  background: $verde-bosque;
+  color: $blanco;
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  ion-icon { font-size: 18px; }
+
+  &:active { opacity: 0.85; }
+}
+
+// ── Formulario (hoja inferior) ─────────────────────────────
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.form-sheet {
+  width: 100%;
+  background: $blanco;
+  border-radius: 16px 16px 0 0;
+  padding: 8px 20px calc(env(safe-area-inset-bottom) + 20px);
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: $texto-primario;
+    margin: 4px 0 16px;
+  }
+}
+
+.form-handle {
+  width: 40px;
+  height: 4px;
+  background: #dddddd;
+  border-radius: 100px;
+  margin: 10px auto 6px;
+}
+
+.form-label {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: $texto-muted;
+  margin: 10px 0 4px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1.5px solid #dddddd;
+  border-radius: 8px;
+  padding: 11px 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  color: $texto-primario;
+  background: #fafafa;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: $verde-bosque;
+  }
+}
+
+.form-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn-cancelar {
+  flex: 1;
+  background: transparent;
+  border: 1.5px solid #dddddd;
+  color: $texto-muted;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  flex: 1;
+  background: $verde-bosque;
+  border: none;
+  color: $blanco;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:disabled { opacity: 0.6; }
+}

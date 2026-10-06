@@ -1,5 +1,5 @@
 <!-- certificados.page.html -->
-<app-cabecera [titulo]="'Certificados'"></app-cabecera>
+<app-cabecera [titulo]="nombreEvento ? ('Certificados · ' + nombreEvento) : 'Certificados'"></app-cabecera>
 
 <ion-content>
 
@@ -14,7 +14,7 @@
     @if (certificados.length === 0) {
       <app-empty-state
         icon="ribbon-outline"
-        imageSrc="assets/img/terri-mascot.png"
+        imageSrc="assets/icon/logo.png"
         title="Sin certificados"
         message="Este evento todavía no tiene certificados disponibles para descargar."
       ></app-empty-state>
@@ -30,7 +30,7 @@
   @if (!cargando && !certificados) {
     <app-empty-state
       icon="alert-circle-outline"
-      imageSrc="assets/img/terri-mascot.png"
+      imageSrc="assets/icon/logo.png"
       title="No encontrado"
       message="No pudimos encontrar este evento entre tus certificados."
     ></app-empty-state>

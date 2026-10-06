@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/Service/api-service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IonIcon } from "@ionic/angular/standalone";
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -8,22 +7,17 @@ import { Router } from '@angular/router';
   selector: 'app-evento',
   templateUrl: './evento.component.html',
   styleUrls: ['./evento.component.scss'],
-  imports: [IonIcon, CommonModule]
+  imports: [IonIcon, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventoComponent  implements OnInit {
-@Input() evento!: any;
+export class EventoComponent {
+  @Input() evento!: any;
 
- 
-  constructor(private eventosService: ApiService, private router: Router) {}
- 
-  ngOnInit(){
-    // console.log(this.evento.imgprincipal)
-  }
- 
+  constructor(private router: Router) {}
+
   eventClick(id: string) {
     this.router.navigate(['/detalles-event'], {
       queryParams: { id: id }
     });
-    // console.log("hello", id);
   }
 }

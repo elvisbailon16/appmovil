@@ -1,7 +1,7 @@
-$verde-bosque: #005846;
-$verde-lima:   #44D62C;
-$verde-agua:   #08B89D;
-$blanco:       #FFFFFF;
+$verde-bosque: var(--verde-bosque);
+$verde-lima:   var(--verde-lima);
+$verde-agua:   var(--verde-agua);
+$blanco:       var(--white);
 
 .fab-qr {
   position: fixed;

@@ -1,5 +1,4 @@
-import { BrowserCacheLocation, IPublicClientApplication, PublicClientApplication, InteractionType } from '@azure/msal-browser';
-import { MsalGuardConfiguration, MsalInterceptorConfiguration } from '@azure/msal-angular';
+import { BrowserCacheLocation, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { Capacitor } from '@capacitor/core';
 
 // ─── Tus datos de Azure ───────────────────────────────────────────
@@ -14,21 +13,13 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     auth: {
       clientId: CLIENT_ID,
       authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+      // El WebView de Android se sirve desde https://localhost (ver androidScheme: 'https'
+      // en capacitor.config.ts) — por eso el redirect vuelve ahí y no a un esquema msauth://
+      // (eso es del SDK nativo de MSAL para Android, que este proyecto no usa).
       redirectUri: Capacitor.isNativePlatform()
-        ? 'msauth://ec.espam.terrimeet/callback'
+        ? 'https://localhost'
         : 'http://localhost:8100',
     },
     cache: { cacheLocation: BrowserCacheLocation.LocalStorage },
   });
-}
-
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return { interactionType: InteractionType.Redirect, authRequest: loginRequest };
-}
-
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap: new Map([['https://graph.microsoft.com/v1.0/me', ['User.Read']]]),
-  };
 }

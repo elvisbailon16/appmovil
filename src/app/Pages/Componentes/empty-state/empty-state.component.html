@@ -2,8 +2,7 @@
 <div class="empty-state">
 
   @if (imageSrc) {
-    <!-- <img [src]="imageSrc" alt="" class="empty-state__image" /> -->
-    <img src="../../../../assets/icon/logo.png" alt="Terri" class="empty-state__image" />
+    <img [src]="imageSrc" alt="Terri" class="empty-state__image" />
   } @else {
     <div class="empty-state__icon-wrapper">
       <ion-icon [name]="icon" class="empty-state__icon"></ion-icon>

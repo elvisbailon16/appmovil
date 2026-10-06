@@ -1,0 +1,102 @@
+// destacados-event.component.scss
+@use '../../../../theme/colors' as colors;
+@use '../../../../theme/typography' as typography;
+
+.destacados-wrap {
+  padding: 16px 0 8px;
+}
+
+.destacados-titulo {
+  font-family: typography.$font-principal;
+  font-size: 14px;
+  font-weight: 700;
+  color: colors.$texto-principal;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+  padding: 0 16px;
+}
+
+// Scroll horizontal sin scrollbar visible (mismo patrón que categorias)
+.destacados-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 4px 16px 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.destacado-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 68px;
+  min-width: 68px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+// Aro de color según estado (verde-lima en curso, verde-agua próximo, gris finalizado)
+.destacado-avatar-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid colors.$gray-light;
+  background: colors.$white;
+  box-sizing: border-box;
+
+  &.en-curso { border-color: colors.$verde-lima; }
+  &.proximo { border-color: colors.$verde-agua; }
+  &.finalizado { border-color: colors.$gray-light; }
+}
+
+.destacado-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.destacado-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: colors.$verde-bosque;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+// Chip de estado, superpuesto al borde inferior del aro
+.destacado-estado {
+  margin-top: -10px;
+  font-family: typography.$font-principal;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: colors.$white;
+  background: colors.$gray-medium;
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.en-curso { background: colors.$verde-lima; }
+  &.proximo { background: colors.$verde-agua; }
+  &.finalizado { background: colors.$gray-medium; }
+}

@@ -38,7 +38,6 @@
     "@capacitor/status-bar": "8.0.2",
     "@ebarooni/capacitor-calendar": "^8.2.0",
     "@ionic/angular": "^8.0.0",
-    "firebase": "^12.15.0",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
     "ng-qrcode": "^22.0.0",

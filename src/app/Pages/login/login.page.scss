@@ -23,6 +23,7 @@
 .custom-item { @include auth.auth-custom-item; }
 .item-icon { @include auth.auth-item-icon; }
 .custom-input { @include auth.auth-input; }
+ion-input-password-toggle { @include auth.auth-password-toggle; }
 
 /* ========== ACTIONS ROW (propio de login) ========== */
 .actions-row {

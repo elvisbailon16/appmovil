@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 const X_AppMovil_Token = 'A9FZK2xJr8EwQG6V4sHJKKh5DcpT1YBvLnI3aRk7mUeWOH';
+const API_URL = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root',
@@ -13,26 +15,26 @@ export class ApiService {
   constructor(private httpclient: HttpClient) {}
   // Api de implementacion para la logica de consumo necesario para el logeo de la app
   loginUser(email:string, password:string){
-    return this.httpclient.post('https://ws.espam.edu.ec/api/auth/login',{
+    return this.httpclient.post(`${API_URL}/auth/login`,{
       email: email,
       password: password
     })
   }
 
   loginMicrosoft(email:string){
-    return this.httpclient.post('https://ws.espam.edu.ec/api/auth/microsoft', {
+    return this.httpclient.post(`${API_URL}/auth/microsoft`, {
       email: email
     })
   }
 
   cerrarSesion() {
-    return this.httpclient.post('https://ws.espam.edu.ec/api/auth/logout', {}, {
+    return this.httpclient.post(`${API_URL}/auth/logout`, {}, {
       headers: this.getHeaders()
     });
   }
 
   getPerfilUsuario() {
-    return this.httpclient.get('https://ws.espam.edu.ec/api/appmovil/perfil_usuario', {
+    return this.httpclient.get(`${API_URL}/appmovil/perfil_usuario`, {
       headers: this.getHeaders()
     });
   }
@@ -54,65 +56,65 @@ export class ApiService {
     });
   }
   getEventos() {
-    return this.httpclient.get('https://ws.espam.edu.ec/api/appmovil/get_eventos', {
+    return this.httpclient.get(`${API_URL}/appmovil/get_eventos`, {
       headers: this.getPublicHeaders()
     });
   }
-  
+
   getEventoById(id: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_evento_id/${id}`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_evento_id/${id}`, {
       headers: this.getPublicHeaders()
     });
   }
 
 
   getCategorias() {
-    return this.httpclient.get('https://ws.espam.edu.ec/api/appmovil/get_categorias', {
+    return this.httpclient.get(`${API_URL}/appmovil/get_categorias`, {
       headers: this.getPublicHeaders()
     });
   }
 
   getEventosByCategoria(id_categoria: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_eventos_categoria/${id_categoria}`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_eventos_categoria/${id_categoria}`, {
       headers: this.getPublicHeaders()
     });
   }
 
-    getEventosDestacados(id_categoria: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_eventos_destacados`, {
+  getEventosDestacados() {
+    return this.httpclient.get(`${API_URL}/appmovil/get_eventos_destacados`, {
       headers: this.getPublicHeaders()
     });
   }
-  
+
 
   getPonentesByEvento(id_evento: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_ponentes_por_evento/${id_evento}`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_ponentes_por_evento/${id_evento}`, {
       headers: this.getPublicHeaders()
     });
   }
 
   getDetallePonente(id_ponente: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_detalle_ponente/${id_ponente}`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_detalle_ponente/${id_ponente}`, {
       headers: this.getPublicHeaders()
     });
   }
 
   getMisEventos() {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_mis_eventos`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_mis_eventos`, {
         headers: this.getHeaders()
 
     });
   }
 
   getMisCertificados() {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_certificados_usuario`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_certificados_usuario`, {
       headers: this.getHeaders()
     });
   }
 
 
   getActividadesByEvento(id: string) {
-    return this.httpclient.get(`https://ws.espam.edu.ec/api/appmovil/get_actividades_evento/${id}`, {
+    return this.httpclient.get(`${API_URL}/appmovil/get_actividades_evento/${id}`, {
       headers: this.getPublicHeaders()
     });
   }

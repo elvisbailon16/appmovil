@@ -64,7 +64,7 @@
     }
 
     @if (!coordenadas && !cargando) {
-      <p class="sin-datos">No se pudo obtener la ubicación.</p>
+      <p class="sin-datos">{{ errorUbicacion || 'No se pudo obtener la ubicación.' }}</p>
     }
 
     @if (cargando) {

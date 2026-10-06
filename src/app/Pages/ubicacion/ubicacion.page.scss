@@ -1,11 +1,12 @@
 @use 'sass:color';
+@use '../../../theme/colors' as colors;
 
 // ubicacion.page.scss
-$verde-bosque:  #005846;
-$verde-lima:    #44D62C;
-$verde-agua:    #08B89D;
-$blanco:        #FFFFFF;
-$texto-primario:#1A1A1A;
+$verde-bosque:  var(--verde-bosque);
+$verde-lima:    var(--verde-lima);
+$verde-agua:    var(--verde-agua);
+$blanco:        var(--white);
+$texto-primario:var(--texto-principal);
 $texto-muted:   #666666;
 
 ion-content {
@@ -177,7 +178,7 @@ ion-content {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f5f5f5;
+  background: var(--off-white);
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 16px;
@@ -239,6 +240,6 @@ ion-content {
 
   ion-icon { font-size: 18px; }
 
-  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
+  &:active { background: color.adjust(colors.$verde-bosque, $lightness: -8%); }
   &:disabled { opacity: 0.5; pointer-events: none; }
 }

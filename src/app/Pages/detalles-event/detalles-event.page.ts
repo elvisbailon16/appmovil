@@ -48,8 +48,8 @@ export class DetallesEventPage implements OnInit {
     this.error = null;
 
     this.apiService.getEventoById(id).subscribe({
-      next: (data) => {
-        this.evento  = data;
+      next: (data: any) => {
+        this.evento  = data?.data ?? data;
         this.cargando = false;
       },
       error: () => {

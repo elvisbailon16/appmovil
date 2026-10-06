@@ -1,8 +1,8 @@
 // ponente-card.component.scss
-$verde-bosque:  #005846;
-$verde-agua:    #08B89D;
-$blanco:        #FFFFFF;
-$texto-primario:#1A1A1A;
+$verde-bosque:  var(--verde-bosque);
+$verde-agua:    var(--verde-agua);
+$blanco:        var(--white);
+$texto-primario:var(--texto-principal);
 $texto-muted:   #666666;
 
 .ponente-card {

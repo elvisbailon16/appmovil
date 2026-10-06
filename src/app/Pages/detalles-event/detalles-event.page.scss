@@ -1,14 +1,15 @@
 @use 'sass:color';
+@use '../../../theme/colors' as colors;
 
 // detalle-evento.page.scss
 // Guía Visual TerriMeet — ESPAM MFL
 
-$verde-bosque:  #005846;
-$verde-lima:    #44D62C;
-$verde-ceibo:   #CBDB2A;
-$verde-agua:    #08B89D;
-$blanco:        #FFFFFF;
-$texto-primario:#1A1A1A;
+$verde-bosque:  var(--verde-bosque);
+$verde-lima:    var(--verde-lima);
+$verde-ceibo:   var(--verde-ceibo);
+$verde-agua:    var(--verde-agua);
+$blanco:        var(--white);
+$texto-primario:var(--texto-principal);
 $texto-muted:   #555555;
 
 // ── Estado de carga ───────────────────────────────────────
@@ -237,7 +238,7 @@ $texto-muted:   #555555;
 
   ion-icon { font-size: 18px; }
 
-  &:active { background: color.adjust($verde-bosque, $lightness: -8%); }
+  &:active { background: color.adjust(colors.$verde-bosque, $lightness: -8%); }
   &:disabled { opacity: 0.38; pointer-events: none; }
 }
 
@@ -261,7 +262,7 @@ $texto-muted:   #555555;
 
 .badge-finalizado {
   width: 100%;
-  background: #f5f5f5;
+  background: var(--off-white);
   color: #888;
   font-family: 'Work Sans', sans-serif;
   font-size: 14px;

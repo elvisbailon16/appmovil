@@ -1,3 +1,23 @@
-<p>
-  destacados-event works!
-</p>
+<!-- destacados-event.component.html -->
+@if (!cargando && destacados.length) {
+  <div class="destacados-wrap">
+    <h3 class="destacados-titulo">DESTACADOS</h3>
+
+    <div class="destacados-scroll">
+      @for (evento of destacados; track evento.id) {
+        <div class="destacado-item" (click)="abrirEvento(evento.id)">
+          <div class="destacado-avatar-wrap" [ngClass]="estadoClass(evento.statusevento)">
+            @if (evento.imgprincipal) {
+              <img [src]="evento.imgprincipal" [alt]="evento.nombre" class="destacado-avatar" loading="lazy" decoding="async">
+            } @else {
+              <div class="destacado-avatar-placeholder">
+                <ion-icon name="calendar-outline"></ion-icon>
+              </div>
+            }
+          </div>
+          <span class="destacado-estado" [ngClass]="estadoClass(evento.statusevento)">{{ evento.statusevento }}</span>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -103,6 +103,7 @@
           expand="block"
           class="btn-primary"
           [disabled]="cargando || !aceptaTerminos"
+          (click)="register()"
           >
           @if (cargando) {
             <ion-spinner name="crescent"></ion-spinner>

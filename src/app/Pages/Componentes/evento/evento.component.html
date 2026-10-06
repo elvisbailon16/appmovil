@@ -4,7 +4,7 @@
     <div class="event-image-wrap">
 
       @if (evento.imgprincipal) {
-        <img src="{{evento.imgprincipal}}" alt="Imagen del evento" class="event-img">
+        <img [src]="evento.imgprincipal" alt="Imagen del evento" class="event-img" loading="lazy" decoding="async">
       } @else {
         <div class="image-placeholder">
           <ion-icon name="calendar-outline"></ion-icon>
