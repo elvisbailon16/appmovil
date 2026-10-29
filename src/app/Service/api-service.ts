@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
+import { Storage } from '@ionic/storage-angular';
+import { Observable, from, of, throwError } from 'rxjs';
+import { catchError, switchMap, map } from 'rxjs/operators';
 
 const X_AppMovil_Token = 'A9FZK2xJr8EwQG6V4sHJKKh5DcpT1YBvLnI3aRk7mUeWOH';
 const API_URL = environment.apiUrl;
@@ -12,7 +14,69 @@ const API_URL = environment.apiUrl;
 })
 export class ApiService {
 
-  constructor(private httpclient: HttpClient) {}
+  private storage: Storage;
+  private storageReady:Promise<Storage>;
+
+
+  constructor(private httpclient: HttpClient) {
+    this.storage = new Storage();
+    this.storageReady = this.storage.create();
+  }
+
+  // Consulta la API y guarda su respuesta localmente.
+  // Si falla la conexión, recupera la última respuesta guardada.
+  private getWithCache<T>(
+    key: string,
+    request: Observable<T>
+  ): Observable<T> {
+
+    return from(this.storageReady).pipe(
+
+      switchMap(storage =>
+
+        request.pipe(
+
+          // Guardar la respuesta antes de entregarla al componente.
+          switchMap(response =>
+            from(storage.set(key, response)).pipe(
+              map(() => response)
+            )
+          ),
+
+          // Si falla la petición, intentar recuperar los datos locales.
+          catchError(error => {
+
+            // No ocultar errores de autenticación.
+            if (error.status === 401 || error.status === 403) {
+              return throwError(() => error);
+            }
+
+            return from(storage.get(key)).pipe(
+
+              switchMap(cachedData => {
+
+                if (
+                  cachedData !== null &&
+                  cachedData !== undefined
+                ) {
+                  return of(cachedData as T);
+                }
+
+                // No hay datos guardados: devolver el error original.
+                return throwError(() => error);
+              })
+
+            );
+          })
+
+        )
+
+      )
+
+    );
+  }
+
+
   // Api de implementacion para la logica de consumo necesario para el logeo de la app
   loginUser(email:string, password:string){
     return this.httpclient.post(`${API_URL}/auth/login`,{
@@ -55,12 +119,25 @@ export class ApiService {
       'Content-Type': 'application/json',
     });
   }
-  getEventos() {
-    return this.httpclient.get(`${API_URL}/appmovil/get_eventos`, {
-      headers: this.getPublicHeaders()
-    });
-  }
 
+
+  // getEventos() {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_eventos`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
+
+  getEventos() {
+    return this.getWithCache(
+      'eventos',
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_eventos`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
+  }
   getEventoById(id: string) {
     return this.httpclient.get(`${API_URL}/appmovil/get_evento_id/${id}`, {
       headers: this.getPublicHeaders()
