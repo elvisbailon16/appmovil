@@ -138,42 +138,113 @@ export class ApiService {
       )
     );
   }
+  // getEventoById(id: string) {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_evento_id/${id}`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
+
   getEventoById(id: string) {
-    return this.httpclient.get(`${API_URL}/appmovil/get_evento_id/${id}`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      `evento_${id}`,
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_evento_id/${id}`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
 
+  // getCategorias() {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_categorias`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
 
   getCategorias() {
-    return this.httpclient.get(`${API_URL}/appmovil/get_categorias`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      'categorias',
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_categorias`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
+
+  // getEventosByCategoria(id_categoria: string) {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_eventos_categoria/${id_categoria}`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
 
   getEventosByCategoria(id_categoria: string) {
-    return this.httpclient.get(`${API_URL}/appmovil/get_eventos_categoria/${id_categoria}`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      `eventos_categoria_${id_categoria}`,
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_eventos_categoria/${id_categoria}`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
+
+  // getEventosDestacados() {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_eventos_destacados`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
 
   getEventosDestacados() {
-    return this.httpclient.get(`${API_URL}/appmovil/get_eventos_destacados`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      'eventos_destacados',
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_eventos_destacados`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
 
+
+  // getPonentesByEvento(id_evento: string) {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_ponentes_por_evento/${id_evento}`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
 
   getPonentesByEvento(id_evento: string) {
-    return this.httpclient.get(`${API_URL}/appmovil/get_ponentes_por_evento/${id_evento}`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      `ponentes_evento_${id_evento}`,
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_ponentes_por_evento/${id_evento}`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
 
+  // getDetallePonente(id_ponente: string) {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_detalle_ponente/${id_ponente}`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
+
   getDetallePonente(id_ponente: string) {
-    return this.httpclient.get(`${API_URL}/appmovil/get_detalle_ponente/${id_ponente}`, {
-      headers: this.getPublicHeaders()
-    });
+    return this.getWithCache(
+      `detalle_ponente_${id_ponente}`,
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_detalle_ponente/${id_ponente}`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
 
   getMisEventos() {
@@ -190,10 +261,23 @@ export class ApiService {
   }
 
 
-  getActividadesByEvento(id: string) {
-    return this.httpclient.get(`${API_URL}/appmovil/get_actividades_evento/${id}`, {
-      headers: this.getPublicHeaders()
-    });
+  // getActividadesByEvento(id: string) {
+  //   return this.httpclient.get(`${API_URL}/appmovil/get_actividades_evento/${id}`, {
+  //     headers: this.getPublicHeaders()
+  //   });
+  // }
+
+    getActividadesByEvento(id: string) {
+    return this.getWithCache(
+      `actividades_evento_${id}`,
+      this.httpclient.get(
+        `${API_URL}/appmovil/get_actividades_eventogit/${id}`,
+        {
+          headers: this.getPublicHeaders()
+        }
+      )
+    );
   }
+
 
 }
