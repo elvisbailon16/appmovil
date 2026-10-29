@@ -271,7 +271,7 @@ export class ApiService {
     return this.getWithCache(
       `actividades_evento_${id}`,
       this.httpclient.get(
-        `${API_URL}/appmovil/get_actividades_eventogit/${id}`,
+        `${API_URL}/appmovil/get_actividades_evento/${id}`,
         {
           headers: this.getPublicHeaders()
         }
